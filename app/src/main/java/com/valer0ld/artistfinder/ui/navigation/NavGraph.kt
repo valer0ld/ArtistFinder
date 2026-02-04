@@ -20,7 +20,7 @@ sealed class NavRoutes(val route: String){
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier){
     NavHost(navController = navController, startDestination = NavRoutes.Home.route, modifier = modifier){
-        composable(NavRoutes.Home.route) { Home() }
+        composable(NavRoutes.Home.route) { Home(navController) }
         composable(NavRoutes.Profile.route) { Profile() }
         composable(NavRoutes.Rating.route) { Rating() }
         composable(NavRoutes.Game.route) { Game() }

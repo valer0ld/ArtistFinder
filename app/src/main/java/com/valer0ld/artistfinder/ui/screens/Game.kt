@@ -26,12 +26,12 @@ fun Game(){
     val currentArtist = remember { mutableStateOf(artists[0]) }
     val typography = MaterialTheme.typography
     val colorScheme = MaterialTheme.colorScheme
-    Box(Modifier.fillMaxSize().background(colorScheme.onBackground), contentAlignment = Alignment.Center){
+    Box(Modifier.fillMaxSize().background(colorScheme.surface), contentAlignment = Alignment.Center){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text(text = currentArtist.value, style = typography.displayMedium,
-                color = colorScheme.background)
+                color = colorScheme.onSurface)
             Box(contentAlignment = Alignment.Center) {
                 Column() {
                     var t = 0
@@ -52,7 +52,7 @@ fun Game(){
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(text = artists[t], style = typography.headlineMedium,
-                                        color = colorScheme.background)
+                                        color = colorScheme.onPrimary)
                                     t++
                                 }
 
@@ -69,7 +69,7 @@ fun Game(){
                     contentAlignment = Alignment.Center
                 ) {
                     Text("Кнопка", style = typography.headlineSmall,
-                        color = colorScheme.background)
+                        color = colorScheme.onTertiary)
                 }
 
             }

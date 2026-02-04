@@ -1,10 +1,8 @@
 package com.valer0ld.artistfinder.ui.navigation
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.shadow
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -34,7 +33,8 @@ fun BottomNavigationBar(navController: NavController){
         modifier = Modifier
             .fillMaxWidth()
             .height(70.dp)
-            .background(MaterialTheme.colorScheme.onBackground)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .shadow(1.dp)
     ) {
         NavBarItems.BarItems.forEach { item ->
             BottomBarItem(
@@ -63,23 +63,14 @@ fun BottomBarItem(
     modifier: Modifier = Modifier
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-
-    val overlayAlpha by animateFloatAsState(
-        targetValue = if (isPressed) 0.12f else 0f,
-        label = "pressedOverlay"
-    )
 
     Box(
         modifier = modifier
             .fillMaxHeight()
             .clickable(
                 interactionSource = interactionSource,
-                onClick = onClick,
-                indication = null
-            )
-            .background(
-                MaterialTheme.colorScheme.background.copy(alpha = overlayAlpha)
+                indication = null,
+                onClick = onClick
             ),
         contentAlignment = Alignment.Center
     ) {
@@ -87,9 +78,9 @@ fun BottomBarItem(
             painter = painterResource(item.image),
             contentDescription = item.title,
             tint = if (selected) {
-                MaterialTheme.colorScheme.surfaceVariant
+                MaterialTheme.colorScheme.tertiaryContainer
             } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
+                MaterialTheme.colorScheme.secondaryContainer
             },
             modifier = Modifier.size(50.dp)
         )

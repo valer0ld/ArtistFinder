@@ -9,14 +9,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.MaterialTheme
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.compose.AppTheme
 import com.valer0ld.artistfinder.ui.navigation.BottomNavigationBar
 import com.valer0ld.artistfinder.ui.navigation.NavGraph
+import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
 fun Main(navController: NavHostController = rememberNavController()) {
     Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = { BottomNavigationBar(navController) }
-        , containerColor = MaterialTheme.colorScheme.onBackground){ innerPadding ->
+        , containerColor = MaterialTheme.colorScheme.surface){ innerPadding ->
         NavGraph(navController, modifier = Modifier.padding(innerPadding))
     }
 }
