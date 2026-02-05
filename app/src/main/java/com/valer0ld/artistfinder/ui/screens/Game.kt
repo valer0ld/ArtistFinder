@@ -1,12 +1,17 @@
 package com.valer0ld.artistfinder.ui.screens
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,61 +23,138 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.rememberNavController
+import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun Game(){
+fun Game(navController: NavController, currentTurn: Int, incrementTurn: ()->Unit){
     val artists = arrayOf("Воскресенье", "Земфира", "Аквариум", "ДДТ", "ЧИЖ")
     val currentArtist = remember { mutableStateOf(artists[0]) }
+    val targetArtist = "ЧИЖ"
+
     val typography = MaterialTheme.typography
     val colorScheme = MaterialTheme.colorScheme
-    Box(Modifier.fillMaxSize().background(colorScheme.surface), contentAlignment = Alignment.Center){
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Text(text = currentArtist.value, style = typography.displayMedium,
-                color = colorScheme.onSurface)
-            Box(contentAlignment = Alignment.Center) {
-                Column() {
-                    var t = 0
-                    for (i in 0..1) {
-                        Row(Modifier.padding(start = 6.dp, end = 6.dp)) {
-                            for (y in 0..1) {
-                                if (artists[t] == currentArtist.value) t++
-                                val tmp = artists[t]
-                                Box(
-                                    Modifier
-                                        .size(200.dp)
-                                        .padding(2.dp)
-                                        .clip(shape = RoundedCornerShape(10.dp))
-                                        .background(colorScheme.primary)
-                                        .clickable {
-                                            currentArtist.value = tmp
-                                        },
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(text = artists[t], style = typography.headlineMedium,
-                                        color = colorScheme.onPrimary)
-                                    t++
-                                }
 
-                            }
+    Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colorScheme.surfaceContainerLowest)
+        ) {
+            TitleAndContentText("Цель",
+                colorScheme.outlineVariant,
+                typography.bodyLarge,
+                targetArtist,
+                colorScheme.primary,
+                typography.displayMedium)
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
+                TitleAndContentText("Время",
+                    colorScheme.outlineVariant,
+                    typography.bodyMedium,
+                    "00:00",
+                    colorScheme.tertiary,
+                    typography.displaySmall)
+                TitleAndContentText("Текущий ход",
+                    colorScheme.outlineVariant,
+                    typography.bodyMedium,
+                    currentTurn.toString(),
+                    colorScheme.tertiary,
+                    typography.displaySmall)
+            }
+            MainGamePanel(artists, currentArtist.value) { newArtist ->
+                if (newArtist == targetArtist){
+                    navController.navigate("win") {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
                         }
+                        restoreState = true
                     }
                 }
-                Box(
-                    Modifier
-                        .size(130.dp)
-                        .clip(shape = RoundedCornerShape(60.dp))
-                        .background(colorScheme.tertiary)
-                        .clickable{},
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Кнопка", style = typography.headlineSmall,
-                        color = colorScheme.onTertiary)
-                }
-
+                currentArtist.value = newArtist
+                incrementTurn()
             }
         }
+}
+
+@Composable
+fun TitleAndContentText(
+    title: String, titleColor: Color, titleStyle: TextStyle,
+    content: String, contentColor: Color, contentStyle: TextStyle){
+    Column(horizontalAlignment = Alignment.CenterHorizontally){
+        Text(text = title,
+            style = titleStyle,
+            color = titleColor)
+
+        Text(text = content,
+            style = contentStyle,
+            color = contentColor)
+    }
+}
+
+@Composable
+fun NextArtistButton(artist: String, modifier: Modifier = Modifier, onArtistClick: (String)->Unit){
+    Box(
+        Modifier
+            .fillMaxHeight()
+            .padding(5.dp)
+            .clip(shape = RoundedCornerShape(10.dp))
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .clickable { onArtistClick(artist) }
+            .then(modifier),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = artist, style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onPrimary)
+    }
+}
+
+@Composable
+fun MainGamePanel(artists: Array<String>, currentArtist: String, onArtistClick: (String) -> Unit){
+    Box(contentAlignment = Alignment.Center) {
+        Column(
+            modifier = Modifier
+                .height(400.dp)
+        ) {
+            var t = 0
+            for (i in 0..1) {
+                Row(Modifier.weight(1f).fillMaxWidth().padding(start = 6.dp, end = 6.dp)) {
+                    for (y in 0..1) {
+                        if (artists[t] == currentArtist) t++
+                        NextArtistButton(artists[t], Modifier.weight(1f), onArtistClick = onArtistClick )
+                        t++
+                    }
+                }
+            }
+        }
+        Box(
+            Modifier
+                .size(130.dp)
+                .clip(shape = RoundedCornerShape(60.dp))
+                .background(MaterialTheme.colorScheme.primary)
+                .border(2.dp, MaterialTheme.colorScheme.onTertiary, RoundedCornerShape(60.dp))
+                .clickable{},
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                currentArtist,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onTertiary
+            )
+        }
+
+    }
+}
+
+@Preview
+@Composable
+fun GamePreview(){
+    AppTheme{
+        Game(navController = rememberNavController(), 1, {})
     }
 }

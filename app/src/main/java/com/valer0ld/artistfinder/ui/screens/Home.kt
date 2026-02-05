@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -38,7 +37,7 @@ fun Home(navController: NavController){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceBright).padding(20.dp)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainerLowest).padding(20.dp)
     ){
         DailyGameBox(navController = navController)
         Text(
@@ -61,7 +60,7 @@ fun DailyGameBox(start: String = "Воскресенье", finish: String = "З�
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .background(colorScheme.tertiaryContainer)
-            .border(width = 1.dp,color = colorScheme.tertiary)
+            .border(width = 1.dp,color = colorScheme.tertiary, RoundedCornerShape(10.dp))
             .padding(10.dp)
     ){
         Text(
@@ -93,10 +92,6 @@ fun DailyGameBox(start: String = "Воскресенье", finish: String = "З�
                 restoreState = true
             }},
             shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colorScheme.primary,
-                contentColor = colorScheme.onPrimary
-            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp)
@@ -128,8 +123,8 @@ fun GameBuilderBox(navController: NavController){
             .fillMaxWidth()
             .height(250.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.surfaceBright)
-            .border(1.dp, MaterialTheme.colorScheme.onSurface)
+            .background(MaterialTheme.colorScheme.surface)
+            .border(1.dp, MaterialTheme.colorScheme.onSurface,RoundedCornerShape(10.dp))
             .padding(5.dp)
     ) {
         CustomTextField("Старт", Modifier)
