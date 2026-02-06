@@ -1,19 +1,18 @@
 package com.valer0ld.artistfinder.ui.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.valer0ld.artistfinder.ui.screens.Home
 import com.valer0ld.artistfinder.ui.screens.Profile
 import com.valer0ld.artistfinder.ui.screens.Rating
 import com.valer0ld.artistfinder.ui.screens.Game
 import com.valer0ld.artistfinder.ui.screens.WinGame
-import com.google.accompanist.navigation.animation.AnimatedNavHost
 
 sealed class NavRoutes(val route: String){
     object Home: NavRoutes("home")
@@ -23,10 +22,9 @@ sealed class NavRoutes(val route: String){
     object WinGame: NavRoutes("win")
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, currentStep: Int, incrementStep: ()->Unit){
-    AnimatedNavHost(
+    NavHost(
         navController = navController,
         startDestination = NavRoutes.Home.route,
         modifier = modifier,

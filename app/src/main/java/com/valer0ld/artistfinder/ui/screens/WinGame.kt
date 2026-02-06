@@ -51,13 +51,11 @@ import com.valer0ld.artistfinder.ui.components.FromArtistToArtist
 import com.valer0ld.artistfinder.ui.components.TitleAndContentText
 import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.theme.AppTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun WinGame(){
     var expanded by remember{ mutableStateOf(false) }
     val listState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(expanded) {
         if (!expanded) {
