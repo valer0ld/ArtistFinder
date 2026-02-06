@@ -25,17 +25,17 @@ import com.valer0ld.artistfinder.R
 
 
 @Composable
-fun GameBottomBar(navController: NavController, currentTurn: Int, currentReturns: Int, modifier: Modifier = Modifier, returnClick: ()->Unit){
+fun GameBottomBar(navController: NavController, currentStep: Int, currentReturns: Int, modifier: Modifier = Modifier, returnClick: ()->Unit){
     Row(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .background(MaterialTheme.colorScheme.background)
             .padding(bottom = 10.dp)
             .then(modifier)
             .fillMaxWidth()
             .height(70.dp)
             .shadow(2.dp, shape = RoundedCornerShape(30.dp))
             .clip(RoundedCornerShape(30.dp))
-            .background(MaterialTheme.colorScheme.surface),
+            .background(MaterialTheme.colorScheme.surfaceVariant),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ){
@@ -63,12 +63,12 @@ fun GameBottomBar(navController: NavController, currentTurn: Int, currentReturns
             Icon(
                 painter = painterResource(CounterIconItems.IconItems[currentReturns].image),
                 contentDescription = CounterIconItems.IconItems[currentReturns].title,
-                tint = if (currentReturns > 0 && currentTurn > 0) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.outlineVariant
+                tint = if (currentReturns > 0 && currentStep > 0) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.outlineVariant
             )
             IconButton(
                 modifier = Modifier,
                 onClick = returnClick,
-                enabled = currentReturns > 0 && currentTurn > 0,
+                enabled = currentReturns > 0 && currentStep > 0,
                 colors = IconButtonDefaults.iconButtonColors(
                     disabledContentColor = MaterialTheme.colorScheme.outlineVariant,
                     contentColor = MaterialTheme.colorScheme.tertiary

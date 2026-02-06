@@ -23,12 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
+import com.valer0ld.artistfinder.ui.components.TitleAndContentText
+import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
@@ -45,27 +46,23 @@ fun Game(navController: NavController, currentTurn: Int, incrementTurn: ()->Unit
             verticalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorScheme.surfaceContainerLowest)
+                .background(colorScheme.background)
         ) {
-            TitleAndContentText("Цель",
-                colorScheme.outlineVariant,
-                typography.bodyLarge,
-                targetArtist,
-                colorScheme.primary,
-                typography.displayMedium)
+            TitleAndContentText(
+                TextPreset.body("Цель",
+                colorScheme.outlineVariant),
+                TextPreset.display(targetArtist,
+                colorScheme.primary)
+            )
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
-                TitleAndContentText("Время",
-                    colorScheme.outlineVariant,
-                    typography.bodyMedium,
-                    "00:00",
-                    colorScheme.tertiary,
-                    typography.displaySmall)
-                TitleAndContentText("Текущий ход",
-                    colorScheme.outlineVariant,
-                    typography.bodyMedium,
-                    currentTurn.toString(),
-                    colorScheme.tertiary,
-                    typography.displaySmall)
+                TitleAndContentText(
+                    TextPreset.bodyM("Время", colorScheme.outlineVariant),
+                    TextPreset.displayS("00:00", colorScheme.tertiary)
+                )
+                TitleAndContentText(
+                    TextPreset.bodyM("Текущий шаг", colorScheme.outlineVariant),
+                    TextPreset.displayS(currentTurn.toString(), colorScheme.tertiary)
+                )
             }
             MainGamePanel(artists, currentArtist.value) { newArtist ->
                 if (newArtist == targetArtist){
@@ -80,21 +77,6 @@ fun Game(navController: NavController, currentTurn: Int, incrementTurn: ()->Unit
                 incrementTurn()
             }
         }
-}
-
-@Composable
-fun TitleAndContentText(
-    title: String, titleColor: Color, titleStyle: TextStyle,
-    content: String, contentColor: Color, contentStyle: TextStyle){
-    Column(horizontalAlignment = Alignment.CenterHorizontally){
-        Text(text = title,
-            style = titleStyle,
-            color = titleColor)
-
-        Text(text = content,
-            style = contentStyle,
-            color = contentColor)
-    }
 }
 
 @Composable

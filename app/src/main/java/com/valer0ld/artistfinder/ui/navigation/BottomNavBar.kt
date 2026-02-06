@@ -37,14 +37,14 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
 
     Row(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .background(MaterialTheme.colorScheme.background)
             .padding(bottom = 10.dp)
             .then(modifier)
             .fillMaxWidth()
             .height(70.dp)
             .shadow(2.dp, shape = RoundedCornerShape(30.dp))
             .clip(RoundedCornerShape(30.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
         NavBarItems.BarItems.forEach { item ->
             BottomBarItem(
@@ -118,7 +118,7 @@ object NavBarItems{
         ),
         BarItem(
             title = "Rating",
-            image = R.drawable.trophy_24px,
+            image = R.drawable.social_leaderboard_24px,
             route = "rating"
         )
     )

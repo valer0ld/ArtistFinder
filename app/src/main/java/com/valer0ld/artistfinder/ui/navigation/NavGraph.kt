@@ -20,12 +20,12 @@ sealed class NavRoutes(val route: String){
 }
 
 @Composable
-fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, currentTurn: Int, incrementTurn: ()->Unit){
+fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, currentStep: Int, incrementStep: ()->Unit){
     NavHost(navController = navController, startDestination = NavRoutes.Home.route, modifier = modifier){
         composable(NavRoutes.Home.route) { Home(navController) }
         composable(NavRoutes.Profile.route) { Profile() }
         composable(NavRoutes.Rating.route) { Rating() }
-        composable(NavRoutes.Game.route) { Game(navController, currentTurn, incrementTurn) }
+        composable(NavRoutes.Game.route) { Game(navController, currentStep, incrementStep) }
         composable(NavRoutes.WinGame.route) { WinGame() }
     }
 }

@@ -30,6 +30,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.R
+import com.valer0ld.artistfinder.ui.components.FromArtistToArtist
+import com.valer0ld.artistfinder.ui.components.TitleAndContentText
+import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
@@ -37,7 +40,7 @@ fun Home(navController: NavController){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainerLowest).padding(20.dp)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(20.dp)
     ){
         DailyGameBox(navController = navController)
         Text(
@@ -68,22 +71,13 @@ fun DailyGameBox(start: String = "Воскресенье", finish: String = "З�
             style = typography.headlineSmall,
             color = colorScheme.onTertiaryContainer,
             modifier = Modifier.weight(1f))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(3f),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ){
-            DailyElement("Старт", start)
-            Icon(
-                painter = painterResource(R.drawable.line_end_arrow_notch_24px),
-                contentDescription = "Стрелка",
-                tint = colorScheme.primary,
-                modifier = Modifier.size(40.dp)
-            )
-            DailyElement("Цель", finish)
-        }
+
+        FromArtistToArtist(
+            TextPreset.body(start, MaterialTheme.colorScheme.onTertiaryContainer),
+            TextPreset.body(finish, MaterialTheme.colorScheme.onTertiaryContainer),
+            modifier = Modifier.weight(3f)
+        )
+
         Button(onClick = {
             navController.navigate("game") {
                 popUpTo(navController.graph.findStartDestination().id) {
@@ -107,14 +101,6 @@ fun DailyGameBox(start: String = "Воскресенье", finish: String = "З�
 }
 
 @Composable
-fun DailyElement(dailyTitle: String, dailyContent: String, modifier: Modifier = Modifier){
-    Column(modifier = modifier){
-        Text(dailyTitle, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
-        Text(dailyContent, color = MaterialTheme.colorScheme.onTertiaryContainer, style = MaterialTheme.typography.bodyLarge)
-    }
-}
-
-@Composable
 fun GameBuilderBox(navController: NavController){
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -123,7 +109,7 @@ fun GameBuilderBox(navController: NavController){
             .fillMaxWidth()
             .height(250.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .border(1.dp, MaterialTheme.colorScheme.onSurface,RoundedCornerShape(10.dp))
             .padding(5.dp)
     ) {
