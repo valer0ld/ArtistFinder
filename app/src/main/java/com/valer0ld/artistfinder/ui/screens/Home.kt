@@ -31,7 +31,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.ui.components.FromArtistToArtist
-import com.valer0ld.artistfinder.ui.components.TitleAndContentText
 import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 

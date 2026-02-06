@@ -1,6 +1,5 @@
 package com.valer0ld.artistfinder.ui.screens
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -38,7 +37,6 @@ fun Game(navController: NavController, currentTurn: Int, incrementTurn: ()->Unit
     val currentArtist = remember { mutableStateOf(artists[0]) }
     val targetArtist = "ЧИЖ"
 
-    val typography = MaterialTheme.typography
     val colorScheme = MaterialTheme.colorScheme
 
     Column(
