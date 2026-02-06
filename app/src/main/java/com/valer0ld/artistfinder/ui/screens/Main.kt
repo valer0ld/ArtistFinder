@@ -24,6 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.ui.components.GameBottomBar
+import com.valer0ld.artistfinder.ui.components.WinGameBar
 import com.valer0ld.artistfinder.ui.navigation.BottomNavigationBar
 import com.valer0ld.artistfinder.ui.navigation.NavGraph
 import com.valer0ld.artistfinder.ui.navigation.NavRoutes
@@ -59,6 +60,12 @@ fun Main(navController: NavHostController = rememberNavController()) {
                 currentStep.intValue--
                 currentReturns.intValue--
             }}
+            if (currentDestination?.route == NavRoutes.WinGame.route){
+                WinGameBar(
+                    navController,
+                    modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)
+                )
+            }
         },
         containerColor = MaterialTheme.colorScheme.surface
     ){ innerPadding ->

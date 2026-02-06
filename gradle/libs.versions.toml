@@ -11,6 +11,7 @@ composeBom = "2026.01.01"
 uiTextGoogleFonts = "1.10.2"
 composeMaterial3 = "1.5.6"
 navigationCompose = "2.9.7"
+accompanist = "0.36.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -30,6 +31,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 androidx-compose-material3 = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "composeMaterial3" }
 androidx-navigation-compose = {group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose"}
+com-google-accompanist = {group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
