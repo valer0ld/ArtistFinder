@@ -1,7 +1,6 @@
 package com.valer0ld.artistfinder.ui.screens
 
 import android.os.Build
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -23,8 +21,6 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -38,21 +34,6 @@ import com.valer0ld.artistfinder.ui.theme.AppTheme
 @Composable
 fun Main(navController: NavHostController = rememberNavController()) {
     ConfigureSystemBars()
-
-    DisposableEffect(navController) {
-        val listener = NavController.OnDestinationChangedListener { controller, destination, _ ->
-            Log.d("NAV", "---- Destination changed ----")
-            destination.hierarchy.forEach {
-                Log.d("NAV", it.route ?: "null")
-            }
-        }
-
-        navController.addOnDestinationChangedListener(listener)
-
-        onDispose {
-            navController.removeOnDestinationChangedListener(listener)
-        }
-    }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
