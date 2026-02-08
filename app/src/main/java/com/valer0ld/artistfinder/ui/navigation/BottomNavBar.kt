@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -33,7 +34,12 @@ import com.valer0ld.artistfinder.ui.theme.AppTheme
 @Composable
 fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modifier){
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = backStackEntry?.destination?.route
+    val currentRoute = backStackEntry?.destination
+
+    val isInProfileGraph = currentRoute
+        ?.hierarchy
+        ?.any { it.route == NavRoutes.Profile.route }
+        ?: false
 
     Row(
         modifier = Modifier
@@ -47,16 +53,34 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
             .background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
         NavBarItems.BarItems.forEach { item ->
+
+            val isSelected = when(item.route){
+                "profile" -> isInProfileGraph
+                else -> currentRoute?.route == item.route
+            }
+
             BottomBarItem(
                 item = item,
-                selected = currentRoute == item.route,
+                selected = isSelected,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                    if (item.route == "profile" && isInProfileGraph) {
+                        if (currentRoute?.route != "profile/main") {
+                            navController.navigate(item.route) {
+                                popUpTo(item.route) {
+                                    inclusive = false
+                                }
+                                launchSingleTop = true
+                                restoreState = false
+                            }
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                    } else {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 },
                 modifier = Modifier.weight(1f)

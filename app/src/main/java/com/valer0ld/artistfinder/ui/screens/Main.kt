@@ -1,6 +1,7 @@
 package com.valer0ld.artistfinder.ui.screens
 
 import android.os.Build
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,14 +13,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -34,6 +39,21 @@ import com.valer0ld.artistfinder.ui.theme.AppTheme
 fun Main(navController: NavHostController = rememberNavController()) {
     ConfigureSystemBars()
 
+    DisposableEffect(navController) {
+        val listener = NavController.OnDestinationChangedListener { controller, destination, _ ->
+            Log.d("NAV", "---- Destination changed ----")
+            destination.hierarchy.forEach {
+                Log.d("NAV", it.route ?: "null")
+            }
+        }
+
+        navController.addOnDestinationChangedListener(listener)
+
+        onDispose {
+            navController.removeOnDestinationChangedListener(listener)
+        }
+    }
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
@@ -46,7 +66,9 @@ fun Main(navController: NavHostController = rememberNavController()) {
         bottomBar = {
             if (currentDestination?.route in listOf(
                 NavRoutes.Home.route,
-                NavRoutes.Profile.route,
+                NavRoutes.ProfileMain.route,
+                NavRoutes.GameList.route,
+                NavRoutes.Settings.route,
                 NavRoutes.Rating.route
         )){
             BottomNavigationBar(navController,
@@ -67,7 +89,8 @@ fun Main(navController: NavHostController = rememberNavController()) {
                 )
             }
         },
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = WindowInsets.navigationBars
     ){ innerPadding ->
         NavGraph(
             navController,
@@ -90,40 +113,36 @@ fun ConfigureSystemBars() {
         activity?.window?.let { window ->
             val isDarkBackground = colorScheme.background.luminance() < 0.5f
 
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                // API 30+ (Android 11+):
+                // Android 11+
                 window.isNavigationBarContrastEnforced = false
 
-                // Для API 35+ (Android 15+)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    // API 34+ (Android 14):
-                    WindowCompat.getInsetsController(window, window.decorView).apply {
-                        isAppearanceLightNavigationBars = !isDarkBackground
-                    }
-                } else {
-                    // API 30-33:
-                    @Suppress("DEPRECATION")
-                    window.navigationBarColor = colorScheme.background.toArgb()
-                    WindowCompat.getInsetsController(window, window.decorView).apply {
-                        isAppearanceLightNavigationBars = !isDarkBackground
-                    }
+                window.navigationBarColor = Color.Transparent.toArgb()
+                window.statusBarColor = Color.Transparent.toArgb()
+
+                WindowCompat.getInsetsController(window, window.decorView).apply {
+                    isAppearanceLightNavigationBars = !isDarkBackground
+                    isAppearanceLightStatusBars = !isDarkBackground
                 }
             } else {
-                // API 21-29:
+                // API 21–29
                 @Suppress("DEPRECATION")
-                window.navigationBarColor = colorScheme.background.toArgb()
+                window.navigationBarColor = Color.Transparent.toArgb()
+                @Suppress("DEPRECATION")
+                window.statusBarColor = Color.Transparent.toArgb()
 
-                // Для API 26+ (Oreo)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     WindowCompat.getInsetsController(window, window.decorView).apply {
                         isAppearanceLightNavigationBars = !isDarkBackground
+                        isAppearanceLightStatusBars = !isDarkBackground
                     }
                 }
             }
         }
     }
 }
-
 
 @Preview(showSystemUi = true)
 @Composable

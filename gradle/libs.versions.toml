@@ -12,6 +12,7 @@ uiTextGoogleFonts = "1.10.2"
 composeMaterial3 = "1.5.6"
 navigationCompose = "2.9.7"
 accompanist = "0.36.0"
+coil = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +33,7 @@ androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text
 androidx-compose-material3 = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "composeMaterial3" }
 androidx-navigation-compose = {group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose"}
 com-google-accompanist = {group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist"}
+io-coil-kt = {group = "io.coil-kt", name = "coil-compose", version.ref = "coil"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

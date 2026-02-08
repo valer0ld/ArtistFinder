@@ -64,6 +64,7 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.com.google.accompanist)
+    implementation(libs.io.coil.kt)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
