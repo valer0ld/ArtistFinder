@@ -11,8 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.valer0ld.artistfinder.ui.screens.Home
 import com.valer0ld.artistfinder.ui.screens.SettingsScreen
-import com.valer0ld.artistfinder.ui.screens.Rating
-import com.valer0ld.artistfinder.ui.screens.Game
+import com.valer0ld.artistfinder.ui.screens.RatingScreen
+import com.valer0ld.artistfinder.ui.screens.GameScreen
 import com.valer0ld.artistfinder.ui.screens.GamesList
 import com.valer0ld.artistfinder.ui.screens.ProfileMain
 import com.valer0ld.artistfinder.ui.screens.WinGame
@@ -60,8 +60,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, cu
             )
         }){
         composable(NavRoutes.Home.route) { Home(navController) }
-        composable(NavRoutes.Rating.route) { Rating() }
-        composable(NavRoutes.Game.route) { Game(navController, currentStep, incrementStep) }
+        composable(NavRoutes.Rating.route) { RatingScreen() }
+        composable(NavRoutes.Game.route) { GameScreen(navController, currentStep, incrementStep) }
         composable(NavRoutes.WinGame.route) { WinGame() }
 
         navigation(
@@ -72,7 +72,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, cu
                 onGamesClick = { navController.navigate(NavRoutes.GameList.route) },
                 onSettingsClick = { navController.navigate(NavRoutes.Settings.route) }
             ) }
-            composable(NavRoutes.GameList.route) { GamesList() }
+            composable(NavRoutes.GameList.route) { GamesList(navController) }
             composable(NavRoutes.Settings.route) { SettingsScreen() }
         }
     }

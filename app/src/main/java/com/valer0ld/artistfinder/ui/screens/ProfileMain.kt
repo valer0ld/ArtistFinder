@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -105,12 +106,16 @@ fun OptionButton(option: String, icon: Int, onOptionChose: ()->Unit){
         modifier = Modifier
             .padding(horizontal = 10.dp)
             .fillMaxWidth()
-            .height(70.dp)
-            .shadow(2.dp, shape = RoundedCornerShape(30.dp)),
+            .height(70.dp),
         onClick = onOptionChose,
         shape = RoundedCornerShape(30.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
+
+        ),
+        elevation = ButtonDefaults.buttonElevation(
+            defaultElevation = 6.dp,
+            pressedElevation = 2.dp,
         ),
     ){
         Icon(

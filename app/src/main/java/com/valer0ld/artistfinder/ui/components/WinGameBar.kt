@@ -25,8 +25,7 @@ fun WinGameBar(navController: NavController, modifier: Modifier = Modifier){
             .padding(bottom = 10.dp)
             .then(modifier)
             .fillMaxWidth()
-            .height(70.dp)
-            .shadow(3.dp, shape = RoundedCornerShape(30.dp)),
+            .height(70.dp),
         onClick = {
             navController.navigate("home") {
                 popUpTo(navController.graph.findStartDestination().id) {
@@ -35,6 +34,10 @@ fun WinGameBar(navController: NavController, modifier: Modifier = Modifier){
                 restoreState = true
             }
         },
+        elevation = ButtonDefaults.buttonElevation(
+            defaultElevation = 6.dp,
+            pressedElevation = 2.dp,
+        ),
         shape = RoundedCornerShape(30.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary

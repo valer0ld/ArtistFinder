@@ -35,7 +35,7 @@ import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun Game(navController: NavController, currentTurn: Int, incrementTurn: ()->Unit){
+fun GameScreen(navController: NavController, currentTurn: Int, incrementTurn: ()->Unit){
     val artists = arrayOf("Воскресенье", "Земфира", "Аквариум", "ДДТ", "ЧИЖ")
     val currentArtist = remember { mutableStateOf(artists[0]) }
     val targetArtist = "ЧИЖ"
@@ -137,8 +137,8 @@ fun MainGamePanel(artists: Array<String>, currentArtist: String, onArtistClick: 
 
 @Preview
 @Composable
-fun GamePreview(){
+fun GameScreenPreview(){
     AppTheme{
-        Game(navController = rememberNavController(), 1, {})
+        GameScreen(navController = rememberNavController(), 1, {})
     }
 }
