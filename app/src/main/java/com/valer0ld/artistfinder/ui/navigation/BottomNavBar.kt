@@ -58,7 +58,7 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
                 onIconClick = {
                     if (item.route == "profile" && isInProfileGraph) {
                         if (currentRoute?.route != "profile/main") {
-                            navController.navigate(item.route) {
+                            navController.navigate("profile/main") {
                                 popUpTo(item.route) {
                                     inclusive = false
                                 }

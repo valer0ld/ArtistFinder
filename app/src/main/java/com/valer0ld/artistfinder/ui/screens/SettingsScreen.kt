@@ -6,3 +6,16 @@ import androidx.compose.runtime.Composable
 fun SettingsScreen(){
 
 }
+
+/*
+fun LazyListScope.settingsSection(
+    title: String,
+    content: LazyListScope.() -> Unit
+) {
+    stickyHeader {
+        SectionHeader(title)
+    }
+    content()
+    item { SectionDivider() }
+}
+*/

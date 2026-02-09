@@ -7,6 +7,4 @@ package com.valer0ld.artistfinder.ui.models
     val time: Int,
     val stepCounter: Int,
     val steps: List<String>
-){
-
-}
+)
