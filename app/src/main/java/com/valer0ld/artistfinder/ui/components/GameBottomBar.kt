@@ -9,23 +9,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.R
+import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 
 @Composable
 fun GameBottomBar(navController: NavController, currentStep: Int, currentReturns: Int, modifier: Modifier = Modifier, returnClick: ()->Unit){
+
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -39,48 +44,48 @@ fun GameBottomBar(navController: NavController, currentStep: Int, currentReturns
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ){
-        IconButton(
-            modifier = Modifier,
-            onClick = {
+        BouncingIconButton(
+            icon = R.drawable.close_24px,
+            label = "close",
+            color = MaterialTheme.colorScheme.error,
+            size = 60.dp,
+            modifier = Modifier.padding(horizontal = 30.dp),
+            onIconClick = {
                 navController.navigate("home") {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
                     restoreState = true
                 }
-            },
-            colors = IconButtonDefaults.iconButtonColors(
-                contentColor = MaterialTheme.colorScheme.error
-            )
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.close_24px),
-                contentDescription = "close",
-                modifier = Modifier.size(50.dp)
-            )
-        }
-        Row() {
+            }
+        )
+        Row(modifier = Modifier.padding(horizontal = 30.dp)) {
+            val enabled = (currentReturns > 0 && currentStep > 0)
+
             Icon(
                 painter = painterResource(CounterIconItems.IconItems[currentReturns].image),
                 contentDescription = CounterIconItems.IconItems[currentReturns].title,
-                tint = if (currentReturns > 0 && currentStep > 0) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.outlineVariant
+                tint = if (enabled) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.outlineVariant,
+                modifier = Modifier.padding(vertical = 5.dp).size(30.dp)
             )
-            IconButton(
-                modifier = Modifier,
-                onClick = returnClick,
-                enabled = currentReturns > 0 && currentStep > 0,
-                colors = IconButtonDefaults.iconButtonColors(
-                    disabledContentColor = MaterialTheme.colorScheme.outlineVariant,
-                    contentColor = MaterialTheme.colorScheme.tertiary
-                )
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.replay_24px),
-                    contentDescription = "return",
-                    modifier = Modifier.size(50.dp)
-                )
-            }
+
+            BouncingIconButton(
+                icon = R.drawable.replay_24px,
+                label = "return",
+                color = if (enabled) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.outlineVariant,
+                size = 60.dp,
+                enabled = enabled,
+                onIconClick = returnClick
+            )
         }
+    }
+}
+
+@Preview
+@Composable
+fun GameBottomBarPrevew(){
+    AppTheme {
+        GameBottomBar(navController = rememberNavController(), currentStep = 3, 2, returnClick = {  })
     }
 }
 

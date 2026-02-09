@@ -1,26 +1,17 @@
 package com.valer0ld.artistfinder.ui.navigation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.R
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +20,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.valer0ld.artistfinder.ui.components.BouncingIconButton
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
@@ -44,13 +36,14 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
-            .padding(bottom = 10.dp)
+            .padding(bottom = 10.dp, start = 5.dp, end = 5.dp)
             .then(modifier)
             .fillMaxWidth()
             .height(70.dp)
             .shadow(2.dp, shape = RoundedCornerShape(30.dp))
             .clip(RoundedCornerShape(30.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
+            .padding(horizontal = 15.dp)
     ) {
         NavBarItems.BarItems.forEach { item ->
 
@@ -62,7 +55,7 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
             BottomBarItem(
                 item = item,
                 selected = isSelected,
-                onClick = {
+                onIconClick = {
                     if (item.route == "profile" && isInProfileGraph) {
                         if (currentRoute?.route != "profile/main") {
                             navController.navigate(item.route) {
@@ -93,32 +86,21 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
 fun BottomBarItem(
     item: BarItem,
     selected: Boolean,
-    onClick: () -> Unit,
+    onIconClick: () -> Unit,
     modifier: Modifier = Modifier
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-
-    Box(
+){
+    BouncingIconButton(
+        icon = item.image,
+        label =item.title,
+        color = if (selected) {
+            MaterialTheme.colorScheme.tertiaryContainer
+        } else {
+            MaterialTheme.colorScheme.secondaryContainer
+        },
+        size = 60.dp,
+        onIconClick = onIconClick,
         modifier = modifier
-            .fillMaxHeight()
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            painter = painterResource(item.image),
-            contentDescription = item.title,
-            tint = if (selected) {
-                MaterialTheme.colorScheme.tertiaryContainer
-            } else {
-                MaterialTheme.colorScheme.secondaryContainer
-            },
-            modifier = Modifier.size(50.dp)
-        )
-    }
+    )
 }
 
 data class BarItem(

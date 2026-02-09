@@ -3,19 +3,14 @@ package com.valer0ld.artistfinder.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,8 +27,6 @@ import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.ui.models.Game
 import com.valer0ld.artistfinder.ui.models.toSpanStyleColored
 import com.valer0ld.artistfinder.ui.theme.AppTheme
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -41,11 +34,12 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.ui.components.AnimatedStepsList
+import com.valer0ld.artistfinder.ui.components.BouncingIconButton
+import com.valer0ld.artistfinder.ui.components.ReturnActionHeader
 
 @Composable
 fun GamesList(navController: NavController){
@@ -59,14 +53,14 @@ fun GamesList(navController: NavController){
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         stickyHeader {
-            ReturnActionHeader({
+            ReturnActionHeader(R.drawable.arrow_back_24px, "Return arrow") {
                 navController.navigate("profile/main") {
                     popUpTo("profile") {
                         inclusive = false
                     }
                     restoreState = true
                 }
-            })
+            }
         }
         items(
             items = TempListOfGames.list,
@@ -113,26 +107,13 @@ fun GameItem(game: Game, onPanelClick: ()->Unit, onPlayClick: ()->Unit){
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             GameItemInfo(game)
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(5.dp)
-            ) {
-                Text(
-                    text = "Играть",
-                    color = MaterialTheme.colorScheme.tertiary,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                IconButton(
-                    onClick = onPlayClick
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.play_arrow_24px),
-                        contentDescription = "play",
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-            }
+            BouncingIconButton(
+                icon = R.drawable.play_arrow_24px,
+                label = "play",
+                color = MaterialTheme.colorScheme.tertiary,
+                size = 60.dp,
+                onIconClick = onPlayClick
+            )
         }
     }
 }
@@ -159,9 +140,7 @@ fun GameItemInfo(game: Game){
                 }
             }
         )
-        Row(
-
-        ) {
+        Row{
             Text(
                 color = MaterialTheme.colorScheme.inverseSurface,
                 text = buildAnnotatedString {
@@ -187,30 +166,6 @@ fun GameItemInfo(game: Game){
                 modifier = Modifier.padding(horizontal = 5.dp)
             )
         }
-    }
-}
-
-@Composable
-fun ReturnActionHeader(onReturnClick: ()->Unit){
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .padding(10.dp),
-        contentAlignment = Alignment.CenterStart
-    ){
-        IconButton(
-            onClick = onReturnClick
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.arrow_back_24px),
-                contentDescription = "Return arrow",
-                tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.size(40.dp)
-            )
-        }
-
     }
 }
 
