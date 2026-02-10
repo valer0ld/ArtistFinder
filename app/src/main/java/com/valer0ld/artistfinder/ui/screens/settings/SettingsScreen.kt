@@ -86,7 +86,9 @@ fun SettingsHeaderItem(headerTitle: String, headerIcon: Int?) {
         tonalElevation = 4.dp,
         color = MaterialTheme.colorScheme.primary,
         shape = RoundedCornerShape(20.dp),
-        modifier = Modifier.padding(top = 30.dp)
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background) // надо исправить без костылей
+            .padding(top = 30.dp)
     ) {
         Row(
             modifier = Modifier
