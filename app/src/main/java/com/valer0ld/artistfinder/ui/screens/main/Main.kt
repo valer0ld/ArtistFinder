@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.screens
+package com.valer0ld.artistfinder.ui.screens.main
 
 import android.os.Build
 import androidx.activity.ComponentActivity
@@ -24,8 +24,8 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.valer0ld.artistfinder.ui.components.GameBottomBar
-import com.valer0ld.artistfinder.ui.components.WinGameBar
+import com.valer0ld.artistfinder.ui.screens.game.GameBottomBar
+import com.valer0ld.artistfinder.ui.screens.win_game.WinGameBar
 import com.valer0ld.artistfinder.ui.navigation.BottomNavigationBar
 import com.valer0ld.artistfinder.ui.navigation.NavGraph
 import com.valer0ld.artistfinder.ui.navigation.NavRoutes

@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.screens
+package com.valer0ld.artistfinder.ui.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -158,15 +158,18 @@ fun GameBuilderBox(navController: NavController){
 fun CustomTextField(placeholder: String, modifier: Modifier = Modifier){
     val message = remember { mutableStateOf("") }
     OutlinedTextField(
-        message.value,
+        value = message.value,
         onValueChange = {message.value = it},
         textStyle = MaterialTheme.typography.bodyLarge,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
             unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
-            focusedTextColor = MaterialTheme.colorScheme.onSurface
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedTextColor = MaterialTheme.colorScheme.outlineVariant,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceBright
         ),
-        modifier = Modifier.background(MaterialTheme.colorScheme.surfaceBright).then(modifier),
+        modifier = Modifier.then(modifier),
         placeholder = {Text(placeholder, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.outlineVariant)}
     )
 }

@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.components
+package com.valer0ld.artistfinder.ui.screens.game
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.R
+import com.valer0ld.artistfinder.ui.components.BouncingIconButton
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 

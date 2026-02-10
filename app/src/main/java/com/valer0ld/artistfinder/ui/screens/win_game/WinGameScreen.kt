@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.screens
+package com.valer0ld.artistfinder.ui.screens.win_game
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -44,7 +44,7 @@ import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun WinGame(){
+fun WinGameScreen(){
     var expanded by remember{ mutableStateOf(false) }
     val listState = rememberLazyListState()
 
@@ -201,8 +201,8 @@ fun StepsHeader(expanded: Boolean, onToggle: ()->Unit){
 
 @Preview
 @Composable
-fun WinGamePreview(){
+fun WinGameScreenPreview(){
     AppTheme{
-        WinGame()
+        WinGameScreen()
     }
 }

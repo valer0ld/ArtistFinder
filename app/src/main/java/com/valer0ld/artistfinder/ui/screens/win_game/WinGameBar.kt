@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.components
+package com.valer0ld.artistfinder.ui.screens.win_game
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

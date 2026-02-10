@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.screens
+package com.valer0ld.artistfinder.ui.screens.rating
 
 import androidx.compose.runtime.Composable
 

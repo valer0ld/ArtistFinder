@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.screens
+package com.valer0ld.artistfinder.ui.screens.profile_main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

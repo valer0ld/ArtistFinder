@@ -1,4 +1,10 @@
 package com.valer0ld.artistfinder.ui.models
 
-class SettingsHeader {
-}
+import androidx.compose.runtime.Immutable
+
+@Immutable
+data class SettingsHeader (
+    val title: String,
+    val icon: Int? = null,
+    val settingList: List<Setting>
+)

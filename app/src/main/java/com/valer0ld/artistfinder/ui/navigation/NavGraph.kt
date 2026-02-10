@@ -5,17 +5,18 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.valer0ld.artistfinder.ui.screens.Home
-import com.valer0ld.artistfinder.ui.screens.SettingsScreen
-import com.valer0ld.artistfinder.ui.screens.RatingScreen
-import com.valer0ld.artistfinder.ui.screens.GameScreen
-import com.valer0ld.artistfinder.ui.screens.GamesList
-import com.valer0ld.artistfinder.ui.screens.ProfileMain
-import com.valer0ld.artistfinder.ui.screens.WinGame
+import com.valer0ld.artistfinder.ui.screens.home.Home
+import com.valer0ld.artistfinder.ui.screens.settings.SettingsScreen
+import com.valer0ld.artistfinder.ui.screens.rating.RatingScreen
+import com.valer0ld.artistfinder.ui.screens.game.GameScreen
+import com.valer0ld.artistfinder.ui.screens.game_list.GamesList
+import com.valer0ld.artistfinder.ui.screens.profile_main.ProfileMain
+import com.valer0ld.artistfinder.ui.screens.win_game.WinGameScreen
 
 sealed class NavRoutes(val route: String){
     object Home: NavRoutes("home")
@@ -62,7 +63,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, cu
         composable(NavRoutes.Home.route) { Home(navController) }
         composable(NavRoutes.Rating.route) { RatingScreen() }
         composable(NavRoutes.Game.route) { GameScreen(navController, currentStep, incrementStep) }
-        composable(NavRoutes.WinGame.route) { WinGame() }
+        composable(NavRoutes.WinGame.route) { WinGameScreen() }
 
         navigation(
             startDestination = NavRoutes.ProfileMain.route,
@@ -73,7 +74,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, cu
                 onSettingsClick = { navController.navigate(NavRoutes.Settings.route) }
             ) }
             composable(NavRoutes.GameList.route) { GamesList(navController) }
-            composable(NavRoutes.Settings.route) { SettingsScreen() }
+            composable(NavRoutes.Settings.route) { SettingsScreen(navController) }
         }
     }
 

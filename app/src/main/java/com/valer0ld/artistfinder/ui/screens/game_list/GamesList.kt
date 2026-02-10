@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.screens
+package com.valer0ld.artistfinder.ui.screens.game_list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
