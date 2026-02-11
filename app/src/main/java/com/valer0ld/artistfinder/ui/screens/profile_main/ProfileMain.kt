@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,9 +35,10 @@ import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun ProfileMain(onGamesClick: ()->Unit, onSettingsClick: ()->Unit){
+fun ProfileMain(innerPadding: PaddingValues, onGamesClick: ()->Unit, onSettingsClick: ()->Unit){
     Column(
         modifier = Modifier
+            .padding(bottom = innerPadding.calculateBottomPadding())
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
     ){
@@ -50,7 +52,7 @@ fun ProfileMain(onGamesClick: ()->Unit, onSettingsClick: ()->Unit){
 
 @Composable
 fun UserProfileViewer(userName: String, userPicture: Int, rating: Int){
-    Box() {
+    Box{
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -126,7 +128,7 @@ fun OptionButton(option: String, icon: Int, onOptionChose: ()->Unit){
         Text(
             text = option,
             color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.weight(1f).padding(horizontal = 20.dp)
         )
     }
@@ -136,6 +138,6 @@ fun OptionButton(option: String, icon: Int, onOptionChose: ()->Unit){
 @Composable
 fun ProfileMainPreview(){
     AppTheme{
-        ProfileMain({},{})
+        ProfileMain(PaddingValues(),{},{})
     }
 }

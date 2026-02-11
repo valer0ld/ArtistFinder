@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -35,7 +36,7 @@ import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun GameScreen(navController: NavController, currentTurn: Int, incrementTurn: ()->Unit){
+fun GameScreen(navController: NavController, innerPadding: PaddingValues, currentTurn: Int, incrementTurn: ()->Unit){
     val artists = arrayOf("Воскресенье", "Земфира", "Аквариум", "ДДТ", "ЧИЖ")
     val currentArtist = remember { mutableStateOf(artists[0]) }
     val targetArtist = "ЧИЖ"
@@ -46,6 +47,7 @@ fun GameScreen(navController: NavController, currentTurn: Int, incrementTurn: ()
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
+                .padding(bottom = innerPadding.calculateBottomPadding())
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .windowInsetsPadding(WindowInsets.statusBars)
@@ -139,6 +141,6 @@ fun MainGamePanel(artists: Array<String>, currentArtist: String, onArtistClick: 
 @Composable
 fun GameScreenPreview(){
     AppTheme{
-        GameScreen(navController = rememberNavController(), 1, {})
+        GameScreen(navController = rememberNavController(), PaddingValues(),1, {})
     }
 }

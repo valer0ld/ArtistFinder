@@ -57,6 +57,36 @@ object TextPreset {
     )
 
     @Composable
+    fun titleS(
+        text: String,
+        color: Color = MaterialTheme.colorScheme.onSurface
+    ) = TextConfig(
+        text = text,
+        color = color,
+        style = MaterialTheme.typography.titleSmall
+    )
+
+    @Composable
+    fun title(
+        text: String,
+        color: Color = MaterialTheme.colorScheme.onSurface
+    ) = TextConfig(
+        text = text,
+        color = color,
+        style = MaterialTheme.typography.titleMedium
+    )
+
+    @Composable
+    fun titleL(
+        text: String,
+        color: Color = MaterialTheme.colorScheme.onSurface
+    ) = TextConfig(
+        text = text,
+        color = color,
+        style = MaterialTheme.typography.titleLarge
+    )
+
+    @Composable
     fun display(
         text: String,
         color: Color = MaterialTheme.colorScheme.onSurface

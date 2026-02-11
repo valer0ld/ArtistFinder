@@ -65,7 +65,7 @@ fun SwitchSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modi
                 SettingColor.SECOND -> MaterialTheme.colorScheme.tertiary
                 SettingColor.DESTRUCTIVE -> MaterialTheme.colorScheme.error
             },
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.titleLarge
         )
 
         Switch(
@@ -115,7 +115,7 @@ fun ButtonSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modi
         ) {
             Text(
                 text = setting.title,
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.titleLarge
             )
         }
     }
@@ -128,7 +128,7 @@ fun TextFieldSetting(setting: Setting, viewModel: SettingsViewModel, modifier: M
     OutlinedTextField(
         value = message.value,
         onValueChange = { (viewModel::onSettingAction)(setting.settingId) },
-        textStyle = MaterialTheme.typography.headlineSmall,
+        textStyle = MaterialTheme.typography.titleLarge,
         colors = when (setting.color){
             SettingColor.DEFAULT -> OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -158,7 +158,7 @@ fun TextFieldSetting(setting: Setting, viewModel: SettingsViewModel, modifier: M
         modifier = modifier.fillMaxWidth().padding(10.dp),
         shape = RoundedCornerShape(10.dp),
         enabled = viewModel.isEditingProfile,
-        placeholder = { Text(setting.title, style = MaterialTheme.typography.headlineSmall) }
+        placeholder = { Text(setting.title, style = MaterialTheme.typography.titleLarge) }
     )
 }
 
@@ -203,7 +203,7 @@ fun ListSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modifi
                 SettingColor.SECOND -> MaterialTheme.colorScheme.tertiary
                 SettingColor.DESTRUCTIVE -> MaterialTheme.colorScheme.error
             },
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.titleLarge
         )
         LazyColumn(
             state = listState,

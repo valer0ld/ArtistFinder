@@ -21,7 +21,7 @@ import com.valer0ld.artistfinder.ui.theme.AppTheme
 fun WinGameBar(navController: NavController, modifier: Modifier = Modifier){
     Button(
         modifier = Modifier
-            .padding(bottom = 10.dp)
+            .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
             .then(modifier)
             .fillMaxWidth()
             .height(70.dp),
@@ -51,7 +51,7 @@ fun WinGameBar(navController: NavController, modifier: Modifier = Modifier){
     }
 }
 
-@Composable()
+@Composable
 @Preview
 fun WinGameBarPreview(navController: NavController = rememberNavController()){
     AppTheme {

@@ -6,14 +6,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -30,8 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.valer0ld.artistfinder.R
-import com.valer0ld.artistfinder.ui.components.ReturnActionHeader
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
@@ -39,21 +34,10 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .windowInsetsPadding(WindowInsets.statusBars),
+            .background(MaterialTheme.colorScheme.background),
         contentPadding = PaddingValues(start = 10.dp, end = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        stickyHeader {
-            ReturnActionHeader(R.drawable.arrow_back_24px, "Return arrow") {
-                navController.navigate("profile/main") {
-                    popUpTo("profile") {
-                        inclusive = false
-                    }
-                    restoreState = true
-                }
-            }
-        }
 
         viewModel.settings.forEach { header ->
 
@@ -61,13 +45,14 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
                 SettingsHeaderItem(header.title, header.icon)
             }
 
-            item{ Spacer(Modifier.height(10.dp)) }
-
             item (key = header.title + "_content"){
                 Column (
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(20.dp))
+                        .clip(RoundedCornerShape(
+                            bottomStart = 20.dp,
+                            bottomEnd = 20.dp,
+                        ))
                         .background(MaterialTheme.colorScheme.surfaceVariant),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
@@ -77,22 +62,30 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
                 }
             }
         }
+
+        item{
+            Spacer(Modifier.height(100.dp))
+        }
     }
 }
 
 @Composable
 fun SettingsHeaderItem(headerTitle: String, headerIcon: Int?) {
     Surface(
-        tonalElevation = 4.dp,
+        shadowElevation = 4.dp,
         color = MaterialTheme.colorScheme.primary,
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(
+            topStart = 20.dp,
+            topEnd = 20.dp,
+
+        ),
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.background) // надо исправить без костылей
+            .background(MaterialTheme.colorScheme.background)
             .padding(top = 30.dp)
+            .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
@@ -108,7 +101,7 @@ fun SettingsHeaderItem(headerTitle: String, headerIcon: Int?) {
             Text(
                 text = headerTitle,
                 color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.weight(1f).padding(start = 10.dp)
             )
         }

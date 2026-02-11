@@ -107,6 +107,10 @@ fun WinGameScreen(){
         item {
             AnimatedStepsList(expanded, TemporarySteps.step)
         }
+
+        item{
+            Spacer(Modifier.height(100.dp))
+        }
     }
 }
 

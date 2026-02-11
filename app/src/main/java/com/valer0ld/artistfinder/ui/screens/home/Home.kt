@@ -1,20 +1,18 @@
 package com.valer0ld.artistfinder.ui.screens.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -26,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,14 +37,14 @@ import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun Home(navController: NavController){
+fun Home(navController: NavController, innerPadding: PaddingValues){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
+            .padding(bottom = innerPadding.calculateBottomPadding())
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .windowInsetsPadding(WindowInsets.statusBars)
             .padding(20.dp)
     ){
         DailyGameBox(navController = navController)
@@ -64,24 +63,25 @@ fun DailyGameBox(start: String = "Воскресенье", finish: String = "З�
     val colorScheme = MaterialTheme.colorScheme
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceAround,
         modifier = Modifier
-            .height(200.dp)
+            .height(250.dp)
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
+            .shadow(6.dp, RoundedCornerShape(20.dp), false)
+            .clip(RoundedCornerShape(20.dp))
             .background(colorScheme.tertiaryContainer)
-            .border(width = 1.dp,color = colorScheme.tertiary, RoundedCornerShape(10.dp))
             .padding(10.dp)
     ){
         Text(
             "Игра дня!",
-            style = typography.headlineSmall,
+            style = typography.headlineMedium,
             color = colorScheme.onTertiaryContainer,
-            modifier = Modifier.weight(1f))
+            modifier = Modifier)
 
         FromArtistToArtist(
-            TextPreset.body(start, MaterialTheme.colorScheme.onTertiaryContainer),
-            TextPreset.body(finish, MaterialTheme.colorScheme.onTertiaryContainer),
-            modifier = Modifier.weight(3f)
+            TextPreset.titleL(start, MaterialTheme.colorScheme.onTertiaryContainer),
+            TextPreset.titleL(finish, MaterialTheme.colorScheme.onTertiaryContainer),
+            modifier = Modifier
         )
 
         Button(onClick = {
@@ -91,17 +91,21 @@ fun DailyGameBox(start: String = "Воскресенье", finish: String = "З�
                 }
                 restoreState = true
             }},
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(20.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp)
+                .padding(horizontal = 30.dp),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 4.dp,
+                pressedElevation = 1.dp,
+            )
             ) {
             Icon(
                 painter = painterResource((R.drawable.play_arrow_24px)),
                 contentDescription = "Play",
                 modifier = Modifier.size(30.dp)
             )
-            Text("Играть", style = typography.bodyLarge)
+            Text("Играть", style = typography.titleLarge)
         }
     }
 }
@@ -110,18 +114,18 @@ fun DailyGameBox(start: String = "Воскресенье", finish: String = "З�
 fun GameBuilderBox(navController: NavController){
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
         modifier = Modifier
             .fillMaxWidth()
             .height(250.dp)
-            .clip(RoundedCornerShape(10.dp))
+            .shadow(3.dp, RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(20.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .border(1.dp, MaterialTheme.colorScheme.onSurface,RoundedCornerShape(10.dp))
-            .padding(5.dp)
+            .padding(15.dp)
     ) {
         CustomTextField("Старт", Modifier)
         CustomTextField("Цель", Modifier)
-        Row(Modifier.padding(horizontal = 10.dp)){
+        Row(Modifier){
             Button(
                 onClick ={
                     navController.navigate("game") {
@@ -131,23 +135,34 @@ fun GameBuilderBox(navController: NavController){
                         restoreState = true
                     }
                 },
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(20.dp),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 1.dp,
+                ),
                 modifier = Modifier
                     .padding(end = 5.dp)
                     .weight(3f),
             ) {
-                Text("Начать", color = MaterialTheme.colorScheme.onPrimary, style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    text = "Начать",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.titleLarge)
             }
             Button(
                 onClick = {},
                 modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(20.dp),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 1.dp,
+                )
             ){
                 Icon(
                     painter = painterResource((R.drawable.shuffle_24px)),
                     contentDescription = "Play",
                     tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.size(30.dp)
                 )
             }
         }
@@ -160,24 +175,24 @@ fun CustomTextField(placeholder: String, modifier: Modifier = Modifier){
     OutlinedTextField(
         value = message.value,
         onValueChange = {message.value = it},
-        textStyle = MaterialTheme.typography.bodyLarge,
+        textStyle = MaterialTheme.typography.titleMedium,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.secondaryContainer,
             focusedTextColor = MaterialTheme.colorScheme.onSurface,
             unfocusedTextColor = MaterialTheme.colorScheme.outlineVariant,
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
             focusedContainerColor = MaterialTheme.colorScheme.surfaceBright
         ),
-        modifier = Modifier.then(modifier),
-        placeholder = {Text(placeholder, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.outlineVariant)}
+        modifier = Modifier.fillMaxWidth().then(modifier),
+        placeholder = {Text(placeholder, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.outlineVariant)}
     )
 }
 
 @Preview
 @Composable
 fun HomePreview() {
-    AppTheme(){
-        Home(navController = rememberNavController())
+    AppTheme{
+        Home(navController = rememberNavController(), PaddingValues())
     }
 }

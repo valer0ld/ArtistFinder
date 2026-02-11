@@ -54,7 +54,7 @@ fun BouncingIconButton(
                 indication = null,
                 onClick = onIconClick
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             painter = painterResource(icon),

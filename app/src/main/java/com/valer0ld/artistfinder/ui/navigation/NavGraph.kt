@@ -3,9 +3,11 @@ package com.valer0ld.artistfinder.ui.navigation
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,11 +32,16 @@ sealed class NavRoutes(val route: String){
 }
 
 @Composable
-fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, currentStep: Int, incrementStep: ()->Unit){
+fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, innerPadding: PaddingValues, currentStep: Int, incrementStep: ()->Unit){
     NavHost(
         navController = navController,
         startDestination = NavRoutes.Home.route,
-        modifier = modifier,
+        modifier = modifier
+            .padding(
+                start = innerPadding.calculateLeftPadding(LayoutDirection.Ltr),
+                end = innerPadding.calculateRightPadding(LayoutDirection.Ltr),
+                top = innerPadding.calculateTopPadding()
+            ),
 
         enterTransition = {
             slideInHorizontally(
@@ -60,9 +67,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, cu
                 animationSpec = tween(durationMillis = 90)
             )
         }){
-        composable(NavRoutes.Home.route) { Home(navController) }
+        composable(NavRoutes.Home.route) { Home(navController, innerPadding) }
         composable(NavRoutes.Rating.route) { RatingScreen() }
-        composable(NavRoutes.Game.route) { GameScreen(navController, currentStep, incrementStep) }
+        composable(NavRoutes.Game.route) { GameScreen(navController, innerPadding, currentStep, incrementStep) }
         composable(NavRoutes.WinGame.route) { WinGameScreen() }
 
         navigation(
@@ -70,6 +77,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier, cu
             route = NavRoutes.Profile.route
         ){
             composable(NavRoutes.ProfileMain.route) { ProfileMain(
+                innerPadding,
                 onGamesClick = { navController.navigate(NavRoutes.GameList.route) },
                 onSettingsClick = { navController.navigate(NavRoutes.Settings.route) }
             ) }

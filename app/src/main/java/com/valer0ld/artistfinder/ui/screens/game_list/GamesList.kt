@@ -39,7 +39,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.ui.components.AnimatedStepsList
 import com.valer0ld.artistfinder.ui.components.BouncingIconButton
-import com.valer0ld.artistfinder.ui.components.ReturnActionHeader
 
 @Composable
 fun GamesList(navController: NavController){
@@ -52,16 +51,6 @@ fun GamesList(navController: NavController){
         contentPadding = PaddingValues(start = 10.dp, end = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        stickyHeader {
-            ReturnActionHeader(R.drawable.arrow_back_24px, "Return arrow") {
-                navController.navigate("profile/main") {
-                    popUpTo("profile") {
-                        inclusive = false
-                    }
-                    restoreState = true
-                }
-            }
-        }
         items(
             items = TempListOfGames.list,
             key = {it.id}
@@ -87,6 +76,10 @@ fun GamesList(navController: NavController){
                 Spacer(Modifier.height(5.dp))
             }
 
+        }
+
+        item{
+            Spacer(Modifier.height(100.dp))
         }
     }
 }

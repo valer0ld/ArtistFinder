@@ -1,6 +1,5 @@
 package com.valer0ld.artistfinder.ui.navigation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,9 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.R
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -32,52 +30,51 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
         ?.hierarchy
         ?.any { it.route == NavRoutes.Profile.route }
         ?: false
-
-    Row(
+    Surface(
+        shape = RoundedCornerShape(30.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
-            .padding(bottom = 10.dp, start = 5.dp, end = 5.dp)
+            .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
             .then(modifier)
             .fillMaxWidth()
-            .height(70.dp)
-            .shadow(2.dp, shape = RoundedCornerShape(30.dp))
-            .clip(RoundedCornerShape(30.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(horizontal = 15.dp)
-    ) {
-        NavBarItems.BarItems.forEach { item ->
+            .height(70.dp),
+        shadowElevation = 4.dp
+    ){
+        Row {
+            NavBarItems.BarItems.forEach { item ->
 
-            val isSelected = when(item.route){
-                "profile" -> isInProfileGraph
-                else -> currentRoute?.route == item.route
-            }
+                val isSelected = when(item.route){
+                    "profile" -> isInProfileGraph
+                    else -> currentRoute?.route == item.route
+                }
 
-            BottomBarItem(
-                item = item,
-                selected = isSelected,
-                onIconClick = {
-                    if (item.route == "profile" && isInProfileGraph) {
-                        if (currentRoute?.route != "profile/main") {
-                            navController.navigate("profile/main") {
-                                popUpTo(item.route) {
-                                    inclusive = false
+                BottomBarItem(
+                    item = item,
+                    selected = isSelected,
+                    onIconClick = {
+                        if (item.route == "profile" && isInProfileGraph) {
+                            if (currentRoute?.route != "profile/main") {
+                                navController.navigate("profile/main") {
+                                    popUpTo(item.route) {
+                                        inclusive = false
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = false
+                                }
+                            }
+                        } else {
+                            navController.navigate(item.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
                                 }
                                 launchSingleTop = true
-                                restoreState = false
+                                restoreState = true
                             }
                         }
-                    } else {
-                        navController.navigate(item.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                },
-                modifier = Modifier.weight(1f)
-            )
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
 }
