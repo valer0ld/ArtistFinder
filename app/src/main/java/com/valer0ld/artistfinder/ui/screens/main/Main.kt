@@ -1,6 +1,8 @@
 package com.valer0ld.artistfinder.ui.screens.main
 
+import android.app.Activity
 import android.os.Build
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -19,17 +22,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.valer0ld.artistfinder.MainActivity
 import com.valer0ld.artistfinder.ui.components.ScaffoldBottomBar
 import com.valer0ld.artistfinder.ui.components.ScaffoldTopBar
 import com.valer0ld.artistfinder.ui.navigation.HomeNavGraph
@@ -44,10 +49,7 @@ import kotlinx.coroutines.launch
 fun Main() {
     ConfigureSystemBars()
 
-    val context = LocalContext.current
-    //var backPressedTime by remember { mutableLongStateOf(0L) }
-
-    val pagerState = rememberPagerState(pageCount = { NavBarItems.barItems.size })
+    val pagerState = rememberPagerState(pageCount = { NavBarItems.barItems.size }, initialPage = 0)
     val coroutineScope = rememberCoroutineScope()
 
     val homeNavController = rememberNavController()
@@ -66,47 +68,19 @@ fun Main() {
     val currentBackStackEntry = currentNavController?.currentBackStackEntryAsState()?.value
     val currentDestination = currentBackStackEntry?.destination?.route
 
+
+
     val currentStep = remember { mutableIntStateOf(0) }
     val maxReturns = 3
     val currentReturns = remember { mutableIntStateOf(maxReturns) }
 
-    BackHandler {
-
-        val nc = currentNavController
-        val backStackSize = nc?.visibleEntries?.value?.size ?: 0
-
-        if ((nc != null && backStackSize > 1)) {
-            nc.popBackStack()
-        }
-        else{
-            if (currentPage > 0) {
-                coroutineScope.launch { // нужно исправить ошибку, при которой назад выполняется с прошлой страницы
-                    pagerState.scrollToPage(0)
-                }
-            }
-            else {
-                /*val currentTime = System.currentTimeMillis()
-                if (currentTime - backPressedTime > 2000) {
-                    Toast.makeText(context, "Нажмите ещё раз для выхода", Toast.LENGTH_SHORT).show()
-                    backPressedTime = currentTime
-                } else {*/
-                    (context as? MainActivity)?.finish()
-                //}
-            }
-        }
-
-    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { ScaffoldTopBar(
             currentDestination = currentDestination,
-            onBack = {
-                currentNavController?.navigate(NavRoutes.ProfileMain.route) {
-                    popUpTo(NavRoutes.ProfileMain.route) { inclusive = false }
-                    launchSingleTop = true
-                    restoreState = true
-                }
+            onBackArrow = {
+                profileNavController.popBackStack()
             }
         ) },
         bottomBar = {
@@ -123,18 +97,14 @@ fun Main() {
                     coroutineScope.launch {
                         if (currentPage == 1 && index == 1){
                             if (currentDestination != "profile/main") {
-                                currentNavController?.navigate(NavRoutes.ProfileMain.route) {
-                                    popUpTo(NavRoutes.ProfileMain.route) { inclusive = false }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
+                                profileNavController.popBackStack()
                             }
                         }
                         else pagerState.animateScrollToPage(index)
                     }
                 },
                 onHomeClick = {
-                    currentNavController?.popBackStack("home", inclusive = false)
+                    homeNavController.popBackStack("home", inclusive = false)
                 }
             )
         },
@@ -144,8 +114,8 @@ fun Main() {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize(),
-            beyondViewportPageCount = 1,
-            userScrollEnabled = when (pagerState.currentPage){
+            beyondViewportPageCount = 0,
+            userScrollEnabled = when (currentPage){
                 0 -> currentDestination == NavRoutes.Home.route
                 1 -> true
                 2 -> true
@@ -167,11 +137,14 @@ fun Main() {
                     ProfileNavGraph(
                         navController = profileNavController,
                         innerPadding = innerPadding,
-                        onNavigationToGame = {
+                        onNavigationToHome = {
                             coroutineScope.launch {
-                                pagerState.animateScrollToPage(0)
-                                homeNavController.navigate(NavRoutes.Game.route)
+                                profileNavController.popBackStack()
+                                pagerState.scrollToPage(0)
                             }
+                        },
+                        onNavigationToGame = {
+                            homeNavController.navigate(NavRoutes.Game.route)
                         }
                     )
                 }
@@ -179,6 +152,38 @@ fun Main() {
                 else -> Box(Modifier.fillMaxSize(), Alignment.Center) { Text("404") }
             }
 
+            CustomBackHandler(pagerState, navControllers)
+        }
+    }
+}
+
+@Composable
+fun CustomBackHandler(pagerState: PagerState, navControllers: Map<Int, NavController>){
+    var backPressedTime by remember { mutableLongStateOf(0L) }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    val currentPage = pagerState.currentPage
+    val currentNavController = navControllers[currentPage]
+
+    BackHandler(enabled = true){
+        if (currentNavController != null && currentNavController.previousBackStackEntry != null) {
+            currentNavController.popBackStack()
+        }
+        else{
+            if (currentPage > 0) {
+                coroutineScope.launch {
+                    pagerState.scrollToPage(0)
+                }
+            } else {
+                val currentTime = System.currentTimeMillis()
+                if (currentTime - backPressedTime > 2000) {
+                    Toast.makeText(context, "Нажмите ещё раз для выхода", Toast.LENGTH_SHORT).show()
+                    backPressedTime = currentTime
+                } else {
+                    (context as? Activity)?.finish()
+                }
+            }
         }
     }
 }

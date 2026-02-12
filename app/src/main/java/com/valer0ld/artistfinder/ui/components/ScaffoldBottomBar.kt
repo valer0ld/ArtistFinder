@@ -20,23 +20,19 @@ fun ScaffoldBottomBar(
     onIconClick: (Int)->Unit,
     onHomeClick: ()->Unit
 ){
-    if (currentDestination == NavRoutes.Game.route){
-        GameBottomBar(
+    when (currentDestination) {
+        NavRoutes.Game.route -> GameBottomBar(
             currentStep = currentStep,
             currentReturns = currentReturns,
             modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
             returnClick = onGameBottomBarClick,
             onHomeClick = onHomeClick
         )
-    }
-    else if (currentDestination == NavRoutes.WinGame.route){
-        WinGameBar(
+        NavRoutes.WinGame.route -> WinGameBar(
             modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
             onHomeClick = onHomeClick
         )
-    }
-    else {
-        BottomNavigationBar(
+        else -> BottomNavigationBar(
             selectedIndex = selectedIndex,
             modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
             onIconClick = onIconClick

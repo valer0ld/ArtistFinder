@@ -10,7 +10,7 @@ import com.valer0ld.artistfinder.ui.navigation.NavRoutes
 @Composable
 fun ScaffoldTopBar(
     currentDestination: String?,
-    onBack: ()->Unit
+    onBackArrow: ()->Unit
 ){
     if (currentDestination in listOf(
             NavRoutes.GameList.route,
@@ -18,7 +18,7 @@ fun ScaffoldTopBar(
         )){
         ReturnActionHeader(
             modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
-            onReturnClick = onBack
+            onReturnClick = onBackArrow
         )
     }
 }

@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,17 +28,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.ui.components.TitleAndContentText
 import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun GameScreen(navController: NavController, innerPadding: PaddingValues, currentTurn: Int, incrementTurn: ()->Unit){
+fun GameScreen(navController: NavController, innerPadding: PaddingValues, currentTurn: Int, incrementStep: ()->Unit, onWinGame: ()->Unit){
     val artists = arrayOf("Воскресенье", "Земфира", "Аквариум", "ДДТ", "ЧИЖ")
     val currentArtist = remember { mutableStateOf(artists[0]) }
     val targetArtist = "ЧИЖ"
@@ -69,34 +71,36 @@ fun GameScreen(navController: NavController, innerPadding: PaddingValues, curren
                 )
             }
             MainGamePanel(artists, currentArtist.value) { newArtist ->
-                if (newArtist == targetArtist){
-                    navController.navigate("win") {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        restoreState = true
-                    }
-                }
+                if (newArtist == targetArtist) onWinGame()
                 currentArtist.value = newArtist
-                incrementTurn()
+                incrementStep()
             }
         }
 }
 
 @Composable
 fun NextArtistButton(artist: String, modifier: Modifier = Modifier, onArtistClick: (String)->Unit){
-    Box(
-        Modifier
+    Button(
+        onClick = { onArtistClick(artist) },
+        shape = RoundedCornerShape(20.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        ),
+        elevation = ButtonDefaults.buttonElevation(
+            defaultElevation = 6.dp,
+            pressedElevation = 2.dp,
+        ),
+        modifier = Modifier
             .fillMaxHeight()
             .padding(5.dp)
-            .clip(shape = RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
-            .clickable { onArtistClick(artist) }
             .then(modifier),
-        contentAlignment = Alignment.Center
     ) {
-        Text(text = artist, style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onPrimary)
+        Text(
+            text = artist,
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center)
     }
 }
 
@@ -141,6 +145,6 @@ fun MainGamePanel(artists: Array<String>, currentArtist: String, onArtistClick: 
 @Composable
 fun GameScreenPreview(){
     AppTheme{
-        GameScreen(navController = rememberNavController(), PaddingValues(),1, {})
+        GameScreen(navController = rememberNavController(), PaddingValues(),1, {}, {})
     }
 }

@@ -29,7 +29,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.ui.components.FromArtistToArtist
@@ -37,7 +36,7 @@ import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun Home(navController: NavController, innerPadding: PaddingValues){
+fun Home(navController: NavController, innerPadding: PaddingValues, onGameClick: ()->Unit){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -47,18 +46,18 @@ fun Home(navController: NavController, innerPadding: PaddingValues){
             .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)
     ){
-        DailyGameBox(navController = navController)
+        DailyGameBox( onGameClick = onGameClick)
         Text(
             "Или создайте свою игру",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(40.dp))
-        GameBuilderBox(navController)
+        GameBuilderBox(onGameClick = onGameClick)
     }
 }
 
 @Composable
-fun DailyGameBox(start: String = "Воскресенье", finish: String = "Земфира", navController: NavController){
+fun DailyGameBox(start: String = "Воскресенье", finish: String = "Земфира", onGameClick: () -> Unit){
     val typography = MaterialTheme.typography
     val colorScheme = MaterialTheme.colorScheme
     Column(
@@ -84,13 +83,8 @@ fun DailyGameBox(start: String = "Воскресенье", finish: String = "З�
             modifier = Modifier
         )
 
-        Button(onClick = {
-            navController.navigate("game") {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
-                }
-                restoreState = true
-            }},
+        Button(
+            onClick = onGameClick,
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -111,7 +105,7 @@ fun DailyGameBox(start: String = "Воскресенье", finish: String = "З�
 }
 
 @Composable
-fun GameBuilderBox(navController: NavController){
+fun GameBuilderBox(onGameClick: () -> Unit){
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.Start,
@@ -127,14 +121,7 @@ fun GameBuilderBox(navController: NavController){
         CustomTextField("Цель", Modifier)
         Row(Modifier){
             Button(
-                onClick ={
-                    navController.navigate("game") {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        restoreState = true
-                    }
-                },
+                onClick = onGameClick,
                 shape = RoundedCornerShape(20.dp),
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 4.dp,
@@ -193,6 +180,6 @@ fun CustomTextField(placeholder: String, modifier: Modifier = Modifier){
 @Composable
 fun HomePreview() {
     AppTheme{
-        Home(navController = rememberNavController(), PaddingValues())
+        Home(navController = rememberNavController(), PaddingValues(), {})
     }
 }

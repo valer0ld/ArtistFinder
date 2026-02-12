@@ -34,13 +34,11 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.ui.components.AnimatedStepsList
 import com.valer0ld.artistfinder.ui.components.BouncingIconButton
 
 @Composable
-fun GamesList(navController: NavController, onGoToGame: ()->Unit){
+fun GamesList(onGoToGame: ()->Unit){
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
     LazyColumn(
@@ -63,12 +61,6 @@ fun GamesList(navController: NavController, onGoToGame: ()->Unit){
                         selectedIndex =  if (isExpanded) -1 else game.id
                     },
                     onPlayClick = onGoToGame
-                       /* navController.navigate("game") {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                //saveState = true
-                            }
-                            restoreState = true
-                        }*/
                 )
                 Spacer(Modifier.height(5.dp))
                 AnimatedStepsList(isExpanded, game.steps)
@@ -165,7 +157,7 @@ fun GameItemInfo(game: Game){
 @Composable
 fun GameListPreview(){
     AppTheme{
-        GamesList(rememberNavController(),{})
+        GamesList({})
     }
 }
 
