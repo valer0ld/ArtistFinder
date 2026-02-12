@@ -12,27 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun WinGameBar(navController: NavController, modifier: Modifier = Modifier){
+fun WinGameBar(modifier: Modifier = Modifier, onHomeClick:  ()->Unit){
     Button(
         modifier = Modifier
             .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
             .then(modifier)
             .fillMaxWidth()
             .height(70.dp),
-        onClick = {
-            navController.navigate("home") {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
-                }
-                restoreState = true
-            }
-        },
+        onClick = onHomeClick,
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 6.dp,
             pressedElevation = 2.dp,
@@ -53,8 +43,8 @@ fun WinGameBar(navController: NavController, modifier: Modifier = Modifier){
 
 @Composable
 @Preview
-fun WinGameBarPreview(navController: NavController = rememberNavController()){
+fun WinGameBarPreview(){
     AppTheme {
-        WinGameBar(navController)
+        WinGameBar(Modifier, {})
     }
 }

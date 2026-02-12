@@ -40,7 +40,7 @@ fun AnimatedStepsList(expanded: Boolean, step: List<String>){
         label = "steps"
     ) { isExpanded ->
         if (isExpanded) {
-            Column (){
+            Column{
                 step.forEachIndexed { index, item ->
                     StepsItem(index, item)
                 }

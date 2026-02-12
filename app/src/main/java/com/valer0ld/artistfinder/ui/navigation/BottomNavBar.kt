@@ -11,25 +11,16 @@ import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.R
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.ui.components.BouncingIconButton
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modifier){
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = backStackEntry?.destination
-
-    val isInProfileGraph = currentRoute
-        ?.hierarchy
-        ?.any { it.route == NavRoutes.Profile.route }
-        ?: false
+fun BottomNavigationBar(
+    selectedIndex: Int,
+    modifier: Modifier = Modifier,
+    onIconClick: (Int)->Unit
+){
     Surface(
         shape = RoundedCornerShape(30.dp),
         color = MaterialTheme.colorScheme.surfaceVariant,
@@ -41,37 +32,13 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
         shadowElevation = 4.dp
     ){
         Row {
-            NavBarItems.BarItems.forEach { item ->
-
-                val isSelected = when(item.route){
-                    "profile" -> isInProfileGraph
-                    else -> currentRoute?.route == item.route
-                }
+            NavBarItems.barItems.forEachIndexed { index, item ->
+                val isSelected = index == selectedIndex
 
                 BottomBarItem(
                     item = item,
                     selected = isSelected,
-                    onIconClick = {
-                        if (item.route == "profile" && isInProfileGraph) {
-                            if (currentRoute?.route != "profile/main") {
-                                navController.navigate("profile/main") {
-                                    popUpTo(item.route) {
-                                        inclusive = false
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = false
-                                }
-                            }
-                        } else {
-                            navController.navigate(item.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    },
+                    onIconClick =  { onIconClick(index) },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -108,7 +75,7 @@ data class BarItem(
 
 
 object NavBarItems{
-    val BarItems = listOf(
+    val barItems = listOf(
         BarItem(
             title = "Home",
             image = R.drawable.stadia_controller_24px,
@@ -131,6 +98,6 @@ object NavBarItems{
 @Composable
 fun BottomNavBarPreview(){
     AppTheme {
-        BottomNavigationBar(navController = rememberNavController())
+        BottomNavigationBar(1, Modifier, {})
     }
 }

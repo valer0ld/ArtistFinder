@@ -16,16 +16,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.ui.components.BouncingIconButton
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 
 @Composable
-fun GameBottomBar(navController: NavController, currentStep: Int, currentReturns: Int, modifier: Modifier = Modifier, returnClick: ()->Unit){
+fun GameBottomBar(
+    currentStep: Int,
+    currentReturns: Int,
+    modifier: Modifier = Modifier,
+    returnClick: ()->Unit,
+    onHomeClick: ()->Unit
+){
 
     Surface(
         shape = RoundedCornerShape(30.dp),
@@ -47,14 +50,7 @@ fun GameBottomBar(navController: NavController, currentStep: Int, currentReturns
                 color = MaterialTheme.colorScheme.error,
                 size = 60.dp,
                 modifier = Modifier.padding(horizontal = 30.dp),
-                onIconClick = {
-                    navController.navigate("home") {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        restoreState = true
-                    }
-                }
+                onIconClick = onHomeClick
             )
             Row(modifier = Modifier.padding(horizontal = 30.dp)) {
                 val enabled = (currentReturns > 0 && currentStep > 0)
@@ -83,7 +79,7 @@ fun GameBottomBar(navController: NavController, currentStep: Int, currentReturns
 @Composable
 fun GameBottomBarPreview(){
     AppTheme {
-        GameBottomBar(navController = rememberNavController(), currentStep = 3, 2, returnClick = {  })
+        GameBottomBar(currentStep = 3, 2, Modifier, {}, {})
     }
 }
 
