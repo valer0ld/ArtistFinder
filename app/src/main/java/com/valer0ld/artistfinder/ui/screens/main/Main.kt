@@ -148,7 +148,7 @@ fun Main() {
                         }
                     )
                 }
-                2 -> RatingScreen()
+                2 -> RatingScreen(innerPadding)
                 else -> Box(Modifier.fillMaxSize(), Alignment.Center) { Text("404") }
             }
 
