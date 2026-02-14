@@ -1,8 +1,11 @@
 package com.valer0ld.artistfinder.ui.models
 
+import com.valer0ld.artistfinder.R
+
 data class RatingPlayer(
     val id: Int,
     val name: String,
+    var picture: Int = R.drawable.webp_user_icon_black,
     var dailyGames: Int,
     var totalSteps: Int,
     var totalTime: String,
@@ -13,86 +16,150 @@ data class RatingPlayer(
 object TemporaryPlayerList{
     val players = listOf(
         RatingPlayer(
-            1,
-            "Третий",
-            12,
-            120,
-            "00:00:11",
-            1000,
-            3
+            id = 1,
+            name = "Третий",
+
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place = 3
         ),
         RatingPlayer(
-            2,
-            "Danil Kolbasenko",
-            14,
-            111,
-            "00:01:12",
-            104,
-            2
+            id = 2,
+            name = "Danil Kolbasenko",
+            dailyGames = 14,
+            totalSteps = 111,
+            totalTime = "00:01:12",
+            sumScore = 104,
+            place = 2
         ),
         RatingPlayer(
-            3,
-            "Первый",
-            44,
-            1234,
-            "00:34:11",
-            132400,
-            1
+            id =3,
+            name = "Первый",
+            dailyGames = 44,
+            totalSteps = 1234,
+            totalTime = "00:34:11",
+            sumScore = 132400,
+            place = 1
         ),
         RatingPlayer(
-            4,
-            "Valera1",
-            12,
-            120,
-            "00:00:11",
-            1000,
-            4
+            id = 4,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
         ),
         RatingPlayer(
-            5,
-            "Valera1",
-            12,
-            120,
-            "00:00:11",
-            1000,
-            4
+            id = 5,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
         ),
         RatingPlayer(
-            6,
-            "Valera1",
-            12,
-            120,
-            "00:00:11",
-            1000,
-            4
+            id = 6,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
         ),
         RatingPlayer(
-            7,
-            "Valera1",
-            12,
-            120,
-            "00:00:11",
-            1000,
-            4
+            id = 7,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
         ),
         RatingPlayer(
-            8,
-            "Valera1",
-            12,
-            120,
-            "00:00:11",
-            1000,
-            4
+            id = 8,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
+        ),
+        RatingPlayer(
+            id = 9,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
+        ),
+        RatingPlayer(
+            id = 10,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
+        ),
+        RatingPlayer(
+            id = 11,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
+        ),
+        RatingPlayer(
+            id = 12,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
+        ),
+        RatingPlayer(
+            id = 13,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
+        ),
+        RatingPlayer(
+            id = 14,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
+        ),
+        RatingPlayer(
+            id = 15,
+            name = "Valera1",
+            dailyGames = 12,
+            totalSteps = 120,
+            totalTime = "00:00:11",
+            sumScore = 1000,
+            place =4
         ),
     )
 
     val currentPlayer = RatingPlayer(
-        2,
-        "Danil Kolbasenko",
-        14,
-        111,
-        "00:01:12",
-        104,
-        2
+        id = 2,
+        name = "Danil Kolbasenko",
+        dailyGames = 14,
+        totalSteps = 111,
+        totalTime = "00:01:12",
+        sumScore = 104,
+        place = 2
     )
 }

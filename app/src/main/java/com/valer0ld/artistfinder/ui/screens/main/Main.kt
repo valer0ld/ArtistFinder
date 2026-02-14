@@ -1,46 +1,32 @@
 package com.valer0ld.artistfinder.ui.screens.main
 
-import android.app.Activity
-import android.os.Build
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.view.WindowCompat
-import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.ui.components.ScaffoldBottomBar
-import com.valer0ld.artistfinder.ui.components.ScaffoldTopBar
 import com.valer0ld.artistfinder.ui.navigation.HomeNavGraph
 import com.valer0ld.artistfinder.ui.navigation.NavBarItems
 import com.valer0ld.artistfinder.ui.navigation.NavRoutes
 import com.valer0ld.artistfinder.ui.navigation.ProfileNavGraph
+import com.valer0ld.artistfinder.ui.screens.main.components.ConfigureSystemBars
+import com.valer0ld.artistfinder.ui.screens.main.components.CustomBackHandler
 import com.valer0ld.artistfinder.ui.screens.rating.RatingScreen
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 import kotlinx.coroutines.launch
@@ -77,12 +63,6 @@ fun Main() {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { ScaffoldTopBar(
-            currentDestination = currentDestination,
-            onBackArrow = {
-                profileNavController.popBackStack()
-            }
-        ) },
         bottomBar = {
             ScaffoldBottomBar(
                 currentDestination = currentDestination,
@@ -100,7 +80,7 @@ fun Main() {
                                 profileNavController.popBackStack()
                             }
                         }
-                        else pagerState.animateScrollToPage(index)
+                        else pagerState.scrollToPage(index)
                     }
                 },
                 onHomeClick = {
@@ -157,77 +137,6 @@ fun Main() {
     }
 }
 
-@Composable
-fun CustomBackHandler(pagerState: PagerState, navControllers: Map<Int, NavController>){
-    var backPressedTime by remember { mutableLongStateOf(0L) }
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
-
-    val currentPage = pagerState.currentPage
-    val currentNavController = navControllers[currentPage]
-
-    BackHandler(enabled = true){
-        if (currentNavController != null && currentNavController.previousBackStackEntry != null) {
-            currentNavController.popBackStack()
-        }
-        else{
-            if (currentPage > 0) {
-                coroutineScope.launch {
-                    pagerState.scrollToPage(0)
-                }
-            } else {
-                val currentTime = System.currentTimeMillis()
-                if (currentTime - backPressedTime > 2000) {
-                    Toast.makeText(context, "Нажмите ещё раз для выхода", Toast.LENGTH_SHORT).show()
-                    backPressedTime = currentTime
-                } else {
-                    (context as? Activity)?.finish()
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ConfigureSystemBars() {
-    val context = LocalContext.current
-    val activity = context as? ComponentActivity
-    val colorScheme = MaterialTheme.colorScheme
-
-    LaunchedEffect(colorScheme.background) {
-        activity?.window?.let { window ->
-            val isDarkBackground = colorScheme.background.luminance() < 0.5f
-
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                // Android 11+
-                window.isNavigationBarContrastEnforced = false
-
-                window.navigationBarColor = Color.Transparent.toArgb()
-                window.statusBarColor = Color.Transparent.toArgb()
-
-                WindowCompat.getInsetsController(window, window.decorView).apply {
-                    isAppearanceLightNavigationBars = !isDarkBackground
-                    isAppearanceLightStatusBars = !isDarkBackground
-                }
-            } else {
-                // API 21–29
-                @Suppress("DEPRECATION")
-                window.navigationBarColor = Color.Transparent.toArgb()
-                @Suppress("DEPRECATION")
-                window.statusBarColor = Color.Transparent.toArgb()
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    WindowCompat.getInsetsController(window, window.decorView).apply {
-                        isAppearanceLightNavigationBars = !isDarkBackground
-                        isAppearanceLightStatusBars = !isDarkBackground
-                    }
-                }
-            }
-        }
-    }
-}
 
 @Preview(showSystemUi = true)
 @Composable

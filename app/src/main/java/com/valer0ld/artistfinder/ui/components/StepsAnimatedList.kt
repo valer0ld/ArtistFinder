@@ -1,18 +1,11 @@
 package com.valer0ld.artistfinder.ui.components
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,25 +21,13 @@ import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 
-
 @Composable
 fun AnimatedStepsList(expanded: Boolean, step: List<String>){
-    AnimatedContent(
-        targetState = expanded,
-        transitionSpec = {
-            slideInVertically { -it } + fadeIn() togetherWith
-                    slideOutVertically { -it } + fadeOut()
-        },
-        label = "steps"
-    ) { isExpanded ->
-        if (isExpanded) {
-            Column{
-                step.forEachIndexed { index, item ->
-                    StepsItem(index, item)
-                }
+    ExpandedAnimatedComponent(expanded) {
+        Column{
+            step.forEachIndexed { index, item ->
+                StepsItem(index, item)
             }
-        } else {
-            Spacer(Modifier.height(0.dp))
         }
     }
 }
