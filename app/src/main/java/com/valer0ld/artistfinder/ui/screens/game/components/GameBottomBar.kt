@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.screens.game
+package com.valer0ld.artistfinder.ui.screens.game.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

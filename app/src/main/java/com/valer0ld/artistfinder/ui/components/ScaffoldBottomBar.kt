@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.valer0ld.artistfinder.ui.navigation.BottomNavigationBar
 import com.valer0ld.artistfinder.ui.navigation.NavRoutes
-import com.valer0ld.artistfinder.ui.screens.game.GameBottomBar
-import com.valer0ld.artistfinder.ui.screens.win_game.WinGameBar
+import com.valer0ld.artistfinder.ui.screens.game.components.GameBottomBar
+import com.valer0ld.artistfinder.ui.screens.win_game.components.WinGameBar
 
 @Composable
 fun ScaffoldBottomBar(

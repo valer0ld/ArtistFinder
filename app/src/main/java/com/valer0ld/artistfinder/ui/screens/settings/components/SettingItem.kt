@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.screens.settings
+package com.valer0ld.artistfinder.ui.screens.settings.components
 
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
@@ -27,15 +27,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.valer0ld.artistfinder.ui.models.Setting
 import com.valer0ld.artistfinder.ui.models.SettingColor
 import com.valer0ld.artistfinder.ui.models.SettingId
-import com.valer0ld.artistfinder.ui.models.SettingPreset
 import com.valer0ld.artistfinder.ui.models.SettingType
-import com.valer0ld.artistfinder.ui.theme.AppTheme
+import com.valer0ld.artistfinder.ui.screens.settings.SettingsViewModel
 import kotlinx.coroutines.flow.filter
 
 
@@ -237,14 +234,3 @@ fun ListSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modifi
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun SettingComponentPreview(){
-    AppTheme{
-        SettingItem( SettingPreset.listSetting(
-            settingId = SettingId.LANGUAGE,
-            title = "Язык",
-            list = listOf("Русский", "Английский")), viewModel())
-    }
-}

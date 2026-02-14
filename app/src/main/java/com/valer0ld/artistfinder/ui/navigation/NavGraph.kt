@@ -1,6 +1,5 @@
 package com.valer0ld.artistfinder.ui.navigation
 
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,7 +26,6 @@ sealed class NavRoutes(val route: String){
     object ProfileMain: NavRoutes("profile/main")
     object GameList: NavRoutes("profile/games")
     object Settings: NavRoutes("profile/settings")
-    //object Rating: NavRoutes("rating")
 }
 
 @Composable
@@ -46,25 +44,25 @@ fun NavGraph(navController: NavHostController, startDestination: String, innerPa
         enterTransition = {
             slideInHorizontally(
                 initialOffsetX = { it },
-                animationSpec = tween(durationMillis = 90)
+                //animationSpec = tween(durationMillis = 90)
             )
         },
         exitTransition = {
             slideOutHorizontally(
                 targetOffsetX = { -it / 4 },
-                animationSpec = tween(durationMillis = 90)
+                //animationSpec = tween(durationMillis = 90)
             )
         },
         popEnterTransition = {
             slideInHorizontally(
                 initialOffsetX = { -it / 4 },
-                animationSpec = tween(durationMillis = 90)
+                //animationSpec = tween(durationMillis = 90)
             )
         },
         popExitTransition = {
             slideOutHorizontally(
                 targetOffsetX = { it },
-                animationSpec = tween(durationMillis = 90)
+                //animationSpec = tween(durationMillis = 90)
             )
         },
         builder = builder
@@ -84,7 +82,6 @@ fun HomeNavGraph(
         startDestination = NavRoutes.Home.route,
     ){
         composable(NavRoutes.Home.route) { Home(
-            navController,
             innerPadding,
             onGameClick = {
                 navController.navigate("game")
@@ -125,7 +122,12 @@ fun ProfileNavGraph(
             onGamesClick = { navController.navigate(NavRoutes.GameList.route) },
             onSettingsClick = { navController.navigate(NavRoutes.Settings.route) }
         ) }
-        composable(NavRoutes.GameList.route) { GamesList() { onNavigationToHome(); onNavigationToGame() } }
-        composable(NavRoutes.Settings.route) { SettingsScreen() }
+        composable(NavRoutes.GameList.route) { GamesList(
+            onGoToGame = { onNavigationToHome(); onNavigationToGame() },
+            onBackArrow = { navController.popBackStack() }
+        ) }
+        composable(NavRoutes.Settings.route) { SettingsScreen(
+            onBackArrow = { navController.popBackStack() }
+        ) }
     }
 }
