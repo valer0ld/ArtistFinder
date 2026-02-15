@@ -1,6 +1,7 @@
 package com.valer0ld.artistfinder.ui.screens.settings
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,11 +27,17 @@ import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = viewModel(), onBackArrow: ()->Unit){
+    val focusManager = LocalFocusManager.current
 
     ProfileChildrenScreen(onBackArrow) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .pointerInput(Unit){
+                    detectTapGestures {
+                        focusManager.clearFocus()
+                    }
+                },
             contentPadding = PaddingValues(start = 10.dp, end = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

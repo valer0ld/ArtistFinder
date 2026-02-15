@@ -19,6 +19,7 @@ import com.valer0ld.artistfinder.ui.screens.game.GameScreen
 import com.valer0ld.artistfinder.ui.screens.game.GameViewModel
 import com.valer0ld.artistfinder.ui.screens.game_list.GamesList
 import com.valer0ld.artistfinder.ui.screens.profile_main.ProfileMain
+import com.valer0ld.artistfinder.ui.screens.user_stats.StatisticScreen
 import com.valer0ld.artistfinder.ui.screens.win_game.WinGameScreen
 import kotlinx.coroutines.launch
 
@@ -29,6 +30,7 @@ sealed class NavRoutes(val route: String){
     object ProfileMain: NavRoutes("profile/main")
     object GameList: NavRoutes("profile/games")
     object Settings: NavRoutes("profile/settings")
+    object Statistic: NavRoutes("profile/statistic")
 }
 
 @Composable
@@ -151,6 +153,15 @@ fun ProfileNavGraph(
                             restoreState = true
                         }
                     }
+                } },
+            onStatsClick = {
+                coroutineScope.launch {
+                    NavigationGuard.safeNavigate {
+                        navController.navigate(NavRoutes.Statistic.route){
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
                 } }
         ) }
         composable(NavRoutes.GameList.route) { GamesList(
@@ -160,5 +171,10 @@ fun ProfileNavGraph(
         composable(NavRoutes.Settings.route) { SettingsScreen(
             onBackArrow = { navController.popBackStack() }
         ) }
+        composable(NavRoutes.Statistic.route) { StatisticScreen(
+                innerPadding = innerPadding,
+                onBackArrow = { navController.popBackStack() }
+            )
+        }
     }
 }

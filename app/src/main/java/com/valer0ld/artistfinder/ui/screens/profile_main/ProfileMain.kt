@@ -18,7 +18,7 @@ import com.valer0ld.artistfinder.ui.screens.profile_main.components.UserProfileV
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun ProfileMain(innerPadding: PaddingValues, onGamesClick: ()->Unit, onSettingsClick: ()->Unit){
+fun ProfileMain(innerPadding: PaddingValues, onGamesClick: ()->Unit, onSettingsClick: ()->Unit, onStatsClick: ()->Unit){
     Column(
         modifier = Modifier
             .padding(bottom = innerPadding.calculateBottomPadding())
@@ -30,6 +30,8 @@ fun ProfileMain(innerPadding: PaddingValues, onGamesClick: ()->Unit, onSettingsC
         OptionButton("Мои игры", R.drawable.list_24px, onGamesClick)
         Spacer(modifier = Modifier.height(20.dp))
         OptionButton("Настройки", R.drawable.settings_24px, onSettingsClick)
+        Spacer(modifier = Modifier.height(20.dp))
+        OptionButton("Статистика", R.drawable.outline_show_chart_24, onStatsClick)
     }
 }
 
@@ -38,6 +40,6 @@ fun ProfileMain(innerPadding: PaddingValues, onGamesClick: ()->Unit, onSettingsC
 @Composable
 fun ProfileMainPreview(){
     AppTheme{
-        ProfileMain(PaddingValues(),{},{})
+        ProfileMain(PaddingValues(),{},{}){}
     }
 }
