@@ -14,14 +14,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.valer0ld.artistfinder.ui.screens.game.GameViewModel
 
 
 @Composable
-fun MainGamePanel(artists: Array<String>, currentArtist: String, onArtistClick: (String) -> Unit){
+fun MainGamePanel(viewModel: GameViewModel, onWinGame: ()->Unit){
+    val processingId by viewModel.processingButtonId.collectAsState()
+    val currentArtist by viewModel.currentArtist.collectAsState()
+
     Box(contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier
@@ -31,8 +37,24 @@ fun MainGamePanel(artists: Array<String>, currentArtist: String, onArtistClick: 
             for (i in 0..1) {
                 Row(Modifier.weight(1f).fillMaxWidth().padding(start = 6.dp, end = 6.dp)) {
                     for (y in 0..1) {
-                        if (artists[t] == currentArtist) t++
-                        NextArtistButton(artists[t], Modifier.weight(1f), onArtistClick = onArtistClick )
+                        if (viewModel.artists[t] == currentArtist) t++
+
+                        val buttonId = (y + i * 2)
+                        val buttonArtist = viewModel.artists[t]
+
+                        val isProcessing = processingId == buttonId
+
+                        NextArtistButton(
+                            buttonArtist,
+                            Modifier.weight(1f),
+                            isProcessing,
+                            onArtistClick = {
+                                viewModel.onArtistButtonClick(
+                                    buttonId,
+                                    buttonArtist,
+                                    onWinGame
+                                )
+                        })
                         t++
                     }
                 }

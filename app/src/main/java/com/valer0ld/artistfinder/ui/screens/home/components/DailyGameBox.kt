@@ -37,18 +37,18 @@ fun DailyGameBox(start: String = "Воскресенье", finish: String = "З�
             .fillMaxWidth()
             .shadow(6.dp, RoundedCornerShape(20.dp), false)
             .clip(RoundedCornerShape(20.dp))
-            .background(colorScheme.tertiaryContainer)
+            .background(colorScheme.primaryContainer)
             .padding(10.dp)
     ){
         Text(
             "Игра дня!",
             style = typography.headlineMedium,
-            color = colorScheme.onTertiaryContainer,
+            color = colorScheme.onPrimaryContainer,
             modifier = Modifier)
 
         FromArtistToArtist(
-            TextPreset.titleL(start, MaterialTheme.colorScheme.onTertiaryContainer),
-            TextPreset.titleL(finish, MaterialTheme.colorScheme.onTertiaryContainer),
+            TextPreset.titleL(start, MaterialTheme.colorScheme.onPrimaryContainer),
+            TextPreset.titleL(finish, MaterialTheme.colorScheme.onPrimaryContainer),
             modifier = Modifier
         )
 

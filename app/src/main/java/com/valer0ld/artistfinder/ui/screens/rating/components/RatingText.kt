@@ -14,7 +14,7 @@ fun RatingText(
     text: String,
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodyMedium,
-    color: Color = MaterialTheme.colorScheme.onSurface
+    color: Color = MaterialTheme.colorScheme.tertiary
 ){
     Text(
         text = text,
@@ -31,7 +31,7 @@ fun RatingText(
 fun RatingHeaderText(
     text: String,
     modifier: Modifier = Modifier,
-    style: TextStyle = MaterialTheme.typography.bodyLarge,
+    style: TextStyle = MaterialTheme.typography.titleMedium,
     color: Color = MaterialTheme.colorScheme.onPrimaryContainer
 ){
     Text(

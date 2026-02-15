@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,18 +14,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.Text
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.ui.components.ScaffoldBottomBar
 import com.valer0ld.artistfinder.ui.navigation.HomeNavGraph
 import com.valer0ld.artistfinder.ui.navigation.NavBarItems
 import com.valer0ld.artistfinder.ui.navigation.NavRoutes
+import com.valer0ld.artistfinder.ui.navigation.NavigationGuard
 import com.valer0ld.artistfinder.ui.navigation.ProfileNavGraph
+import com.valer0ld.artistfinder.ui.screens.game.GameViewModel
 import com.valer0ld.artistfinder.ui.screens.main.components.ConfigureSystemBars
 import com.valer0ld.artistfinder.ui.screens.main.components.CustomBackHandler
 import com.valer0ld.artistfinder.ui.screens.rating.RatingScreen
@@ -54,11 +56,7 @@ fun Main() {
     val currentBackStackEntry = currentNavController?.currentBackStackEntryAsState()?.value
     val currentDestination = currentBackStackEntry?.destination?.route
 
-
-
-    val currentStep = remember { mutableIntStateOf(0) }
-    val maxReturns = 3
-    val currentReturns = remember { mutableIntStateOf(maxReturns) }
+    val gameViewModel: GameViewModel = viewModel()
 
 
     Scaffold(
@@ -67,12 +65,7 @@ fun Main() {
             ScaffoldBottomBar(
                 currentDestination = currentDestination,
                 selectedIndex = currentPage,
-                currentStep = currentStep.intValue,
-                currentReturns = currentReturns.intValue,
-                onGameBottomBarClick = {
-                    currentStep.intValue--
-                    currentReturns.intValue--
-                },
+                gameViewModel = gameViewModel,
                 onIconClick = { index ->
                     coroutineScope.launch {
                         if (currentPage == 1 && index == 1){
@@ -88,7 +81,7 @@ fun Main() {
                 }
             )
         },
-        containerColor = Color.Transparent,
+        containerColor = MaterialTheme.colorScheme.background,
         contentWindowInsets = WindowInsets.navigationBars
     ){ innerPadding ->
         HorizontalPager(
@@ -107,25 +100,26 @@ fun Main() {
                     HomeNavGraph(
                         navController = homeNavController,
                         innerPadding = innerPadding,
-                        currentStep = currentStep.intValue,
-                        incrementStep = {
-                            currentStep.intValue++
-                        }
+                        gameViewModel = gameViewModel
                     )
                 }
                 1 -> {
                     ProfileNavGraph(
                         navController = profileNavController,
                         innerPadding = innerPadding,
-                        onNavigationToHome = {
+                        onNavigationToHomeAndGame = {
                             coroutineScope.launch {
-                                profileNavController.popBackStack()
-                                pagerState.scrollToPage(0)
+                                NavigationGuard.safeNavigate{
+                                    profileNavController.popBackStack()
+                                    pagerState.scrollToPage(0)
+                                    homeNavController.navigate(NavRoutes.Game.route){
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
+
                             }
                         },
-                        onNavigationToGame = {
-                            homeNavController.navigate(NavRoutes.Game.route)
-                        }
                     )
                 }
                 2 -> RatingScreen(innerPadding)

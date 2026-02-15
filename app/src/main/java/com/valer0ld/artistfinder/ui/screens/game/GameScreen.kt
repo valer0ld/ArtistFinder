@@ -13,24 +13,18 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.valer0ld.artistfinder.ui.components.TitleAndContentText
 import com.valer0ld.artistfinder.ui.models.TextPreset
 import com.valer0ld.artistfinder.ui.screens.game.components.MainGamePanel
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun GameScreen(navController: NavController, innerPadding: PaddingValues, currentTurn: Int, incrementStep: ()->Unit, onWinGame: ()->Unit){
-    val artists = arrayOf("Воскресенье", "Земфира", "Аквариум", "ДДТ", "ЧИЖ")
-    val currentArtist = remember { mutableStateOf(artists[0]) }
-    val targetArtist = "ЧИЖ"
-
+fun GameScreen(innerPadding: PaddingValues, viewModel: GameViewModel, onWinGame: ()->Unit){
     val colorScheme = MaterialTheme.colorScheme
 
     Column(
@@ -45,7 +39,7 @@ fun GameScreen(navController: NavController, innerPadding: PaddingValues, curren
             TitleAndContentText(
                 TextPreset.body("Цель",
                 colorScheme.outlineVariant),
-                TextPreset.display(targetArtist,
+                TextPreset.display(viewModel.targetArtist,
                 colorScheme.primary)
             )
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
@@ -55,14 +49,10 @@ fun GameScreen(navController: NavController, innerPadding: PaddingValues, curren
                 )
                 TitleAndContentText(
                     TextPreset.bodyM("Текущий шаг", colorScheme.outlineVariant),
-                    TextPreset.displayS(currentTurn.toString(), colorScheme.tertiary)
+                    TextPreset.displayS(viewModel.currentStep.collectAsState().value.toString(), colorScheme.tertiary)
                 )
             }
-            MainGamePanel(artists, currentArtist.value) { newArtist ->
-                if (newArtist == targetArtist) onWinGame()
-                currentArtist.value = newArtist
-                incrementStep()
-            }
+            MainGamePanel(viewModel, onWinGame)
         }
 }
 
@@ -70,6 +60,6 @@ fun GameScreen(navController: NavController, innerPadding: PaddingValues, curren
 @Composable
 fun GameScreenPreview(){
     AppTheme{
-        GameScreen(navController = rememberNavController(), PaddingValues(),1, {}, {})
+        GameScreen(PaddingValues(), viewModel(), {})
     }
 }

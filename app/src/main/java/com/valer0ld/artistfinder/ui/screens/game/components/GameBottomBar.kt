@@ -11,25 +11,25 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.ui.components.BouncingIconButton
+import com.valer0ld.artistfinder.ui.screens.game.GameViewModel
 import com.valer0ld.artistfinder.ui.theme.AppTheme
-
 
 @Composable
 fun GameBottomBar(
-    currentStep: Int,
-    currentReturns: Int,
     modifier: Modifier = Modifier,
-    returnClick: ()->Unit,
+    viewModel: GameViewModel,
     onHomeClick: ()->Unit
 ){
-
     Surface(
         shape = RoundedCornerShape(30.dp),
         color = MaterialTheme.colorScheme.surfaceVariant,
@@ -50,9 +50,15 @@ fun GameBottomBar(
                 color = MaterialTheme.colorScheme.error,
                 size = 60.dp,
                 modifier = Modifier.padding(horizontal = 30.dp),
-                onIconClick = onHomeClick
+                onIconClick = {
+                    onHomeClick()
+                    viewModel.onUpdateState()
+                }
             )
             Row(modifier = Modifier.padding(horizontal = 30.dp)) {
+                val currentStep by viewModel.currentStep.collectAsState()
+                val currentReturns by viewModel.currentReturns.collectAsState()
+
                 val enabled = (currentReturns > 0 && currentStep > 0)
 
                 Icon(
@@ -68,7 +74,7 @@ fun GameBottomBar(
                     color = if (enabled) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.outlineVariant,
                     size = 60.dp,
                     enabled = enabled,
-                    onIconClick = returnClick
+                    onIconClick = { viewModel.onReturnClick() }
                 )
             }
         }
@@ -79,7 +85,7 @@ fun GameBottomBar(
 @Composable
 fun GameBottomBarPreview(){
     AppTheme {
-        GameBottomBar(currentStep = 3, 2, Modifier, {}, {})
+        GameBottomBar(Modifier, viewModel(), {})
     }
 }
 

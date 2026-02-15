@@ -15,13 +15,16 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun NextArtistButton(artist: String, modifier: Modifier = Modifier, onArtistClick: (String)->Unit){
+fun NextArtistButton(artist: String, modifier: Modifier = Modifier, isProcessing: Boolean, onArtistClick: (String)->Unit){
     Button(
+        enabled = !isProcessing,
         onClick = { onArtistClick(artist) },
         shape = RoundedCornerShape(20.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
         ),
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 6.dp,
@@ -34,7 +37,7 @@ fun NextArtistButton(artist: String, modifier: Modifier = Modifier, onArtistClic
     ) {
         Text(
             text = artist,
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center)
     }

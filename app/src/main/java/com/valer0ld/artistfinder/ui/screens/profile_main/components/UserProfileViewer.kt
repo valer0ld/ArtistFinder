@@ -30,7 +30,7 @@ fun UserProfileViewer(userName: String, userPicture: Int, rating: Int){
             modifier = Modifier
                 .fillMaxWidth()
                 .height(350.dp)
-                .background(MaterialTheme.colorScheme.tertiaryContainer)
+                .background(MaterialTheme.colorScheme.primaryContainer)
                 .windowInsetsPadding(WindowInsets.statusBars),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceAround

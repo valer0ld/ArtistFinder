@@ -5,6 +5,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -15,9 +16,11 @@ import androidx.navigation.compose.composable
 import com.valer0ld.artistfinder.ui.screens.home.Home
 import com.valer0ld.artistfinder.ui.screens.settings.SettingsScreen
 import com.valer0ld.artistfinder.ui.screens.game.GameScreen
+import com.valer0ld.artistfinder.ui.screens.game.GameViewModel
 import com.valer0ld.artistfinder.ui.screens.game_list.GamesList
 import com.valer0ld.artistfinder.ui.screens.profile_main.ProfileMain
 import com.valer0ld.artistfinder.ui.screens.win_game.WinGameScreen
+import kotlinx.coroutines.launch
 
 sealed class NavRoutes(val route: String){
     object Home: NavRoutes("home")
@@ -73,31 +76,42 @@ fun NavGraph(navController: NavHostController, startDestination: String, innerPa
 fun HomeNavGraph(
     navController: NavHostController,
     innerPadding: PaddingValues,
-    currentStep: Int,
-    incrementStep: ()->Unit
+    gameViewModel: GameViewModel
 ){
+    val coroutineScope = rememberCoroutineScope()
+
     NavGraph(
         navController = navController,
         innerPadding = innerPadding,
         startDestination = NavRoutes.Home.route,
     ){
         composable(NavRoutes.Home.route) { Home(
-            innerPadding,
+            innerPadding = innerPadding,
             onGameClick = {
-                navController.navigate("game")
+                coroutineScope.launch {
+                    NavigationGuard.safeNavigate {
+                        navController.navigate("game"){
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
             }
         ) }
         composable(NavRoutes.Game.route) { GameScreen(
-            navController,
-            innerPadding,
-            currentStep,
-            incrementStep = incrementStep,
+            innerPadding = innerPadding,
+            viewModel = gameViewModel,
             onWinGame = {
-                navController.navigate("win") {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+                coroutineScope.launch {
+                    NavigationGuard.safeNavigate {
+                        navController.navigate("win"){
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
-                    restoreState = true
                 }
             }
         ) }
@@ -109,9 +123,10 @@ fun HomeNavGraph(
 fun ProfileNavGraph(
     navController: NavHostController,
     innerPadding: PaddingValues,
-    onNavigationToHome: ()->Unit,
-    onNavigationToGame: ()->Unit
+    onNavigationToHomeAndGame: ()->Unit
 ){
+    val coroutineScope = rememberCoroutineScope ()
+
     NavGraph(
         navController = navController,
         innerPadding = innerPadding,
@@ -119,11 +134,27 @@ fun ProfileNavGraph(
     ){
         composable(NavRoutes.ProfileMain.route) { ProfileMain(
             innerPadding,
-            onGamesClick = { navController.navigate(NavRoutes.GameList.route) },
-            onSettingsClick = { navController.navigate(NavRoutes.Settings.route) }
+            onGamesClick = {
+                coroutineScope.launch {
+                    NavigationGuard.safeNavigate {
+                        navController.navigate(NavRoutes.GameList.route){
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                } },
+            onSettingsClick = {
+                coroutineScope.launch {
+                    NavigationGuard.safeNavigate {
+                        navController.navigate(NavRoutes.Settings.route){
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                } }
         ) }
         composable(NavRoutes.GameList.route) { GamesList(
-            onGoToGame = { onNavigationToHome(); onNavigationToGame() },
+            onGoToGame = { onNavigationToHomeAndGame() },
             onBackArrow = { navController.popBackStack() }
         ) }
         composable(NavRoutes.Settings.route) { SettingsScreen(

@@ -42,7 +42,7 @@ fun RatingScreen(innerPadding: PaddingValues){
         Text(
             text = "Рейтинг по играм дня!",
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.tertiary,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
             textAlign = TextAlign.Center
         )

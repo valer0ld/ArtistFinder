@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TableHeader(){
-    TableItem(color = MaterialTheme.colorScheme.primary){
+    TableItem(color = MaterialTheme.colorScheme.primaryContainer){
         RatingHeaderText("№", modifier = Modifier.weight(1f))
         VerticalDivider(color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.3f))
         RatingHeaderText("Пользователь", modifier = Modifier.weight(5f))
