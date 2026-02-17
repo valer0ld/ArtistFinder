@@ -21,22 +21,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.ui.components.ScaffoldBottomBar
-import com.valer0ld.artistfinder.ui.navigation.HomeNavGraph
-import com.valer0ld.artistfinder.ui.navigation.NavBarItems
-import com.valer0ld.artistfinder.ui.navigation.NavRoutes
-import com.valer0ld.artistfinder.ui.navigation.NavigationGuard
-import com.valer0ld.artistfinder.ui.navigation.ProfileNavGraph
+import com.valer0ld.artistfinder.navigation.HomeNavGraph
+import com.valer0ld.artistfinder.navigation.NavBarItems
+import com.valer0ld.artistfinder.navigation.NavRoutes
+import com.valer0ld.artistfinder.navigation.NavigationGuard
+import com.valer0ld.artistfinder.navigation.ProfileNavGraph
 import com.valer0ld.artistfinder.ui.screens.game.GameViewModel
-import com.valer0ld.artistfinder.ui.screens.main.components.ConfigureSystemBars
 import com.valer0ld.artistfinder.ui.screens.main.components.CustomBackHandler
 import com.valer0ld.artistfinder.ui.screens.rating.RatingScreen
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun Main() {
-    ConfigureSystemBars()
-
+fun MainScreen() {
     val pagerState = rememberPagerState(pageCount = { NavBarItems.barItems.size }, initialPage = 0)
     val coroutineScope = rememberCoroutineScope()
 
@@ -134,8 +131,8 @@ fun Main() {
 
 @Preview(showSystemUi = true)
 @Composable
-fun MainPreview(){
+fun MainScreenPreview(){
     AppTheme(dynamicColor = false) {
-        Main()
+        MainScreen()
     }
 }

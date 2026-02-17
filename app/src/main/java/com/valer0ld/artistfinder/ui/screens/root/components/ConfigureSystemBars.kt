@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.screens.main.components
+package com.valer0ld.artistfinder.ui.screens.root.components
 
 import android.os.Build
 import androidx.activity.ComponentActivity

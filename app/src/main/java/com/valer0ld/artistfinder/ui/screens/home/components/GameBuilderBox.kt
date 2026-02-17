@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.R
+import com.valer0ld.artistfinder.ui.components.CustomTextField
 
 
 @Composable

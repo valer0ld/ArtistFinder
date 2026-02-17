@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.navigation
+package com.valer0ld.artistfinder.navigation
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -18,7 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import com.valer0ld.artistfinder.ui.components.AnimatedStepsList
-import com.valer0ld.artistfinder.ui.components.ProfileChildrenScreen
+import com.valer0ld.artistfinder.ui.components.ChildrenScreen
 import com.valer0ld.artistfinder.ui.models.TempListOfGames
 import com.valer0ld.artistfinder.ui.screens.game_list.components.GameItem
 
@@ -26,7 +26,7 @@ import com.valer0ld.artistfinder.ui.screens.game_list.components.GameItem
 fun GamesList(onGoToGame: ()->Unit, onBackArrow: ()->Unit){
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
-    ProfileChildrenScreen(onBackArrow) {
+    ChildrenScreen(onBackArrow) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),

@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.screens.home.components
+package com.valer0ld.artistfinder.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +27,7 @@ fun CustomTextField(placeholder: String, modifier: Modifier = Modifier){
             focusedContainerColor = MaterialTheme.colorScheme.surfaceBright
         ),
         modifier = Modifier.fillMaxWidth().then(modifier),
-        placeholder = {Text(placeholder, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.outlineVariant)}
+        placeholder = {Text(placeholder, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.outlineVariant)},
+
     )
 }

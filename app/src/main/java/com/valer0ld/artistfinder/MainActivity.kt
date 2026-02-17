@@ -5,12 +5,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.valer0ld.artistfinder.ui.screens.main.Main
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.valer0ld.artistfinder.ui.screens.root.RootScreen
 import com.valer0ld.artistfinder.ui.theme.AppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen().setKeepOnScreenCondition { false }
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
@@ -19,7 +24,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme(dynamicColor = false) {
-                Main()
+                RootScreen()
             }
         }
     }

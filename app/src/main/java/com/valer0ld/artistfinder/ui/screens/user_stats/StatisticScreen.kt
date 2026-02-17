@@ -8,14 +8,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.valer0ld.artistfinder.ui.components.ProfileChildrenScreen
+import com.valer0ld.artistfinder.ui.components.ChildrenScreen
 import com.valer0ld.artistfinder.ui.models.DanilaStats
 import com.valer0ld.artistfinder.ui.screens.user_stats.components.StatPanel
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
 fun StatisticScreen(innerPadding: PaddingValues, onBackArrow: ()->Unit){
-    ProfileChildrenScreen(onBackArrow) {
+    ChildrenScreen(onBackArrow) {
         Column(
             modifier = Modifier
                 .padding(bottom = innerPadding.calculateBottomPadding())

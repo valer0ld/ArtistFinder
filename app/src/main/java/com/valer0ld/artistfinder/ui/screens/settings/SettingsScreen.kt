@@ -19,17 +19,18 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.valer0ld.artistfinder.ui.components.ProfileChildrenScreen
+import com.valer0ld.artistfinder.ui.components.ChildrenScreen
 import com.valer0ld.artistfinder.ui.screens.settings.components.SettingItem
 import com.valer0ld.artistfinder.ui.screens.settings.components.SettingsHeaderItem
 import com.valer0ld.artistfinder.ui.theme.AppTheme
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = viewModel(), onBackArrow: ()->Unit){
+fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), onBackArrow: ()->Unit){
     val focusManager = LocalFocusManager.current
 
-    ProfileChildrenScreen(onBackArrow) {
+    ChildrenScreen(onBackArrow) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

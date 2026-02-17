@@ -1,5 +1,6 @@
-package com.valer0ld.artistfinder.ui.navigation
+package com.valer0ld.artistfinder.navigation
 
+import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
 
 object NavigationGuard {
@@ -15,5 +16,11 @@ object NavigationGuard {
                 isNavigating = false
             }
         }
+    }
+}
+
+suspend fun NavHostController.safePopBackStack(){
+    NavigationGuard.safeNavigate {
+        this.popBackStack()
     }
 }

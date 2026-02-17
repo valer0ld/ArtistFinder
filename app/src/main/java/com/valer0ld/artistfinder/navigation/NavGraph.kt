@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.ui.navigation
+package com.valer0ld.artistfinder.navigation
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -13,6 +13,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.valer0ld.artistfinder.ui.screens.auth.AuthViewModel
+import com.valer0ld.artistfinder.ui.screens.auth.LoggInScreen
+import com.valer0ld.artistfinder.ui.screens.auth.RegisterScreen
 import com.valer0ld.artistfinder.ui.screens.home.Home
 import com.valer0ld.artistfinder.ui.screens.settings.SettingsScreen
 import com.valer0ld.artistfinder.ui.screens.game.GameScreen
@@ -31,6 +34,9 @@ sealed class NavRoutes(val route: String){
     object GameList: NavRoutes("profile/games")
     object Settings: NavRoutes("profile/settings")
     object Statistic: NavRoutes("profile/statistic")
+
+    object LoggIn: NavRoutes("auth/loggIn")
+    object Register: NavRoutes("auth/register")
 }
 
 @Composable
@@ -128,7 +134,6 @@ fun ProfileNavGraph(
     onNavigationToHomeAndGame: ()->Unit
 ){
     val coroutineScope = rememberCoroutineScope ()
-
     NavGraph(
         navController = navController,
         innerPadding = innerPadding,
@@ -166,15 +171,84 @@ fun ProfileNavGraph(
         ) }
         composable(NavRoutes.GameList.route) { GamesList(
             onGoToGame = { onNavigationToHomeAndGame() },
-            onBackArrow = { navController.popBackStack() }
+            onBackArrow = {
+                coroutineScope.launch {
+                    navController.safePopBackStack()
+                }
+            }
         ) }
         composable(NavRoutes.Settings.route) { SettingsScreen(
-            onBackArrow = { navController.popBackStack() }
+            onBackArrow = {
+                coroutineScope.launch {
+                    navController.safePopBackStack()
+                }
+            }
         ) }
         composable(NavRoutes.Statistic.route) { StatisticScreen(
                 innerPadding = innerPadding,
-                onBackArrow = { navController.popBackStack() }
+                onBackArrow = {
+                    coroutineScope.launch {
+                        navController.safePopBackStack()
+                    }
+                }
             )
         }
+    }
+}
+
+
+@Composable
+fun AuthNavGraph(
+    navController: NavHostController,
+    authViewModel: AuthViewModel
+){
+    val coroutineScope = rememberCoroutineScope()
+
+    NavHost(
+        navController = navController,
+        startDestination = NavRoutes.LoggIn.route,
+
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { it },
+            )
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { -it / 4 },
+            )
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { -it / 4 },
+            )
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { it },
+            )
+        }
+    ){
+        composable(NavRoutes.LoggIn.route) { LoggInScreen(
+            authViewModel = authViewModel,
+            onRegisterClick = {
+                coroutineScope.launch {
+                    NavigationGuard.safeNavigate {
+                        navController.navigate(NavRoutes.Register.route){
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
+            }
+        ) }
+        composable(NavRoutes.Register.route) { RegisterScreen(
+            authViewModel = authViewModel,
+            onBackArrowClick = {
+                coroutineScope.launch {
+                    navController.safePopBackStack()
+                }
+            }
+        ) }
     }
 }

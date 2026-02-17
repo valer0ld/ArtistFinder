@@ -4,12 +4,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.valer0ld.artistfinder.repo.AuthRepository
 import com.valer0ld.artistfinder.ui.models.SettingColor
 import com.valer0ld.artistfinder.ui.models.SettingId
 import com.valer0ld.artistfinder.ui.models.SettingPreset
 import com.valer0ld.artistfinder.ui.models.SettingsHeader
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SettingsViewModel : ViewModel() {
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
     var isEditingProfile by mutableStateOf(false)
 
     fun onSettingAction(settingId: SettingId){
@@ -24,8 +32,16 @@ class SettingsViewModel : ViewModel() {
             SettingId.EDIT_EMAIL -> {}
             SettingId.EDIT_PASSWORD -> {}
             SettingId.CONFIRM_PASSWORD -> {}
-            SettingId.LOGOUT -> {}
-            SettingId.DELETE_ACCOUNT -> {}
+            SettingId.LOGOUT -> {
+                viewModelScope.launch {
+                    authRepository.logout()
+                }
+            }
+            SettingId.DELETE_ACCOUNT -> {
+                viewModelScope.launch {
+                    authRepository.logout()
+                }
+            }
         }
     }
 
