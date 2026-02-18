@@ -65,7 +65,7 @@ fun MainGamePanel(viewModel: GameViewModel, onWinGame: ()->Unit){
             Modifier
                 .size(130.dp)
                 .clip(shape = RoundedCornerShape(60.dp))
-                .background(MaterialTheme.colorScheme.primary)
+                .background(MaterialTheme.colorScheme.primaryContainer)
                 .border(2.dp, MaterialTheme.colorScheme.onPrimaryContainer, RoundedCornerShape(60.dp))
                 .clickable{},
             contentAlignment = Alignment.Center,
