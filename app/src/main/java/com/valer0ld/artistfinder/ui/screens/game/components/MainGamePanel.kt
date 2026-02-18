@@ -31,7 +31,7 @@ fun MainGamePanel(viewModel: GameViewModel, onWinGame: ()->Unit){
     Box(contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier
-                .height(400.dp)
+                .height(450.dp)
         ) {
             var t = 0
             for (i in 0..1) {
@@ -46,6 +46,7 @@ fun MainGamePanel(viewModel: GameViewModel, onWinGame: ()->Unit){
 
                         NextArtistButton(
                             buttonArtist,
+                            top = buttonId < 2,
                             Modifier.weight(1f),
                             isProcessing,
                             onArtistClick = {
@@ -65,14 +66,14 @@ fun MainGamePanel(viewModel: GameViewModel, onWinGame: ()->Unit){
                 .size(130.dp)
                 .clip(shape = RoundedCornerShape(60.dp))
                 .background(MaterialTheme.colorScheme.primary)
-                .border(2.dp, MaterialTheme.colorScheme.onTertiary, RoundedCornerShape(60.dp))
+                .border(2.dp, MaterialTheme.colorScheme.onPrimaryContainer, RoundedCornerShape(60.dp))
                 .clickable{},
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                currentArtist,
+                currentArtist.name,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onTertiary
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
 

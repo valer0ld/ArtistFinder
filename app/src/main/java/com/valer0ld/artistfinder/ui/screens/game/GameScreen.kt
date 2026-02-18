@@ -39,7 +39,7 @@ fun GameScreen(innerPadding: PaddingValues, viewModel: GameViewModel, onWinGame:
             TitleAndContentText(
                 TextPreset.body("Цель",
                 colorScheme.outlineVariant),
-                TextPreset.display(viewModel.targetArtist,
+                TextPreset.display(viewModel.targetArtist.name,
                 colorScheme.primary)
             )
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){

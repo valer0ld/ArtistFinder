@@ -2,6 +2,8 @@ package com.valer0ld.artistfinder.ui.screens.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.valer0ld.artistfinder.ui.models.Artist
+import com.valer0ld.artistfinder.ui.models.TempArtist
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,11 +11,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class GameViewModel: ViewModel() {
-    val artists = listOf("Воскресенье", "Земфира", "Аквариум", "ДДТ", "ЧИЖ")
-    val targetArtist = "ЧИЖ"
+    val artists = TempArtist.list
+    val targetArtist = TempArtist.list[TempArtist.list.size-1]
 
-    private val _currentArtist = MutableStateFlow<String>(artists[0])
-    val currentArtist: StateFlow<String> = _currentArtist.asStateFlow()
+    private val _currentArtist = MutableStateFlow<Artist>(artists[0])
+    val currentArtist: StateFlow<Artist> = _currentArtist.asStateFlow()
 
     private val _currentStep =  MutableStateFlow<Int>(0)
     var currentStep: StateFlow<Int> = _currentStep.asStateFlow()
@@ -26,7 +28,7 @@ class GameViewModel: ViewModel() {
     val processingButtonId: StateFlow<Int?> = _processingButtonId.asStateFlow()
 
 
-    fun onArtistButtonClick(buttonId: Int, artist: String, onWinGame: ()->Unit) {
+    fun onArtistButtonClick(buttonId: Int, artist: Artist, onWinGame: ()->Unit) {
 
         if (_processingButtonId.value != null) return
 
@@ -35,7 +37,7 @@ class GameViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 processButton(artist, onWinGame)
-                delay(200)
+                delay(300)
             } finally {
                 _processingButtonId.value = null
             }
@@ -52,7 +54,7 @@ class GameViewModel: ViewModel() {
         _currentReturns.value = maxReturns
         _currentArtist.value = artists[0]
     }
-    private fun processButton(artist: String, onWinGame: ()->Unit){
+    private fun processButton(artist: Artist, onWinGame: ()->Unit){
         if (artist == targetArtist) {
             onWinGame()
             onUpdateState()
