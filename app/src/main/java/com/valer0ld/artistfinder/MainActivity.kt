@@ -6,8 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.valer0ld.artistfinder.ui.screens.root.RootScreen
-import com.valer0ld.artistfinder.ui.theme.AppTheme
+import com.valer0ld.artistfinder.presentation.screens.root.RootScreen
+import com.valer0ld.artistfinder.presentation.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 

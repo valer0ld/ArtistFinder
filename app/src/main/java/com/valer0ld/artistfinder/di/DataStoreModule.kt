@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.valer0ld.artistfinder.data.datastore.AuthDataStore
-import com.valer0ld.artistfinder.repo.AuthRepository
+import com.valer0ld.artistfinder.data.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
