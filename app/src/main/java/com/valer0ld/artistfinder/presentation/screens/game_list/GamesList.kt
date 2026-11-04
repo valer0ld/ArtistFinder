@@ -17,13 +17,18 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.valer0ld.artistfinder.presentation.components.AnimatedStepsList
 import com.valer0ld.artistfinder.presentation.components.ChildrenScreen
 import com.valer0ld.artistfinder.domain.model.TempListOfGames
 import com.valer0ld.artistfinder.presentation.screens.game_list.components.GameItem
+import com.valer0ld.artistfinder.presentation.viewmodel.GameListViewModel
 
 @Composable
-fun GamesList(onGoToGame: ()->Unit, onBackArrow: ()->Unit){
+fun GamesList(onGoToGame: ()->Unit, onBackArrow: ()->Unit, viewModel: GameListViewModel = hiltViewModel()){
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
     ChildrenScreen(onBackArrow) {
@@ -34,7 +39,7 @@ fun GamesList(onGoToGame: ()->Unit, onBackArrow: ()->Unit){
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             items(
-                items = TempListOfGames.list,
+                items = state.gameList,
                 key = {it.id}
             ){ game ->
                 val isExpanded = selectedIndex == game.id

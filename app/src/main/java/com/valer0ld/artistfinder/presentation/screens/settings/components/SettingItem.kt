@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -32,23 +31,22 @@ import com.valer0ld.artistfinder.domain.model.Setting
 import com.valer0ld.artistfinder.domain.model.SettingColor
 import com.valer0ld.artistfinder.domain.model.SettingId
 import com.valer0ld.artistfinder.domain.model.SettingType
-import com.valer0ld.artistfinder.presentation.viewmodel.SettingsViewModel
+import com.valer0ld.artistfinder.presentation.viewmodel.SettingsUIState
 import kotlinx.coroutines.flow.filter
 
 
 @Composable
-fun SettingItem(setting: Setting, viewModel: SettingsViewModel, modifier: Modifier = Modifier){
+fun SettingItem(setting: Setting, state:  SettingsUIState, onSettingAction: (SettingId, Any?)->Unit, modifier: Modifier = Modifier){
     when (setting.type){
-        SettingType.SWITCH -> SwitchSetting(setting, viewModel, modifier)
-        SettingType.BUTTON -> ButtonSetting(setting, viewModel, modifier)
-        SettingType.LIST -> ListSetting(setting, viewModel, modifier)
-        SettingType.TEXTFIELD -> TextFieldSetting(setting, viewModel, modifier)
+        SettingType.SWITCH -> SwitchSetting(setting, state, onSettingAction, modifier)
+        SettingType.BUTTON -> ButtonSetting(setting, state, onSettingAction, modifier)
+        SettingType.LIST -> ListSetting(setting, state, onSettingAction, modifier)
+        SettingType.TEXTFIELD -> TextFieldSetting(setting, state , onSettingAction, modifier)
     }
 }
 
 @Composable
-fun SwitchSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modifier = Modifier){
-    val checkedState = remember{ mutableStateOf(false) }
+fun SwitchSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (SettingId, Any?)->Unit, modifier: Modifier = Modifier){
 
     Row(
         modifier = modifier.fillMaxWidth().padding(10.dp),
@@ -66,10 +64,9 @@ fun SwitchSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modi
         )
 
         Switch(
-            checked = checkedState.value,
+            checked = state.values[setting.Id] as? Boolean? ?: false,
             onCheckedChange = {
-                checkedState.value = it
-                (viewModel::onSettingAction)(setting.settingId)
+                onSettingAction(setting.Id, null)
             }
         )
 
@@ -77,20 +74,22 @@ fun SwitchSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modi
 }
 
 @Composable
-fun ButtonSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modifier = Modifier){
-    if ((setting.settingId != SettingId.SAVE_PROFILE || viewModel.isEditingProfile)
-        && (setting.settingId != SettingId.EDIT_PROFILE || !viewModel.isEditingProfile)) {
+fun ButtonSetting(setting: Setting, state: SettingsUIState,onSettingAction: (SettingId, Any?)->Unit, modifier: Modifier = Modifier){
+    val isEditingProfile = state.isEditingProfile
+
+    if ((setting.Id != SettingId.SAVE_PROFILE || isEditingProfile)
+        && (setting.Id != SettingId.EDIT_PROFILE || !isEditingProfile)) {
         Button(
             modifier = modifier
                 .fillMaxWidth()
                 .height(70.dp)
                 .padding(10.dp),
-            onClick = { (viewModel::onSettingAction)(setting.settingId) },
+            onClick = { ( onSettingAction)(setting.Id, null) },
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 6.dp,
                 pressedElevation = 2.dp,
             ),
-            enabled = !(setting.settingId == SettingId.EDIT_PICTURE && !viewModel.isEditingProfile),
+            enabled = !(setting.Id == SettingId.EDIT_PICTURE && !isEditingProfile),
             shape = RoundedCornerShape(30.dp),
             colors = when (setting.color) {
                 SettingColor.DEFAULT -> ButtonDefaults.buttonColors(
@@ -119,12 +118,11 @@ fun ButtonSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modi
 }
 
 @Composable
-fun TextFieldSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modifier = Modifier){
-    val message = remember { mutableStateOf("") }
+fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (SettingId, Any?)->Unit, modifier: Modifier = Modifier){
 
     OutlinedTextField(
-        value = message.value,
-        onValueChange = { (viewModel::onSettingAction)(setting.settingId) },
+        value = state.values[setting.Id] as? String ?: "",
+        onValueChange = { ( onSettingAction)(setting.Id, null) },
         textStyle = MaterialTheme.typography.titleLarge,
         colors = when (setting.color){
             SettingColor.DEFAULT -> OutlinedTextFieldDefaults.colors(
@@ -154,13 +152,13 @@ fun TextFieldSetting(setting: Setting, viewModel: SettingsViewModel, modifier: M
         },
         modifier = modifier.fillMaxWidth().padding(10.dp),
         shape = RoundedCornerShape(10.dp),
-        enabled = viewModel.isEditingProfile,
+        enabled = state.isEditingProfile,
         placeholder = { Text(setting.title, style = MaterialTheme.typography.titleLarge) }
     )
 }
 
 @Composable
-fun ListSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modifier = Modifier){
+fun ListSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (SettingId, Any?)->Unit, modifier: Modifier = Modifier){
     val items by remember(setting.optionList) {
         derivedStateOf {
             setting.optionList ?: listOf("")
@@ -170,7 +168,14 @@ fun ListSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modifi
     val count = Int.MAX_VALUE
     val centerOffset = count / 2
 
-    val listState = rememberLazyListState( initialFirstVisibleItemIndex = centerOffset)
+    val currentValue = state.values[setting.Id] as? String ?: items.firstOrNull().orEmpty()
+
+    val initialFirstVisibleItemIndex = remember(items, currentValue) {
+        val selectedIndex = items.indexOf(currentValue).takeIf { it >= 0 } ?: 0
+        centerOffset + selectedIndex
+    }
+
+    val listState = rememberLazyListState( initialFirstVisibleItemIndex = initialFirstVisibleItemIndex)
     val flingBehavior = rememberSnapFlingBehavior(listState)
 
     val centerIndex by remember {
@@ -182,8 +187,22 @@ fun ListSetting(setting: Setting, viewModel: SettingsViewModel, modifier: Modifi
             .filter { !it }
             .collect {
                 val selected = items[(centerIndex - centerOffset).mod(items.size)]
-                (viewModel::onSettingAction)(setting.settingId)
+
+                if (selected != currentValue) {
+                    onSettingAction(setting.Id, selected)
+                }
             }
+    }
+
+    LaunchedEffect(currentValue) {
+        val selectedIndex = items.indexOf(currentValue)
+        if (selectedIndex >= 0){
+            val targetIndex = centerOffset + selectedIndex
+
+            if (targetIndex != listState.firstVisibleItemIndex){
+                listState.scrollToItem(targetIndex)
+            }
+        }
     }
 
     val itemHeight = 40.dp

@@ -1,37 +1,56 @@
 package com.valer0ld.artistfinder.presentation.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.data.repository.AuthRepository
-import com.valer0ld.artistfinder.domain.model.SettingColor
 import com.valer0ld.artistfinder.domain.model.SettingId
-import com.valer0ld.artistfinder.domain.model.SettingPreset
-import com.valer0ld.artistfinder.presentation.model.SettingsHeader
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.Boolean
+
+data class SettingsUIState(
+    val values: Map<SettingId, Any?> = mapOf(
+        SettingId.DARK_THEME to false,
+        SettingId.LANGUAGE to "Русский",
+        SettingId.SHOW_IN_RATING to true,
+        SettingId.EDIT_USERNAME to  "Имя пользователя",
+        SettingId.EDIT_EMAIL to "почта",
+        SettingId.EDIT_PASSWORD to "пароль",
+        SettingId.CONFIRM_PASSWORD to "пароль"
+    ),
+    val isEditingProfile: Boolean = false,
+    val userPicture: Int = R.drawable.webp_user_icon_black,
+)
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    var isEditingProfile by mutableStateOf(false)
 
-    fun onSettingAction(settingId: SettingId){
+    private val _uiState = MutableStateFlow(SettingsUIState())
+    val uiState: StateFlow<SettingsUIState> = _uiState.asStateFlow()
+
+    fun onSettingAction(settingId: SettingId, value: Any? = null){
         when(settingId){
-            SettingId.DARK_THEME -> {}
-            SettingId.LANGUAGE -> {}
-            SettingId.SHOW_IN_RATING -> {}
-            SettingId.EDIT_PROFILE -> { isEditingProfile = true }
-            SettingId.SAVE_PROFILE -> { isEditingProfile = false}
-            SettingId.EDIT_PICTURE -> {}
-            SettingId.EDIT_USERNAME -> {}
-            SettingId.EDIT_EMAIL -> {}
-            SettingId.EDIT_PASSWORD -> {}
-            SettingId.CONFIRM_PASSWORD -> {}
+            SettingId.DARK_THEME -> { _uiState.update {it.copy(values = it.values + (SettingId.DARK_THEME to value) )} }
+            SettingId.LANGUAGE -> {  _uiState.update {it.copy(values = it.values + (SettingId.LANGUAGE to value) )} }
+            SettingId.SHOW_IN_RATING -> {  _uiState.update {it.copy(values = it.values + (SettingId.SHOW_IN_RATING to value) )} }
+            SettingId.EDIT_PROFILE -> { _uiState.update {it.copy(isEditingProfile = true )} }
+            SettingId.SAVE_PROFILE -> { _uiState.update {it.copy(isEditingProfile = false )} }
+            SettingId.EDIT_PICTURE -> { _uiState.update {it.copy(values = it.values + (SettingId.EDIT_PICTURE to value) )}}
+            SettingId.EDIT_USERNAME -> {  _uiState.update {it.copy(values = it.values + (SettingId.EDIT_USERNAME to value) )} }
+            SettingId.EDIT_EMAIL -> {  _uiState.update {it.copy(values = it.values + (SettingId.EDIT_EMAIL to value) )} }
+            SettingId.EDIT_PASSWORD -> {  _uiState.update {it.copy(values = it.values + (SettingId.EDIT_PASSWORD to value) )} }
+            SettingId.CONFIRM_PASSWORD -> {
+                if (value == _uiState.value.values[SettingId.EDIT_PASSWORD])
+                    _uiState.update {it.copy(values = it.values + (SettingId.CONFIRM_PASSWORD to value) )}
+            }
             SettingId.LOGOUT -> {
                 viewModelScope.launch {
                     authRepository.logout()
@@ -44,73 +63,4 @@ class SettingsViewModel @Inject constructor(
             }
         }
     }
-
-    val settings = listOf(
-        SettingsHeader(
-            title = "Внешний вид",
-            settingList = listOf(
-                SettingPreset.switchSetting(
-                    settingId = SettingId.DARK_THEME,
-                    title = "Тёмная тема"
-                ),
-                SettingPreset.listSetting(
-                    settingId = SettingId.LANGUAGE,
-                    title = "Язык",
-                    list = listOf("Русский", "Английский")
-                )
-            )
-        ),
-        SettingsHeader(
-            title = "Конфиденциональность",
-            settingList = listOf(
-                SettingPreset.switchSetting(
-                    settingId = SettingId.SHOW_IN_RATING,
-                    title = "Отображать в рейтинге"
-                ),
-            )
-        ),
-        SettingsHeader(
-            title = "Аккаунт",
-            settingList = listOf(
-                SettingPreset.buttonSetting(
-                    settingId = SettingId.EDIT_PROFILE,
-                    title = "Редактировать"
-                ),
-                SettingPreset.buttonSetting(
-                    settingId = SettingId.SAVE_PROFILE,
-                    title = "Сохранить"
-                ),
-                SettingPreset.buttonSetting(
-                    settingId = SettingId.EDIT_PICTURE,
-                    title = "Изменить аватар"
-                ),
-                SettingPreset.textFieldSetting(
-                    settingId = SettingId.EDIT_USERNAME,
-                    title = "Имя пользователя"
-                ),
-                SettingPreset.textFieldSetting(
-                    settingId = SettingId.EDIT_EMAIL,
-                    title = "Почта"
-                ),
-                SettingPreset.textFieldSetting(
-                    settingId = SettingId.EDIT_PASSWORD,
-                    title = "Пароль"
-                ),
-                SettingPreset.textFieldSetting(
-                    settingId = SettingId.CONFIRM_PASSWORD,
-                    title = "Подтвердить пароль"
-                ),
-                SettingPreset.buttonSetting(
-                    settingId = SettingId.LOGOUT,
-                    title = "Выход из аккаунта",
-                    color = SettingColor.SECOND
-                ),
-                SettingPreset.buttonSetting(
-                    settingId = SettingId.DELETE_ACCOUNT,
-                    title = "Удалить аккаунт",
-                    color = SettingColor.DESTRUCTIVE
-                ),
-            )
-        )
-    )
 }

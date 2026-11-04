@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,7 +21,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.valer0ld.artistfinder.domain.model.AppSettings
 import com.valer0ld.artistfinder.presentation.components.ChildrenScreen
 import com.valer0ld.artistfinder.presentation.screens.settings.components.SettingItem
 import com.valer0ld.artistfinder.presentation.screens.settings.components.SettingsHeaderItem
@@ -29,6 +32,7 @@ import com.valer0ld.artistfinder.presentation.viewmodel.SettingsViewModel
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), onBackArrow: ()->Unit){
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
 
     ChildrenScreen(onBackArrow) {
@@ -44,7 +48,8 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), onBackArrow: 
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            viewModel.settings.forEach { header ->
+
+            AppSettings.list.forEach { header ->
 
                 stickyHeader (key = header.title){
                     SettingsHeaderItem(header.title, header.icon)
@@ -62,12 +67,11 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), onBackArrow: 
                         horizontalAlignment = Alignment.CenterHorizontally
                     ){
                         header.settingList.forEach { setting ->
-                            SettingItem(setting, viewModel, Modifier.animateItem())
+                            SettingItem(setting, state, viewModel::onSettingAction, Modifier.animateItem())
                         }
                     }
                 }
             }
-
             item{
                 Spacer(Modifier.height(100.dp))
             }

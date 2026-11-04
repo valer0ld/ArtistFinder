@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class Setting(
-    val settingId: SettingId,
+    val Id: SettingId,
     val type: SettingType,
     val title: String,
     val icon: Int? = null,
@@ -47,7 +47,7 @@ object SettingPreset{
         title: String,
         icon: Int? = null,
         color: SettingColor = SettingColor.DEFAULT) = Setting(
-            settingId = settingId,
+            Id = settingId,
             type = SettingType.SWITCH,
             title = title,
             icon = icon,
@@ -59,7 +59,7 @@ object SettingPreset{
         title: String,
         icon: Int? = null,
         color: SettingColor = SettingColor.DEFAULT) = Setting(
-        settingId = settingId,
+        Id = settingId,
         type = SettingType.BUTTON,
         title = title,
         icon = icon,
@@ -72,7 +72,7 @@ object SettingPreset{
         icon: Int? = null,
         color: SettingColor = SettingColor.DEFAULT,
         list: List<String>) = Setting(
-        settingId = settingId,
+        Id = settingId,
         type = SettingType.LIST,
         title = title,
         icon = icon,
@@ -85,7 +85,7 @@ object SettingPreset{
         title: String,
         icon: Int? = null,
         color: SettingColor = SettingColor.DEFAULT) = Setting(
-        settingId = settingId,
+        Id = settingId,
         type = SettingType.TEXTFIELD,
         title = title,
         icon = icon,
