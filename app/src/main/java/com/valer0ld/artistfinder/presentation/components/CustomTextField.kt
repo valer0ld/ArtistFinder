@@ -6,17 +6,16 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 
 
 @Composable
-fun CustomTextField(placeholder: String, modifier: Modifier = Modifier){
-    val message = remember { mutableStateOf("") }
+fun CustomTextField(placeholder: String, message: String, onValueChanged: (String)->Unit, modifier: Modifier = Modifier){
     OutlinedTextField(
-        value = message.value,
-        onValueChange = {message.value = it},
+        value = message,
+        onValueChange = { newText ->
+            onValueChanged(newText)
+        },
         textStyle = MaterialTheme.typography.titleMedium,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.tertiary,

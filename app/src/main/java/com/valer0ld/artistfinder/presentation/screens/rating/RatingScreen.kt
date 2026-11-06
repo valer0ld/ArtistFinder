@@ -26,14 +26,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.valer0ld.artistfinder.domain.model.RatingPlayer
 import com.valer0ld.artistfinder.domain.model.TemporaryPlayerList
 import com.valer0ld.artistfinder.presentation.screens.rating.components.CurrentPlayerRecordAndStats
 import com.valer0ld.artistfinder.presentation.screens.rating.components.PlayerRecordAndStats
 import com.valer0ld.artistfinder.presentation.screens.rating.components.TableHeader
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
+import com.valer0ld.artistfinder.presentation.viewmodel.RatingViewModel
 
 @Composable
-fun RatingScreen(innerPadding: PaddingValues){
+fun RatingScreen(innerPadding: PaddingValues, viewModel: RatingViewModel = hiltViewModel()){
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     Column(
         modifier = Modifier.fillMaxSize().padding(innerPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,15 +52,13 @@ fun RatingScreen(innerPadding: PaddingValues){
             modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
             textAlign = TextAlign.Center
         )
-        RatingTable()
+        RatingTable(state.players, state.currentPlayer)
     }
 }
 
 @Composable
-fun RatingTable(){
-    val sortedPlayer = TemporaryPlayerList.players.sortedBy { it.place }
+fun RatingTable(players: List<RatingPlayer>, currentPlayer: RatingPlayer){
     var selectedIndex by remember { mutableIntStateOf(-1) }
-    val currentPlayer = TemporaryPlayerList.currentPlayer
 
     Surface(
         modifier = Modifier.padding(horizontal = 15.dp).fillMaxWidth(),
@@ -77,7 +81,7 @@ fun RatingTable(){
                         .height(550.dp)
                 ) {
                     itemsIndexed(
-                        items = sortedPlayer,
+                        items = players,
                         key = { _, item -> item.id}
                     ){ index, player ->
                         val isExpanded = selectedIndex == player.id

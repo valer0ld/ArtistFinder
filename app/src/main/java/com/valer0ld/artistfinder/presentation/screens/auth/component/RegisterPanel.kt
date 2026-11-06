@@ -35,10 +35,10 @@ fun RegisterPanel(onRegister: ()->Unit){
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            CustomTextField("Имя пользователя", Modifier)
-            CustomTextField("Почта", Modifier)
-            CustomTextField("Пароль", Modifier)
-            CustomTextField("Повторите пароль", Modifier)
+            CustomTextField("Имя пользователя","", {}, Modifier)
+            CustomTextField("Почта", "", {},Modifier)
+            CustomTextField("Пароль", "", {},Modifier)
+            CustomTextField("Повторите пароль", "", {},Modifier)
             Spacer(Modifier.height(20.dp))
             Button(
                 onClick = onRegister,

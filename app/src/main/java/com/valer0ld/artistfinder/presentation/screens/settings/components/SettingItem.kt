@@ -64,9 +64,9 @@ fun SwitchSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (S
         )
 
         Switch(
-            checked = state.values[setting.Id] as? Boolean? ?: false,
-            onCheckedChange = {
-                onSettingAction(setting.Id, null)
+            checked = state.values[setting.Id] as? Boolean ?: false,
+            onCheckedChange = { isChecked ->
+                onSettingAction(setting.Id, isChecked)
             }
         )
 
@@ -77,7 +77,7 @@ fun SwitchSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (S
 fun ButtonSetting(setting: Setting, state: SettingsUIState,onSettingAction: (SettingId, Any?)->Unit, modifier: Modifier = Modifier){
     val isEditingProfile = state.isEditingProfile
 
-    if ((setting.Id != SettingId.SAVE_PROFILE || isEditingProfile)
+    if (((setting.Id != SettingId.SAVE_PROFILE && setting.Id != SettingId.QUIT_EDITING) || isEditingProfile)
         && (setting.Id != SettingId.EDIT_PROFILE || !isEditingProfile)) {
         Button(
             modifier = modifier
@@ -122,7 +122,9 @@ fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction:
 
     OutlinedTextField(
         value = state.values[setting.Id] as? String ?: "",
-        onValueChange = { ( onSettingAction)(setting.Id, null) },
+        onValueChange = { newText ->
+            onSettingAction(setting.Id, newText)
+        },
         textStyle = MaterialTheme.typography.titleLarge,
         colors = when (setting.color){
             SettingColor.DEFAULT -> OutlinedTextFieldDefaults.colors(

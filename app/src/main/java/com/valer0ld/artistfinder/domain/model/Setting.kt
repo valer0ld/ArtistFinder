@@ -19,21 +19,6 @@ enum class SettingType {
     TEXTFIELD
 }
 
-enum class SettingId {
-    DARK_THEME,
-    LANGUAGE,
-    SHOW_IN_RATING,
-    EDIT_PROFILE,
-    SAVE_PROFILE,
-    EDIT_PICTURE,
-    EDIT_USERNAME,
-    EDIT_EMAIL,
-    EDIT_PASSWORD,
-    CONFIRM_PASSWORD,
-    LOGOUT,
-    DELETE_ACCOUNT
-}
-
 enum class SettingColor {
     DEFAULT,
     SECOND,

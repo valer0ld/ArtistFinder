@@ -6,11 +6,11 @@ data class RatingPlayer(
     val id: Int,
     val name: String,
     var picture: Int = R.drawable.webp_user_icon_black,
-    var dailyGames: Int,
-    var totalSteps: Int,
-    var totalTime: String,
-    val sumScore: Int,
-    var place: Int
+    var dailyGames: Int = 0,
+    var totalSteps: Int = 0,
+    var totalTime: String = "00:00:00",
+    val sumScore: Int = 0,
+    var place: Int = 0
 )
 
 object TemporaryPlayerList{

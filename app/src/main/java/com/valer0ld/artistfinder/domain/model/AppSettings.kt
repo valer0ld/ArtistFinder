@@ -2,6 +2,21 @@ package com.valer0ld.artistfinder.domain.model
 
 import com.valer0ld.artistfinder.presentation.model.SettingsHeader
 
+enum class SettingId {
+    DARK_THEME,
+    LANGUAGE,
+    SHOW_IN_RATING,
+    EDIT_PROFILE,
+    SAVE_PROFILE,
+    QUIT_EDITING,
+    EDIT_PICTURE,
+    EDIT_USERNAME,
+    EDIT_EMAIL,
+    EDIT_PASSWORD,
+    CONFIRM_PASSWORD,
+    LOGOUT,
+    DELETE_ACCOUNT
+}
 
 object AppSettings{
     val list = listOf(
@@ -38,6 +53,11 @@ object AppSettings{
                 SettingPreset.buttonSetting(
                     settingId = SettingId.SAVE_PROFILE,
                     title = "Сохранить"
+                ),
+                SettingPreset.buttonSetting(
+                    settingId = SettingId.QUIT_EDITING,
+                    title = "Отменить",
+                    color = SettingColor.DESTRUCTIVE
                 ),
                 SettingPreset.buttonSetting(
                     settingId = SettingId.EDIT_PICTURE,

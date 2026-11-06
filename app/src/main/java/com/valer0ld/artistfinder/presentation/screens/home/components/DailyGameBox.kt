@@ -26,7 +26,7 @@ import com.valer0ld.artistfinder.presentation.model.TextPreset
 
 
 @Composable
-fun DailyGameBox(start: String = "Воскресенье", finish: String = "Земфира", onGameClick: () -> Unit){
+fun DailyGameBox(start: String, finish: String, onGameClick: () -> Unit){
     val typography = MaterialTheme.typography
     val colorScheme = MaterialTheme.colorScheme
     Column(

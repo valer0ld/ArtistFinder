@@ -37,8 +37,8 @@ fun LoggInPanel(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            CustomTextField("Почта", Modifier)
-            CustomTextField("Пароль", Modifier)
+            CustomTextField("Почта", "", {}, Modifier)
+            CustomTextField("Пароль", "", {},Modifier)
             Spacer(Modifier.height(5.dp))
             Button(
                 onClick = onLoggIn,

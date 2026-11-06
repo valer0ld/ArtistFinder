@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.presentation.model
+package com.valer0ld.artistfinder.domain.model
 
 data class UserStatistic(
     var gameStarts: Int,

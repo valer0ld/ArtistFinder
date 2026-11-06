@@ -24,6 +24,12 @@ data class SettingsUIState(
         SettingId.EDIT_PASSWORD to "пароль",
         SettingId.CONFIRM_PASSWORD to "пароль"
     ),
+    val oldUserInfo: Map<SettingId, Any?> = mapOf(
+        SettingId.EDIT_USERNAME to  "Имя пользователя",
+        SettingId.EDIT_EMAIL to "почта",
+        SettingId.EDIT_PASSWORD to "пароль",
+        SettingId.CONFIRM_PASSWORD to "пароль"
+    ),
     val isEditingProfile: Boolean = false,
     val userPicture: Int = R.drawable.webp_user_icon_black,
 )
@@ -41,8 +47,29 @@ class SettingsViewModel @Inject constructor(
             SettingId.DARK_THEME -> { _uiState.update {it.copy(values = it.values + (SettingId.DARK_THEME to value) )} }
             SettingId.LANGUAGE -> {  _uiState.update {it.copy(values = it.values + (SettingId.LANGUAGE to value) )} }
             SettingId.SHOW_IN_RATING -> {  _uiState.update {it.copy(values = it.values + (SettingId.SHOW_IN_RATING to value) )} }
-            SettingId.EDIT_PROFILE -> { _uiState.update {it.copy(isEditingProfile = true )} }
-            SettingId.SAVE_PROFILE -> { _uiState.update {it.copy(isEditingProfile = false )} }
+            SettingId.EDIT_PROFILE -> {
+                _uiState.update { state ->
+                    state.copy(
+                    isEditingProfile = true,
+                    oldUserInfo = state.values.filterKeys { it in state.oldUserInfo }
+                    )
+                }
+            }
+            SettingId.QUIT_EDITING -> {
+                _uiState.update { state ->
+                    state.copy(
+                        isEditingProfile = false,
+                        values = state.values + state.oldUserInfo.filterKeys { it in state.values }
+                    )
+                }
+            }
+            SettingId.SAVE_PROFILE -> {
+                _uiState.update { state ->
+                    state.copy(
+                        isEditingProfile = false,
+                    )
+                }
+            }
             SettingId.EDIT_PICTURE -> { _uiState.update {it.copy(values = it.values + (SettingId.EDIT_PICTURE to value) )}}
             SettingId.EDIT_USERNAME -> {  _uiState.update {it.copy(values = it.values + (SettingId.EDIT_USERNAME to value) )} }
             SettingId.EDIT_EMAIL -> {  _uiState.update {it.copy(values = it.values + (SettingId.EDIT_EMAIL to value) )} }
