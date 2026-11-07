@@ -31,14 +31,13 @@ fun DailyGameBox(start: String, finish: String, onGameClick: () -> Unit){
     val colorScheme = MaterialTheme.colorScheme
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceAround,
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
-            .height(250.dp)
             .fillMaxWidth()
             .shadow(6.dp, RoundedCornerShape(20.dp), false)
             .clip(RoundedCornerShape(20.dp))
-            .background(colorScheme.primaryContainer)
-            .padding(10.dp)
+            .background(colorScheme.tertiaryContainer)
+            .padding(horizontal = 10.dp, vertical = 20.dp)
     ){
         Text(
             "Игра дня!",

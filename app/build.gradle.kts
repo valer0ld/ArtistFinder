@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.compose.compiler)
@@ -8,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.valer0ld.artistfinder"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.valer0ld.artistfinder"
@@ -33,17 +32,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -71,6 +64,7 @@ dependencies {
     implementation(libs.androidx.splashscreen)
 
     implementation(libs.dagger.hilt.android)
+    implementation(libs.androidx.compose.foundation.layout)
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.androidx.hilt.compose)
 

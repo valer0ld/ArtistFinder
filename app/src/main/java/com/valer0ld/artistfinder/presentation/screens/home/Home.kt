@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,21 +44,22 @@ fun Home(innerPadding: PaddingValues, onGameClick: ()->Unit, viewModel: HomeView
             .background(MaterialTheme.colorScheme.background)
             .padding(20.dp)
     ){
-        DailyGameBox(
-            state.dailyStartArtist.name,
-            state.dailyEndArtist.name,
-            onGameClick = onGameClick
-        )
-        Text(
-            "Или создайте свою игру",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(40.dp)
-        )
         GameBuilderBox(
             state,
             onStartValueChanged = viewModel::onStartValueChanged,
             onEndValueChanged = viewModel::onEndValueChanged,
+            onGameClick = onGameClick,
+            onShuffleClick = viewModel::randomArtists
+        )
+        Text(
+            "Или попробуйте",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(40.dp)
+        )
+        DailyGameBox(
+            state.dailyStartArtist.name,
+            state.dailyEndArtist.name,
             onGameClick = onGameClick
         )
     }

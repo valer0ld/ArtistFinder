@@ -61,6 +61,13 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun randomArtists(){
+        _uiState.update { it.copy (
+            searchStartArtist = TempArtist.list[0],
+            searchEndArtist = TempArtist.list[1]
+        ) }
+    }
+
     fun loadDailyArtist(){
         viewModelScope.launch {
             _uiState.update { it.copy (isLoading = true, error = null)}
