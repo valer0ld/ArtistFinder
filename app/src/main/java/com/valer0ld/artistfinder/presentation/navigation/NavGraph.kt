@@ -13,6 +13,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.presentation.viewmodel.AuthViewModel
 import com.valer0ld.artistfinder.presentation.screens.auth.LoggInScreen
 import com.valer0ld.artistfinder.presentation.screens.auth.RegisterScreen
@@ -83,8 +84,7 @@ fun NavGraph(navController: NavHostController, startDestination: String, innerPa
 @Composable
 fun HomeNavGraph(
     navController: NavHostController,
-    innerPadding: PaddingValues,
-    gameViewModel: GameViewModel
+    innerPadding: PaddingValues
 ){
     val coroutineScope = rememberCoroutineScope()
 
@@ -108,7 +108,6 @@ fun HomeNavGraph(
         ) }
         composable(NavRoutes.Game.route) { GameScreen(
             innerPadding = innerPadding,
-            viewModel = gameViewModel,
             onWinGame = {
                 coroutineScope.launch {
                     NavigationGuard.safeNavigate {

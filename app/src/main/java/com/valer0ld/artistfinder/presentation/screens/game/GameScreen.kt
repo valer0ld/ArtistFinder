@@ -14,9 +14,12 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.valer0ld.artistfinder.presentation.components.TitleAndContentText
 import com.valer0ld.artistfinder.presentation.model.TextPreset
@@ -25,7 +28,8 @@ import com.valer0ld.artistfinder.presentation.theme.AppTheme
 import com.valer0ld.artistfinder.presentation.viewmodel.GameViewModel
 
 @Composable
-fun GameScreen(innerPadding: PaddingValues, viewModel: GameViewModel, onWinGame: ()->Unit){
+fun GameScreen(innerPadding: PaddingValues, viewModel: GameViewModel = hiltViewModel(), onWinGame: ()->Unit){
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     val colorScheme = MaterialTheme.colorScheme
 
     Column(
@@ -40,7 +44,7 @@ fun GameScreen(innerPadding: PaddingValues, viewModel: GameViewModel, onWinGame:
             TitleAndContentText(
                 TextPreset.body("Цель",
                 colorScheme.outlineVariant),
-                TextPreset.display(viewModel.targetArtist.name,
+                TextPreset.display(state.targetArtist.name,
                 colorScheme.primary)
             )
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
@@ -50,10 +54,10 @@ fun GameScreen(innerPadding: PaddingValues, viewModel: GameViewModel, onWinGame:
                 )
                 TitleAndContentText(
                     TextPreset.bodyM("Текущий шаг", colorScheme.outlineVariant),
-                    TextPreset.displayS(viewModel.currentStep.collectAsState().value.toString(), colorScheme.tertiary)
+                    TextPreset.displayS(state.currentStep.toString(), colorScheme.tertiary)
                 )
             }
-            MainGamePanel(viewModel, onWinGame)
+            MainGamePanel(state, viewModel::onArtistButtonClick, onWinGame)
         }
 }
 

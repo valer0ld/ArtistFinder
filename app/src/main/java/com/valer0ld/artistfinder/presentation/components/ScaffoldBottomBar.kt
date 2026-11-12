@@ -15,14 +15,12 @@ import com.valer0ld.artistfinder.presentation.screens.win_game.components.WinGam
 fun ScaffoldBottomBar(
     currentDestination: String?,
     selectedIndex: Int,
-    gameViewModel: GameViewModel,
     onIconClick: (Int)->Unit,
     onHomeClick: ()->Unit
 ){
     when (currentDestination) {
         NavRoutes.Game.route -> GameBottomBar(
             modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
-            viewModel = gameViewModel,
             onHomeClick = onHomeClick
         )
         NavRoutes.WinGame.route -> WinGameBar(

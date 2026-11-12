@@ -20,13 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.valer0ld.artistfinder.domain.model.Artist
+import com.valer0ld.artistfinder.presentation.viewmodel.GameUIState
 import com.valer0ld.artistfinder.presentation.viewmodel.GameViewModel
 
 
 @Composable
-fun MainGamePanel(viewModel: GameViewModel, onWinGame: ()->Unit){
-    val processingId by viewModel.processingButtonId.collectAsState()
-    val currentArtist by viewModel.currentArtist.collectAsState()
+fun MainGamePanel(state: GameUIState, onArtistButtonClick: (Int, Artist, ()->Unit)->Unit, onWinGame: ()->Unit){
 
     Box(contentAlignment = Alignment.Center) {
         Column(
@@ -37,12 +37,12 @@ fun MainGamePanel(viewModel: GameViewModel, onWinGame: ()->Unit){
             for (i in 0..1) {
                 Row(Modifier.weight(1f).fillMaxWidth().padding(start = 6.dp, end = 6.dp)) {
                     for (y in 0..1) {
-                        if (viewModel.artists[t] == currentArtist) t++
+                        if (state.similarArtists[t] == state.currentArtist) t++
 
                         val buttonId = (y + i * 2)
-                        val buttonArtist = viewModel.artists[t]
+                        val buttonArtist = state.similarArtists[t]
 
-                        val isProcessing = processingId == buttonId
+                        val isProcessing = state.processingButtonId == buttonId
 
                         NextArtistButton(
                             buttonArtist,
@@ -50,12 +50,13 @@ fun MainGamePanel(viewModel: GameViewModel, onWinGame: ()->Unit){
                             Modifier.weight(1f),
                             isProcessing,
                             onArtistClick = {
-                                viewModel.onArtistButtonClick(
+                                onArtistButtonClick(
                                     buttonId,
                                     buttonArtist,
                                     onWinGame
                                 )
-                        })
+                            }
+                        )
                         t++
                     }
                 }
@@ -71,7 +72,7 @@ fun MainGamePanel(viewModel: GameViewModel, onWinGame: ()->Unit){
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                currentArtist.name,
+                state.currentArtist.name,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )

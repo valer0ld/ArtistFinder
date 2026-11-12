@@ -4,64 +4,73 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.model.TempArtist
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GameViewModel: ViewModel() {
-    val artists = TempArtist.list
-    val targetArtist = TempArtist.list[TempArtist.list.size-1]
 
-    private val _currentArtist = MutableStateFlow<Artist>(artists[0])
-    val currentArtist: StateFlow<Artist> = _currentArtist.asStateFlow()
+data class GameUIState(
+    val targetArtist: Artist = Artist("", 0),
+    val currentArtist: Artist = Artist("", 0),
+    val similarArtists: List<Artist> = emptyList(),
+    val currentStep: Int = 0,
+    val maxReturns: Int = 3,
+    val currentReturns: Int = maxReturns,
+    val processingButtonId: Int? = null
+)
 
-    private val _currentStep = MutableStateFlow<Int>(0)
-    var currentStep: StateFlow<Int> = _currentStep.asStateFlow()
+@HiltViewModel
+class GameViewModel @Inject constructor(): ViewModel() {
 
-    val maxReturns = 3
-    private val _currentReturns = MutableStateFlow<Int>(maxReturns)
-    var currentReturns: StateFlow<Int> = _currentReturns.asStateFlow()
-
-    private val _processingButtonId = MutableStateFlow<Int?>(null)
-    val processingButtonId: StateFlow<Int?> = _processingButtonId.asStateFlow()
-
+    private val _uiState = MutableStateFlow(GameUIState())
+    val uiState: StateFlow<GameUIState> = _uiState.asStateFlow()
 
     fun onArtistButtonClick(buttonId: Int, artist: Artist, onWinGame: ()->Unit) {
 
-        if (_processingButtonId.value != null) return
+        if (_uiState.value.processingButtonId != null) return
 
-        _processingButtonId.value = buttonId
+        _uiState.update { it.copy (processingButtonId = buttonId) }
 
         viewModelScope.launch {
             try {
                 processButton(artist, onWinGame)
-                delay(300)
+                delay(200)
             } finally {
-                _processingButtonId.value = null
+                _uiState.update { it.copy (processingButtonId = null) }
             }
         }
     }
 
     fun onReturnClick(){
-        _currentStep.value--
-        _currentReturns.value--
+        _uiState.update { it.copy (
+            currentStep = it.currentStep - 1,
+            currentReturns = it.currentReturns - 1
+        ) }
     }
 
     fun onUpdateState(){
-        _currentStep.value = 0
-        _currentReturns.value = maxReturns
-        _currentArtist.value = artists[0]
+        _uiState.update { it.copy (
+            currentStep = 0,
+            currentReturns = it.maxReturns,
+            similarArtists = emptyList()
+        ) }
     }
     private fun processButton(artist: Artist, onWinGame: ()->Unit){
-        if (artist == targetArtist) {
+        if (artist == _uiState.value.targetArtist) {
             onWinGame()
             onUpdateState()
         }
         else{
-            _currentArtist.value = artist
-            _currentStep.value++
+            _uiState.update { it.copy (
+                currentArtist = artist,
+                currentStep =  it.currentStep + 1,
+                similarArtists = artist.similarArtist ?: emptyList()
+            ) }
         }
     }
 }

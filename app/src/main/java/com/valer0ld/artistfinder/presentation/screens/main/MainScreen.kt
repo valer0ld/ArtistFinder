@@ -53,8 +53,6 @@ fun MainScreen() {
     val currentBackStackEntry = currentNavController?.currentBackStackEntryAsState()?.value
     val currentDestination = currentBackStackEntry?.destination?.route
 
-    val gameViewModel: GameViewModel = viewModel()
-
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -62,7 +60,6 @@ fun MainScreen() {
             ScaffoldBottomBar(
                 currentDestination = currentDestination,
                 selectedIndex = currentPage,
-                gameViewModel = gameViewModel,
                 onIconClick = { index ->
                     coroutineScope.launch {
                         if (currentPage == 1 && index == 1){
@@ -97,7 +94,6 @@ fun MainScreen() {
                     HomeNavGraph(
                         navController = homeNavController,
                         innerPadding = innerPadding,
-                        gameViewModel = gameViewModel
                     )
                 }
                 1 -> {

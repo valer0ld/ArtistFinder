@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.presentation.screens.home.components.DailyGameBox
 import com.valer0ld.artistfinder.presentation.screens.home.components.GameBuilderBox
 import com.valer0ld.artistfinder.presentation.theme.AppTheme

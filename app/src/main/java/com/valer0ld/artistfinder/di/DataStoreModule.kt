@@ -6,7 +6,9 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.valer0ld.artistfinder.data.datastore.AuthDataStore
-import com.valer0ld.artistfinder.data.repository.AuthRepository
+import com.valer0ld.artistfinder.data.repository.AuthRepositoryImpl
+import com.valer0ld.artistfinder.domain.repository.AuthRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,14 +19,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
-
-    @Provides
-    @Singleton
-    fun provideAuthRepository(
-        authDataStore: AuthDataStore
-    ) : AuthRepository {
-        return AuthRepository(authDataStore)
-    }
 
     @Provides
     @Singleton
