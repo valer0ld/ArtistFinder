@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.model.TempArtist
 import com.valer0ld.artistfinder.domain.model.TempListOfGames
+import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,12 +31,21 @@ enum class SearchArtist{
 }
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val currentGameRepository: CurrentGameRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUIState())
     val uiState: StateFlow<HomeUIState> = _uiState.asStateFlow()
 
     init {
         loadDailyArtist()
+    }
+
+    fun onGameStart(isDaily: Boolean){
+        viewModelScope.launch {
+            if (isDaily) currentGameRepository.startGame(_uiState.value.dailyStartArtist, _uiState.value.dailyEndArtist, true)
+            else currentGameRepository.startGame(_uiState.value.searchStartArtist, _uiState.value.searchEndArtist, false)
+        }
     }
 
     fun onStartValueChanged(value: String){

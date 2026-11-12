@@ -33,14 +33,12 @@ fun MainGamePanel(state: GameUIState, onArtistButtonClick: (Int, Artist, ()->Uni
             modifier = Modifier
                 .height(450.dp)
         ) {
-            var t = 0
+            var t = 1
             for (i in 0..1) {
                 Row(Modifier.weight(1f).fillMaxWidth().padding(start = 6.dp, end = 6.dp)) {
                     for (y in 0..1) {
-                        if (state.similarArtists[t] == state.currentArtist) t++
-
                         val buttonId = (y + i * 2)
-                        val buttonArtist = state.similarArtists[t]
+                        val buttonArtist = state.similarArtists.getOrNull(t - 1) ?: Artist("",0)
 
                         val isProcessing = state.processingButtonId == buttonId
 
@@ -48,7 +46,7 @@ fun MainGamePanel(state: GameUIState, onArtistButtonClick: (Int, Artist, ()->Uni
                             buttonArtist,
                             top = buttonId < 2,
                             Modifier.weight(1f),
-                            isProcessing,
+                            enabled = !isProcessing && state.similarArtists.size >= t,
                             onArtistClick = {
                                 onArtistButtonClick(
                                     buttonId,

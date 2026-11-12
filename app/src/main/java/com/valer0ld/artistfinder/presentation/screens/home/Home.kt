@@ -49,7 +49,10 @@ fun Home(innerPadding: PaddingValues, onGameClick: ()->Unit, viewModel: HomeView
             state,
             onStartValueChanged = viewModel::onStartValueChanged,
             onEndValueChanged = viewModel::onEndValueChanged,
-            onGameClick = onGameClick,
+            onGameClick = {
+                onGameClick()
+                viewModel.onGameStart(false)
+            },
             onShuffleClick = viewModel::randomArtists
         )
         Text(
@@ -61,7 +64,10 @@ fun Home(innerPadding: PaddingValues, onGameClick: ()->Unit, viewModel: HomeView
         DailyGameBox(
             state.dailyStartArtist.name,
             state.dailyEndArtist.name,
-            onGameClick = onGameClick
+            onGameClick = {
+                onGameClick()
+                viewModel.onGameStart(true)
+            }
         )
     }
 }

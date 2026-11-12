@@ -16,14 +16,14 @@ import com.valer0ld.artistfinder.presentation.components.CustomTextField
 import kotlinx.coroutines.launch
 
 @Composable
-fun SearchArtist(name: String, list: List<Artist>, onValueChanged: (String)->Unit){
+fun SearchArtist(name: String, placeholder: String, list: List<Artist>, onValueChanged: (String)->Unit){
     var isFocused by remember { mutableStateOf(false) }
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val coroutineScope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
 
     Column{
-        CustomTextField("Старт", name, onValueChanged,
+        CustomTextField(placeholder, name, onValueChanged,
             Modifier.onFocusChanged { focusState ->
                 isFocused = focusState.isFocused
 

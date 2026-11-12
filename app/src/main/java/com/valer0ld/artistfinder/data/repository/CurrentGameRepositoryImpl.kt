@@ -50,7 +50,7 @@ class CurrentGameRepositoryImpl @Inject constructor() : CurrentGameRepository{
     }
 
     override suspend fun isWin() : Boolean {
-        return game.value?.currentArtist == _game.value?.targetArtist
+        return game.value?.currentArtist?.name == _game.value?.targetArtist?.name
     }
 
     override suspend fun onWin(duration: Long) {
@@ -60,5 +60,6 @@ class CurrentGameRepositoryImpl @Inject constructor() : CurrentGameRepository{
                 isFinished = true
             )
         }
+        clear()
     }
 }

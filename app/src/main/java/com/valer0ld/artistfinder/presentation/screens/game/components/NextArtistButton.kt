@@ -26,7 +26,7 @@ import com.valer0ld.artistfinder.domain.model.Artist
 
 
 @Composable
-fun NextArtistButton(artist: Artist, top: Boolean, modifier: Modifier = Modifier, isProcessing: Boolean, onArtistClick: (Artist)->Unit){
+fun NextArtistButton(artist: Artist, top: Boolean, modifier: Modifier = Modifier, enabled: Boolean, onArtistClick: (Artist)->Unit){
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -57,7 +57,7 @@ fun NextArtistButton(artist: Artist, top: Boolean, modifier: Modifier = Modifier
                 .shadow(6.dp, shape = RoundedCornerShape(20.dp), false)
                 .clip(RoundedCornerShape(20.dp))
                 .background(Color.Transparent)
-                .clickable(enabled = !isProcessing){
+                .clickable(enabled = enabled){
                         onArtistClick(artist)
                 },
         ){

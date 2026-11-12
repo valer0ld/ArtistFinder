@@ -57,8 +57,8 @@ fun GameBuilderBox(state: HomeUIState, onStartValueChanged: (String)->Unit, onEn
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier,)
 
-        SearchArtist(state.searchStartArtist.name, state.searchStartList, onStartValueChanged)
-        SearchArtist(state.searchEndArtist.name, state.searchEndList, onEndValueChanged)
+        SearchArtist(state.searchStartArtist.name,"Старт", state.searchStartList, onStartValueChanged)
+        SearchArtist(state.searchEndArtist.name, "Цель", state.searchEndList, onEndValueChanged)
 
         Row(Modifier){
             Button(
