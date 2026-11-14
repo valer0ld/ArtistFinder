@@ -6,7 +6,7 @@ package com.valer0ld.artistfinder.domain.model
     val target: String,
     val time: Int,
     val stepCounter: Int,
-    val steps: List<String>
+    val steps: List<Artist>
 )
 
 
@@ -19,13 +19,9 @@ object TempListOfGames{
             time = 150,
             stepCounter = 20,
             steps = listOf(
-                "Воскресенье",
-                "Земфира",
-                "ДДТ",
-                "СВ",
-                "Аквариум",
-                "Машина времени",
-                "Чайф"
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0)
             )
         ),
         Game(
@@ -35,13 +31,9 @@ object TempListOfGames{
             time = 150,
             stepCounter = 20,
             steps = listOf(
-                "Воскресенье",
-                "Земфира",
-                "ДДТ",
-                "СВ",
-                "Аквариум",
-                "Машина времени",
-                "Чайф"
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0)
             )
         ),
         Game(
@@ -51,13 +43,9 @@ object TempListOfGames{
             time = 150,
             stepCounter = 20,
             steps = listOf(
-                "Воскресенье",
-                "Земфира",
-                "ДДТ",
-                "СВ",
-                "Аквариум",
-                "Машина времени",
-                "Чайф"
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0)
             )
         ),
         Game(
@@ -67,13 +55,9 @@ object TempListOfGames{
             time = 150,
             stepCounter = 20,
             steps = listOf(
-                "Воскресенье",
-                "Земфира",
-                "ДДТ",
-                "СВ",
-                "Аквариум",
-                "Машина времени",
-                "Чайф"
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0)
             )
         ),
         Game(
@@ -83,13 +67,9 @@ object TempListOfGames{
             time = 150,
             stepCounter = 20,
             steps = listOf(
-                "Воскресенье",
-                "Земфира",
-                "ДДТ",
-                "СВ",
-                "Аквариум",
-                "Машина времени",
-                "Чайф"
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0)
             )
         ),
         Game(
@@ -99,13 +79,9 @@ object TempListOfGames{
             time = 150,
             stepCounter = 20,
             steps = listOf(
-                "Воскресенье",
-                "Земфира",
-                "ДДТ",
-                "СВ",
-                "Аквариум",
-                "Машина времени",
-                "Чайф"
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0)
             )
         ),
         Game(
@@ -115,13 +91,9 @@ object TempListOfGames{
             time = 150,
             stepCounter = 20,
             steps = listOf(
-                "Воскресенье",
-                "Земфира",
-                "ДДТ",
-                "СВ",
-                "Аквариум",
-                "Машина времени",
-                "Чайф"
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0)
             )
         ),
     )

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
+import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +29,8 @@ data class GameUIState(
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val currentGameRepository: CurrentGameRepository
+    private val currentGameRepository: CurrentGameRepository,
+    private val currentUserRepository: CurrentUserRepository
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(GameUIState())
@@ -45,12 +47,12 @@ class GameViewModel @Inject constructor(
                         currentArtist = game.currentArtist,
                         similarArtists = game.currentArtist.similarArtist ?: emptyList(),
                         currentStep = game.currentStep,
-                        currentReturns = game.currentReturns
+                        currentReturns = game.currentReturns,
+                        startTime = game.startTime
                     )
                 }
             }
         }
-        _uiState.update { it.copy( startTime = SystemClock.elapsedRealtime()) }
     }
 
     fun onArtistButtonClick(buttonId: Int, artist: Artist, onWinGame: ()->Unit) {
@@ -63,7 +65,8 @@ class GameViewModel @Inject constructor(
             try {
                 currentGameRepository.selectArtist(artist)
                 if (currentGameRepository.isWin()){
-                    currentGameRepository.onWin(SystemClock.elapsedRealtime() - _uiState.value.startTime)
+                    val game = currentGameRepository.onWin(SystemClock.elapsedRealtime() - _uiState.value.startTime)
+                    currentUserRepository.addGameStats(game.duration, game.currentStep)
                     onWinGame()
                 }
                 delay(100.milliseconds)

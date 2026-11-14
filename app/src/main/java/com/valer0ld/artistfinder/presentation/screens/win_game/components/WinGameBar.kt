@@ -12,17 +12,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
+import com.valer0ld.artistfinder.presentation.viewmodel.WinBarViewModel
 
 @Composable
-fun WinGameBar(modifier: Modifier = Modifier, onHomeClick:  ()->Unit){
+fun WinGameBar(modifier: Modifier = Modifier, onHomeClick:  ()->Unit, viewModel: WinBarViewModel = hiltViewModel()){
     Button(
         modifier = Modifier
             .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
             .then(modifier)
             .fillMaxWidth()
             .height(70.dp),
-        onClick = onHomeClick,
+        onClick = {
+            onHomeClick()
+            viewModel.onUpdateState()
+        },
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 6.dp,
             pressedElevation = 2.dp,

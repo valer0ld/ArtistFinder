@@ -15,10 +15,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.presentation.components.TitleAndContentText
 import com.valer0ld.artistfinder.presentation.model.TextPreset
+import com.valer0ld.artistfinder.presentation.util.formatDuration
+import com.valer0ld.artistfinder.presentation.viewmodel.WinUIState
 
 
 @Composable
-fun StatisticContainer(){
+fun StatisticContainer(state: WinUIState){
     Spacer(Modifier.height(80.dp))
     Row(
         modifier = Modifier
@@ -31,11 +33,11 @@ fun StatisticContainer(){
     ) {
         TitleAndContentText(
             TextPreset.body("Время", MaterialTheme.colorScheme.primaryContainer),
-            TextPreset.display("00:00", MaterialTheme.colorScheme.primary)
+            TextPreset.display(formatDuration(state.duration), MaterialTheme.colorScheme.primary)
         )
         TitleAndContentText(
             TextPreset.body("Шаги", MaterialTheme.colorScheme.primaryContainer),
-            TextPreset.display("0", MaterialTheme.colorScheme.primary)
+            TextPreset.display(state.totalStep.toString(), MaterialTheme.colorScheme.primary)
         )
     }
     Spacer(Modifier.height(60.dp))

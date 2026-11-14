@@ -12,5 +12,5 @@ interface CurrentGameRepository{
     suspend fun useReturn()
     suspend fun clear()
     suspend fun isWin() : Boolean
-    suspend fun onWin(duration: Long)
+    suspend fun onWin(duration: Long) : CurrentGame
 }

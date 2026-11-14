@@ -49,8 +49,6 @@ fun SearchList(artists: List<Artist>, onArtistClick: (String)->Unit, modifier: M
             )
             .clip(
                 RoundedCornerShape(
-                    topStart = 5.dp,
-                    topEnd = 5.dp,
                     bottomStart = 20.dp,
                     bottomEnd = 20.dp,
                 )

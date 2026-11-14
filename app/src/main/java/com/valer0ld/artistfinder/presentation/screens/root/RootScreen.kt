@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.valer0ld.artistfinder.presentation.navigation.AuthNavGraph
 import com.valer0ld.artistfinder.presentation.viewmodel.AuthViewModel
@@ -17,12 +18,10 @@ import com.valer0ld.artistfinder.presentation.screens.root.components.ConfigureS
 import com.valer0ld.artistfinder.presentation.screens.splash.SplashScreen
 
 @Composable
-fun RootScreen(){
+fun RootScreen(viewModel: AuthViewModel = hiltViewModel()){
     ConfigureSystemBars()
 
-    val authViewModel: AuthViewModel = hiltViewModel()
-
-    val isLoggedIn by authViewModel.isLoggedIn.collectAsState()
+    val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
     val authNavController = rememberNavController()
 
     var showSplash by remember { mutableStateOf(true) }
@@ -36,7 +35,7 @@ fun RootScreen(){
             animationSpec = tween(600)
         ) { loggedIn ->
             if(loggedIn) MainScreen()
-            else AuthNavGraph(authViewModel = authViewModel, navController = authNavController)
+            else AuthNavGraph(navController = authNavController)
         }
     }
 

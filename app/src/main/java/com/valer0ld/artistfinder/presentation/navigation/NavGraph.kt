@@ -112,11 +112,10 @@ fun HomeNavGraph(
                 coroutineScope.launch {
                     NavigationGuard.safeNavigate {
                         navController.navigate("win"){
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                            popUpTo(NavRoutes.Game.route) {
+                                inclusive = true
                             }
                             launchSingleTop = true
-                            restoreState = true
                         }
                     }
                 }
@@ -198,8 +197,7 @@ fun ProfileNavGraph(
 
 @Composable
 fun AuthNavGraph(
-    navController: NavHostController,
-    authViewModel: AuthViewModel
+    navController: NavHostController
 ){
     val coroutineScope = rememberCoroutineScope()
 
@@ -229,7 +227,6 @@ fun AuthNavGraph(
         }
     ){
         composable(NavRoutes.LoggIn.route) { LoggInScreen(
-            authViewModel = authViewModel,
             onRegisterClick = {
                 coroutineScope.launch {
                     NavigationGuard.safeNavigate {
@@ -242,7 +239,6 @@ fun AuthNavGraph(
             }
         ) }
         composable(NavRoutes.Register.route) { RegisterScreen(
-            authViewModel = authViewModel,
             onBackArrowClick = {
                 coroutineScope.launch {
                     navController.safePopBackStack()

@@ -19,13 +19,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.valer0ld.artistfinder.presentation.screens.auth.component.LoggInPanel
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
 import com.valer0ld.artistfinder.presentation.viewmodel.AuthViewModel
+import com.valer0ld.artistfinder.presentation.viewmodel.LoggInViewModel
 
 @Composable
 fun LoggInScreen(
-    authViewModel: AuthViewModel,
     onRegisterClick: ()->Unit
 ){
     val focusManager = LocalFocusManager.current
@@ -49,7 +50,7 @@ fun LoggInScreen(
         )
         Spacer(Modifier.height(20.dp))
 
-        LoggInPanel { authViewModel.login("1", "1") }
+        LoggInPanel()
 
         Spacer(Modifier.height(10.dp))
         Box(
@@ -85,7 +86,7 @@ fun LoggInScreenPreview(){
                 color = MaterialTheme.colorScheme.primary,
             )
             Spacer(Modifier.height(20.dp))
-            LoggInPanel {}
+            LoggInPanel()
             Spacer(Modifier.height(10.dp))
             Box(
                 modifier = Modifier

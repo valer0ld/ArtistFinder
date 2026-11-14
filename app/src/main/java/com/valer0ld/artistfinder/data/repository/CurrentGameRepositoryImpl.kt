@@ -1,5 +1,6 @@
 package com.valer0ld.artistfinder.data.repository
 
+import android.os.SystemClock
 import com.valer0ld.artistfinder.data.model.CurrentGame
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
@@ -20,7 +21,8 @@ class CurrentGameRepositoryImpl @Inject constructor() : CurrentGameRepository{
             currentArtist = start,
             targetArtist = target,
             steps = listOf(start),
-            isDaily = isDaily
+            isDaily = isDaily,
+            startTime = SystemClock.elapsedRealtime()
         )
     }
 
@@ -38,7 +40,7 @@ class CurrentGameRepositoryImpl @Inject constructor() : CurrentGameRepository{
         _game.update{ current ->
             current?.copy(
                 currentArtist = current.steps[current.steps.size-2] ?: Artist("ошибка", 0),
-                steps = current.steps.subList(0, toIndex = current.steps.size - 2),
+                steps = current.steps.subList(0, toIndex = current.steps.size - 1),
                 currentStep = current.currentStep - 1,
                 currentReturns = current.currentReturns - 1
             )
@@ -53,13 +55,13 @@ class CurrentGameRepositoryImpl @Inject constructor() : CurrentGameRepository{
         return game.value?.currentArtist?.name == _game.value?.targetArtist?.name
     }
 
-    override suspend fun onWin(duration: Long) {
+    override suspend fun onWin(duration: Long) : CurrentGame {
         _game.update{ current ->
             current?.copy(
                 duration = duration,
                 isFinished = true
             )
         }
-        clear()
+        return game.value as CurrentGame
     }
 }

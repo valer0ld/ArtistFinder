@@ -10,19 +10,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import com.valer0ld.artistfinder.R
+import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
 
 
 @Composable
-fun AnimatedStepsList(expanded: Boolean, step: List<String>){
+fun AnimatedStepsList(expanded: Boolean, step: List<Artist>){
     ExpandedAnimatedComponent(expanded) {
         Column{
             step.forEachIndexed { index, item ->
@@ -33,7 +39,7 @@ fun AnimatedStepsList(expanded: Boolean, step: List<String>){
 }
 
 @Composable
-fun StepsItem(index: Int, artist: String){
+fun StepsItem(index: Int, artist: Artist){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,9 +57,18 @@ fun StepsItem(index: Int, artist: String){
                 .size(20.dp),
             textAlign = TextAlign.Center
         )
-        Spacer(Modifier.width(10.dp))
+        Spacer(Modifier.width(20.dp))
+        AsyncImage(
+            model = artist.image,
+            contentDescription = "default picture",
+            modifier = Modifier
+                .size(30.dp)
+                .clip(RoundedCornerShape(30.dp)),
+            contentScale = ContentScale.Crop
+        )
+        Spacer(modifier = Modifier.width(10.dp))
         Text(
-            text = artist,
+            text = artist.name,
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.tertiary,
         )
@@ -64,6 +79,6 @@ fun StepsItem(index: Int, artist: String){
 @Composable
 fun StepsItemPreview(){
     AppTheme{
-        StepsItem(1,"Воскресенье")
+        StepsItem(1,Artist("Воскресенье", R.drawable.voskresenje))
     }
 }

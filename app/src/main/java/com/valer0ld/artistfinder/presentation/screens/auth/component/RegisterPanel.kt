@@ -13,14 +13,30 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.valer0ld.artistfinder.presentation.components.CustomTextField
+import com.valer0ld.artistfinder.presentation.viewmodel.RegisterViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 
 @Composable
-fun RegisterPanel(onRegister: ()->Unit){
+fun RegisterPanel(viewModel: RegisterViewModel = hiltViewModel(), onRegister: ()->Unit){
+    val coroutineScope = rememberCoroutineScope()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.isSuccess) {
+        if (state.isSuccess) onRegister()
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,13 +51,13 @@ fun RegisterPanel(onRegister: ()->Unit){
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            CustomTextField("Имя пользователя","", {}, Modifier)
-            CustomTextField("Почта", "", {},Modifier)
-            CustomTextField("Пароль", "", {},Modifier)
-            CustomTextField("Повторите пароль", "", {},Modifier)
+            CustomTextField("Имя пользователя",state.userName, viewModel::onUserNameChange, Modifier)
+            CustomTextField("Почта", state.email, viewModel::onEmailChange,Modifier)
+            CustomTextField("Пароль", state.password, viewModel::onPasswordChange,Modifier)
+            CustomTextField("Повторите пароль", state.repeatPassword, viewModel::onRepeatPasswordChange,Modifier)
             Spacer(Modifier.height(20.dp))
             Button(
-                onClick = onRegister,
+                onClick = { viewModel.register() },
                 shape = RoundedCornerShape(30.dp),
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 6.dp,

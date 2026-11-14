@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.data.datastore
+package com.valer0ld.artistfinder.data.local.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
@@ -23,19 +23,25 @@ class AuthDataStore @Inject constructor(
         private val USER_ID = stringPreferencesKey("user_id")
     }
 
+    val userID: Flow<String?> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) emit(emptyPreferences())
+            else throw  exception
+        }
+        .map { preferences ->
+            preferences[USER_ID]
+        }
+
     val isLoggedIn: Flow<Boolean> = dataStore.data
         .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
+            if (exception is IOException) emit(emptyPreferences())
+            else throw exception
         }
         .map { preferences ->
             preferences[IS_LOGGED_IN] ?: false
         }
 
-    suspend fun saveLogin(token: String, userID: String){
+    suspend fun saveUserToken(token: String, userID: String){
         dataStore.edit { preferences ->
             preferences[IS_LOGGED_IN] = true
             preferences[AUTH_TOKEN] = token
@@ -51,5 +57,9 @@ class AuthDataStore @Inject constructor(
 
     suspend fun getToken(): String? {
         return dataStore.data.first() [AUTH_TOKEN]
+    }
+
+    suspend fun getUserID(): String? {
+        return dataStore.data.first() [USER_ID]
     }
 }

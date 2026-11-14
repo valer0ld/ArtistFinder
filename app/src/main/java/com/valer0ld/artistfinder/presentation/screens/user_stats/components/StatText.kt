@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.domain.model.UserStatistic
+import com.valer0ld.artistfinder.presentation.util.formatTotalTime
 
 
 @Composable
@@ -41,7 +42,7 @@ fun StatText(title: String, metrics: String){
 fun StatPanel(userStat: UserStatistic){
     StatText("Начато игр:", userStat.gameStarts.toString())
     StatText("Закончено игр:", userStat.gameEnds.toString())
-    StatText("Времени в игре:", userStat.totalTime.toString())
+    StatText("Времени в игре:", formatTotalTime(userStat.totalTime))
     StatText("Сделано шагов:", userStat.totalSteps.toString())
     StatText("Лучший рейтинг:", userStat.bestRating.toString())
 }

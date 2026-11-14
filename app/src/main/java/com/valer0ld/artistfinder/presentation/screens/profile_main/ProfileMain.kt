@@ -36,7 +36,7 @@ fun ProfileMain(
     ){
         val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-        UserProfileViewer(state.userName, state.userPicture, state.rating)
+        UserProfileViewer(state)
         Spacer(modifier = Modifier.height(30.dp))
         OptionButton("Мои игры", R.drawable.list_24px) {
             onGamesClick()

@@ -21,10 +21,11 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.valer0ld.artistfinder.presentation.viewmodel.ProfileUIState
 
 
 @Composable
-fun UserProfileViewer(userName: String, userPicture: Int, rating: Int){
+fun UserProfileViewer(state: ProfileUIState){
     Box{
         Column(
             modifier = Modifier
@@ -36,7 +37,7 @@ fun UserProfileViewer(userName: String, userPicture: Int, rating: Int){
             verticalArrangement = Arrangement.SpaceAround
         ) {
             AsyncImage(
-                model = userPicture,
+                model = state.userPicture.ifBlank { state.basePicture },
                 contentDescription = "default profile picture",
                 modifier = Modifier.size(150.dp),
                 contentScale = ContentScale.Crop,
@@ -44,12 +45,12 @@ fun UserProfileViewer(userName: String, userPicture: Int, rating: Int){
             )
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = userName,
+                    text = state.userName,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.headlineMedium
                 )
                 Text(
-                    text = "#${rating} место в рейтинге",
+                    text = "#${state.rating} место в рейтинге",
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge
                 )

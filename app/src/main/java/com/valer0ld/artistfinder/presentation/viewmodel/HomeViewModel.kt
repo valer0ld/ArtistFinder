@@ -6,6 +6,7 @@ import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.model.TempArtist
 import com.valer0ld.artistfinder.domain.model.TempListOfGames
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
+import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,7 +33,8 @@ enum class SearchArtist{
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val currentGameRepository: CurrentGameRepository
+    private val currentGameRepository: CurrentGameRepository,
+    private val currentUserRepository: CurrentUserRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUIState())
     val uiState: StateFlow<HomeUIState> = _uiState.asStateFlow()
@@ -45,6 +47,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             if (isDaily) currentGameRepository.startGame(_uiState.value.dailyStartArtist, _uiState.value.dailyEndArtist, true)
             else currentGameRepository.startGame(_uiState.value.searchStartArtist, _uiState.value.searchEndArtist, false)
+            currentUserRepository.startGame()
         }
     }
 
@@ -63,10 +66,12 @@ class HomeViewModel @Inject constructor(
     fun loadSearchList(searchArtist: SearchArtist, value: String){
         when(searchArtist){
             SearchArtist.START -> {
-                if (value != "") _uiState.update { it.copy (searchStartList = emptyList()) }
+                if (value != "") _uiState.update { it.copy (searchStartList = TempArtist.list) }
+                else  _uiState.update { it.copy (searchStartList = emptyList()) }
             }
             SearchArtist.END -> {
                 if (value != "") _uiState.update { it.copy (searchEndList = TempArtist.list) }
+                else  _uiState.update { it.copy (searchEndList = emptyList()) }
             }
         }
     }

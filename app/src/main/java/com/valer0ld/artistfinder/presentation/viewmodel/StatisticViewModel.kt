@@ -2,8 +2,8 @@ package com.valer0ld.artistfinder.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.valer0ld.artistfinder.domain.model.DanilaStats
 import com.valer0ld.artistfinder.domain.model.UserStatistic
+import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +25,9 @@ data class StatisticUIState(
 )
 
 @HiltViewModel
-class StatisticViewModel @Inject constructor() : ViewModel() {
+class StatisticViewModel @Inject constructor(
+    private val currentUserRepository: CurrentUserRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(StatisticUIState())
     val uiState: StateFlow<StatisticUIState> = _uiState.asStateFlow()
@@ -38,12 +40,20 @@ class StatisticViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             _uiState.update { it.copy (isLoading = true, error = null)}
             try{
-                val stats = DanilaStats.stats
-                _uiState.update {
-                    it.copy(
-                        userStats = stats,
-                        isLoading = false
-                    )
+                currentUserRepository.observeUser().collect { user ->
+                    if (user == null) return@collect
+
+                    _uiState.update {
+                        it.copy(
+                            userStats = UserStatistic(
+                                gameStarts = user.gameStarts,
+                                gameEnds = user.gameEnds,
+                                totalTime = user.totalTime,
+                                totalSteps = user.totalSteps,
+                                bestRating = user.bestRating
+                            )
+                        )
+                    }
                 }
             } catch (e: Exception){
                 _uiState.update {

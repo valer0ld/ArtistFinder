@@ -24,9 +24,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun RegisterScreen(authViewModel: AuthViewModel, onBackArrowClick: ()->Unit){
+fun RegisterScreen(onBackArrowClick: ()->Unit){
     val focusManager = LocalFocusManager.current
-    val coroutineScope = rememberCoroutineScope()
 
     ChildrenScreen(
         onBackArrow = onBackArrowClick
@@ -50,15 +49,9 @@ fun RegisterScreen(authViewModel: AuthViewModel, onBackArrowClick: ()->Unit){
             )
             Spacer(Modifier.height(20.dp))
 
-            RegisterPanel {
-                authViewModel.login("1","1")
-                coroutineScope.launch {
-                    delay(200)
-                    onBackArrowClick()
-                }
-            }
-
+            RegisterPanel(onRegister = onBackArrowClick)
         }
+
     }
 }
 
@@ -83,7 +76,7 @@ fun RegisterScreenPreview(){
                 )
                 Spacer(Modifier.height(20.dp))
 
-               RegisterPanel {  }
+               RegisterPanel{}
 
             }
         }

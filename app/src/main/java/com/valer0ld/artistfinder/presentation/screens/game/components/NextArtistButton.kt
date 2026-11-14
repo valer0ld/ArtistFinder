@@ -64,7 +64,7 @@ fun NextArtistButton(artist: Artist, top: Boolean, modifier: Modifier = Modifier
             AsyncImage(
                 model = artist.image,
                 contentDescription = "artist image",
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary),
                 contentScale = ContentScale.Crop,
             )
         }
