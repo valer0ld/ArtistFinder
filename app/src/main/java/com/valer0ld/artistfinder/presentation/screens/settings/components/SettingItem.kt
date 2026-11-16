@@ -130,16 +130,16 @@ fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction:
             SettingColor.DEFAULT -> OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
-                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedTextColor = MaterialTheme.colorScheme.outlineVariant,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceBright
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
             )
             SettingColor.SECOND -> OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                 unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
-                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedTextColor = MaterialTheme.colorScheme.outlineVariant,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceBright
             )
@@ -147,7 +147,7 @@ fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction:
                 focusedBorderColor = MaterialTheme.colorScheme.errorContainer,
                 unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
                 focusedTextColor = MaterialTheme.colorScheme.error,
-                unfocusedTextColor = MaterialTheme.colorScheme.outlineVariant,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceBright
             )
@@ -155,7 +155,14 @@ fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction:
         modifier = modifier.fillMaxWidth().padding(10.dp),
         shape = RoundedCornerShape(10.dp),
         enabled = state.isEditingProfile,
-        placeholder = { Text(setting.title, style = MaterialTheme.typography.titleLarge) }
+        placeholder = {
+            Text(
+                setting.title,
+                style = MaterialTheme.typography.titleLarge,
+                color = if (state.isEditingProfile) MaterialTheme.colorScheme.outlineVariant else MaterialTheme.colorScheme.surfaceDim
+            )
+        },
+        singleLine = true
     )
 }
 

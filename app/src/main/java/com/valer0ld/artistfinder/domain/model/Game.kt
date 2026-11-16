@@ -84,8 +84,33 @@ object TempListOfGames{
                 Artist("Воскресенье", 0)
             )
         ),
+
         Game(
             id = 7,
+            start = "Воскресенье",
+            target = "Земфира",
+            time = 150,
+            stepCounter = 20,
+            steps = listOf(
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0)
+            )
+        ),
+        Game(
+            id = 8,
+            start = "Воскресенье",
+            target = "Земфира",
+            time = 150,
+            stepCounter = 20,
+            steps = listOf(
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0),
+                Artist("Воскресенье", 0)
+            )
+        ),
+        Game(
+            id = 9,
             start = "Воскресенье",
             target = "Земфира",
             time = 150,

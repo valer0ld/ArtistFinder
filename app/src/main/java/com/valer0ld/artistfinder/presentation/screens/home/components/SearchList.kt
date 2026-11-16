@@ -2,11 +2,10 @@ package com.valer0ld.artistfinder.presentation.screens.home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.indication
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,14 +30,16 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.model.TempArtist
+import com.valer0ld.artistfinder.presentation.components.LazyColumnWithScrollbar
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
 
 @Composable
 fun SearchList(artists: List<Artist>, onArtistClick: (String)->Unit, modifier: Modifier = Modifier){
     val listState = rememberLazyListState()
 
-    LazyColumn (
-        state = listState,
+    LazyColumnWithScrollbar(
+        listState = listState,
+        color = MaterialTheme.colorScheme.onTertiary,
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
@@ -53,39 +54,43 @@ fun SearchList(artists: List<Artist>, onArtistClick: (String)->Unit, modifier: M
                     bottomEnd = 20.dp,
                 )
             )
-            .background(MaterialTheme.colorScheme.tertiary),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .background(MaterialTheme.colorScheme.tertiary)
     ){
-        items(
-            items = artists,
-            key = {it.name}
-        ) { artist ->
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
-                    .background(Color.Transparent)
-                    .padding(horizontal = 20.dp)
-                    .clickable(onClick = { onArtistClick(artist.name) }),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ){
-                AsyncImage(
-                    model = artist.image,
-                    contentDescription = "default picture",
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clip(RoundedCornerShape(30.dp)),
-                    contentScale = ContentScale.Crop
-                )
-                Spacer(modifier = Modifier.width(20.dp))
-                Text(
-                    text = artist.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onTertiary,
-                )
+        LazyColumn (
+            state = listState,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ){
+            items(
+                items = artists,
+                key = {it.name}
+            ) { artist ->
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .height(40.dp)
+                        .background(Color.Transparent)
+                        .padding(horizontal = 20.dp)
+                        .clickable(onClick = { onArtistClick(artist.name) }),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ){
+                    AsyncImage(
+                        model = artist.image,
+                        contentDescription = "default picture",
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(RoundedCornerShape(30.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                    Text(
+                        text = artist.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onTertiary,
+                    )
+                }
+                HorizontalDivider(color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.2f))
             }
-            HorizontalDivider(color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.2f))
         }
     }
 }

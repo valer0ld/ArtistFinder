@@ -51,21 +51,18 @@ class SettingsViewModel @Inject constructor(
             currentUserRepository.observeUser().collect { user ->
                 if (user == null) return@collect
 
-                _uiState.update {
-                    it.copy(
-                        values = it.values + mapOf(
-                                SettingId.EDIT_USERNAME to  user.userName,
-                                SettingId.EDIT_EMAIL to user.email,
-                                SettingId.EDIT_PICTURE to user.avatarUrl
-                        ),
+                val newValues = mapOf(
+                    SettingId.EDIT_USERNAME to  user.userName,
+                    SettingId.EDIT_EMAIL to user.email,
+                    SettingId.EDIT_PICTURE to user.avatarUrl
+                )
 
+                _uiState.update { state ->
+                    state.copy(
+                        values = state.values + newValues,
+                        oldUserInfo = newValues.filterKeys { it in state.oldUserInfo }
                     )
                 }
-            }
-            _uiState.update { state ->
-                state.copy(
-                    oldUserInfo = state.values.filterKeys { it in state.oldUserInfo }
-                )
             }
         }
     }
@@ -86,7 +83,8 @@ class SettingsViewModel @Inject constructor(
                 _uiState.update { state ->
                     state.copy(
                         isEditingProfile = false,
-                        values = state.values + state.oldUserInfo.filterKeys { it in state.values }
+                        //values = state.values + state.oldUserInfo.filterKeys { it in state.values }
+                        values = state.values + state.oldUserInfo
                     )
                 }
             }
@@ -103,7 +101,7 @@ class SettingsViewModel @Inject constructor(
                             _uiState.update { state ->
                                 state.copy(
                                     isEditingProfile = false,
-                                    oldUserInfo = state.values.filterKeys { it in state.oldUserInfo }
+                                    oldUserInfo = state.values.filterKeys { it in state.oldUserInfo.keys } // перестраховка
                                 )
                             }
                         }
@@ -119,7 +117,7 @@ class SettingsViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(
                                 isEditingProfile = false,
-                                oldUserInfo = state.values.filterKeys { it in state.oldUserInfo }
+                                oldUserInfo = state.values.filterKeys { it in state.oldUserInfo.keys } // перестраховка
                             )
                         }
                     }

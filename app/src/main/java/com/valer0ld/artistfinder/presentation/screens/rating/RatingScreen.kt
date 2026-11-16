@@ -1,6 +1,7 @@
 package com.valer0ld.artistfinder.presentation.screens.rating
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.valer0ld.artistfinder.domain.model.RatingPlayer
 import com.valer0ld.artistfinder.domain.model.TemporaryPlayerList
+import com.valer0ld.artistfinder.presentation.components.LazyColumnWithScrollbar
 import com.valer0ld.artistfinder.presentation.screens.rating.components.CurrentPlayerRecordAndStats
 import com.valer0ld.artistfinder.presentation.screens.rating.components.PlayerRecordAndStats
 import com.valer0ld.artistfinder.presentation.screens.rating.components.TableHeader
@@ -59,6 +63,7 @@ fun RatingScreen(innerPadding: PaddingValues, viewModel: RatingViewModel = hiltV
 @Composable
 fun RatingTable(players: List<RatingPlayer>, currentPlayer: RatingPlayer){
     var selectedIndex by remember { mutableIntStateOf(-1) }
+    val listState = rememberLazyListState()
 
     Surface(
         modifier = Modifier.padding(horizontal = 15.dp).fillMaxWidth(),
@@ -74,29 +79,35 @@ fun RatingTable(players: List<RatingPlayer>, currentPlayer: RatingPlayer){
         ){
             TableHeader()
             Box{
-                LazyColumn(
+                LazyColumnWithScrollbar(
+                    listState = listState,
+                    isExpanded = selectedIndex != -1,
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .fillMaxWidth()
                         .height(550.dp)
-                ) {
-                    itemsIndexed(
-                        items = players,
-                        key = { _, item -> item.id}
-                    ){ index, player ->
-                        val isExpanded = selectedIndex == player.id
+                ){
+                    LazyColumn(
+                        state = listState
+                    ) {
+                        itemsIndexed(
+                            items = players,
+                            key = { _, item -> item.id}
+                        ){ index, player ->
+                            val isExpanded = selectedIndex == player.id
 
-                        PlayerRecordAndStats(
-                            player = player,
-                            currentPlayerId = currentPlayer.id,
-                            index = index + 1,
-                            isExpanded = isExpanded
-                        ){
+                            PlayerRecordAndStats(
+                                player = player,
+                                currentPlayerId = currentPlayer.id,
+                                index = index + 1,
+                                isExpanded = isExpanded
+                            ){
                                 selectedIndex =  if (isExpanded) -1 else player.id
                             }
-                    }
-                    item{
-                        Spacer(modifier = Modifier.height(100.dp))
+                        }
+                        item{
+                            Spacer(modifier = Modifier.height(40.dp))
+                        }
                     }
                 }
                 CurrentPlayerRecordAndStats(

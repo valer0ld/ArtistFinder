@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -25,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.valer0ld.artistfinder.domain.model.AppSettings
 import com.valer0ld.artistfinder.presentation.components.ChildrenScreen
+import com.valer0ld.artistfinder.presentation.components.LazyColumnWithScrollbar
 import com.valer0ld.artistfinder.presentation.screens.settings.components.SettingItem
 import com.valer0ld.artistfinder.presentation.screens.settings.components.SettingsHeaderItem
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
@@ -34,16 +37,19 @@ import com.valer0ld.artistfinder.presentation.viewmodel.SettingsViewModel
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), onBackArrow: ()->Unit){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
+    val listState = rememberLazyListState()
 
     ChildrenScreen(onBackArrow) {
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .pointerInput(Unit){
                     detectTapGestures {
                         focusManager.clearFocus()
                     }
-                },
+                }
+                .imePadding(),
             contentPadding = PaddingValues(start = 10.dp, end = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

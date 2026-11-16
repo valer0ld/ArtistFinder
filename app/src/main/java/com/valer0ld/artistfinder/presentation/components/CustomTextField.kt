@@ -16,17 +16,17 @@ fun CustomTextField(placeholder: String, message: String, onValueChanged: (Strin
         onValueChange = { newText ->
             onValueChanged(newText)
         },
-        textStyle = MaterialTheme.typography.titleMedium,
+        textStyle = MaterialTheme.typography.titleLarge,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
             unfocusedBorderColor = MaterialTheme.colorScheme.secondaryContainer,
             focusedTextColor = MaterialTheme.colorScheme.onSurface,
-            unfocusedTextColor = MaterialTheme.colorScheme.outlineVariant,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
             focusedContainerColor = MaterialTheme.colorScheme.surfaceBright
         ),
         modifier = Modifier.fillMaxWidth().then(modifier),
-        placeholder = {Text(placeholder, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.outlineVariant)},
-
+        placeholder = {Text(placeholder, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.outlineVariant)},
+        singleLine = true
     )
 }

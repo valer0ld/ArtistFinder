@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.presentation.components.CustomTextField
+import com.valer0ld.artistfinder.presentation.components.ExpandedAnimatedComponent
 import kotlinx.coroutines.launch
 
 @Composable
@@ -46,7 +47,7 @@ fun SearchArtist(name: String, placeholder: String, list: List<Artist>, onValueC
                     shape = RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp)
                 )
         )
-        if (isFocused && list.isNotEmpty()) {
+        ExpandedAnimatedComponent(isFocused && list.isNotEmpty()) {
             SearchList(
                 list, onArtistClick = { name ->
                     onValueChanged(name)

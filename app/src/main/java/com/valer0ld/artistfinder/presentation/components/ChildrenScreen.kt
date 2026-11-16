@@ -14,10 +14,11 @@ import androidx.compose.ui.Modifier
 @Composable
 fun ChildrenScreen(
     onBackArrow: ()->Unit,
+    modifier: Modifier = Modifier,
     content: @Composable ColumnScope.()->Unit
 ){
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .windowInsetsPadding(WindowInsets.statusBars)

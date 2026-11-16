@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -30,8 +31,8 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun RegisterPanel(viewModel: RegisterViewModel = hiltViewModel(), onRegister: ()->Unit){
-    val coroutineScope = rememberCoroutineScope()
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
 
     LaunchedEffect(state.isSuccess) {
         if (state.isSuccess) onRegister()
