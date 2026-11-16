@@ -28,13 +28,13 @@ fun GameItemInfo(game: Game){
             textAlign = TextAlign.Center,
             text = buildAnnotatedString {
                 withStyle(style = MaterialTheme.typography.bodyLarge.toSpanStyleColored(color = MaterialTheme.colorScheme.primary)){
-                    append(game.start)
+                    append(game.start.name)
                 }
                 withStyle(style = MaterialTheme.typography.headlineMedium.toSpanStyleColored()){
                     append(" → ")
                 }
                 withStyle(style = MaterialTheme.typography.bodyLarge.toSpanStyleColored(color = MaterialTheme.colorScheme.primary)){
-                    append(game.target)
+                    append(game.target.name)
                 }
             }
         )

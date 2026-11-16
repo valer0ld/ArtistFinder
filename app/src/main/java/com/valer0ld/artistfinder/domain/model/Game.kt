@@ -2,11 +2,12 @@ package com.valer0ld.artistfinder.domain.model
 
  data class Game (
      val id: Int,
-    val start: String,
-    val target: String,
-    val time: Int,
-    val stepCounter: Int,
-    val steps: List<Artist>
+     val start: Artist,
+     val target: Artist,
+     val time: Int,
+     val stepCounter: Int,
+     val steps: List<Artist>,
+     val isDaily: Boolean = false
 )
 
 
@@ -14,8 +15,8 @@ object TempListOfGames{
     val list = listOf(
         Game(
             id = 1,
-            start = "Воскресенье",
-            target = "Земфира",
+            start = TempArtist.list[0],
+            target = TempArtist.list[1],
             time = 150,
             stepCounter = 20,
             steps = listOf(
@@ -26,8 +27,8 @@ object TempListOfGames{
         ),
         Game(
             id = 2,
-            start = "Воскресенье",
-            target = "Земфира",
+            start = TempArtist.list[0],
+            target = TempArtist.list[1],
             time = 150,
             stepCounter = 20,
             steps = listOf(
@@ -38,8 +39,8 @@ object TempListOfGames{
         ),
         Game(
             id = 3,
-            start = "Воскресенье",
-            target = "Земфира",
+            start = TempArtist.list[0],
+            target = TempArtist.list[1],
             time = 150,
             stepCounter = 20,
             steps = listOf(
@@ -50,8 +51,8 @@ object TempListOfGames{
         ),
         Game(
             id = 4,
-            start = "Воскресенье",
-            target = "Земфира",
+            start = TempArtist.list[0],
+            target = TempArtist.list[1],
             time = 150,
             stepCounter = 20,
             steps = listOf(
@@ -62,8 +63,8 @@ object TempListOfGames{
         ),
         Game(
             id = 5,
-            start = "Воскресенье",
-            target = "Земфира",
+            start = TempArtist.list[0],
+            target = TempArtist.list[1],
             time = 150,
             stepCounter = 20,
             steps = listOf(
@@ -74,8 +75,8 @@ object TempListOfGames{
         ),
         Game(
             id = 6,
-            start = "Воскресенье",
-            target = "Земфира",
+            start = TempArtist.list[0],
+            target = TempArtist.list[1],
             time = 150,
             stepCounter = 20,
             steps = listOf(
@@ -87,8 +88,8 @@ object TempListOfGames{
 
         Game(
             id = 7,
-            start = "Воскресенье",
-            target = "Земфира",
+            start = TempArtist.list[0],
+            target = TempArtist.list[1],
             time = 150,
             stepCounter = 20,
             steps = listOf(
@@ -99,8 +100,8 @@ object TempListOfGames{
         ),
         Game(
             id = 8,
-            start = "Воскресенье",
-            target = "Земфира",
+            start = TempArtist.list[0],
+            target = TempArtist.list[1],
             time = 150,
             stepCounter = 20,
             steps = listOf(
@@ -111,8 +112,8 @@ object TempListOfGames{
         ),
         Game(
             id = 9,
-            start = "Воскресенье",
-            target = "Земфира",
+            start = TempArtist.list[0],
+            target = TempArtist.list[1],
             time = 150,
             stepCounter = 20,
             steps = listOf(

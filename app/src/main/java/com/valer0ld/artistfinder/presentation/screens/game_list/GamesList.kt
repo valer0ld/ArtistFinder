@@ -58,7 +58,10 @@ fun GamesList(onGoToGame: ()->Unit, onBackArrow: ()->Unit, viewModel: GameListVi
                             onPanelClick = {
                                 selectedIndex =  if (isExpanded) -1 else game.id
                             },
-                            onPlayClick = onGoToGame
+                            onPlayClick = {
+                                onGoToGame()
+                                viewModel.onGameStart(game.start, game.target)
+                            }
                         )
                         Spacer(Modifier.height(5.dp))
                         AnimatedStepsList(isExpanded, game.steps)

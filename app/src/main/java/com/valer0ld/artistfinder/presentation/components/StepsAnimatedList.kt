@@ -32,7 +32,7 @@ fun AnimatedStepsList(expanded: Boolean, step: List<Artist>){
     ExpandedAnimatedComponent(expanded) {
         Column{
             step.forEachIndexed { index, item ->
-                StepsItem(index, item)
+                StepsItem(index + 1, item)
             }
         }
     }

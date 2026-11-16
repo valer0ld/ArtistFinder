@@ -2,8 +2,11 @@ package com.valer0ld.artistfinder.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.model.Game
 import com.valer0ld.artistfinder.domain.model.TempListOfGames
+import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
+import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,13 +22,23 @@ data class GameListUIState(
 )
 
 @HiltViewModel
-class GameListViewModel @Inject constructor() : ViewModel() {
+class GameListViewModel @Inject constructor(
+    private val currentGameRepository: CurrentGameRepository,
+    private val currentUserRepository: CurrentUserRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GameListUIState())
     val uiState: StateFlow<GameListUIState> = _uiState.asStateFlow()
 
     init {
         loadList()
+    }
+
+    fun onGameStart(start: Artist, target: Artist){
+        viewModelScope.launch {
+            currentGameRepository.startGame(start, target, false)
+            currentUserRepository.startGame()
+        }
     }
 
     fun loadList(){
