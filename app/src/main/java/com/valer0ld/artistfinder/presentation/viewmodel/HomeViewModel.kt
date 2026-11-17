@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.model.TempArtist
-import com.valer0ld.artistfinder.domain.model.TempListOfGames
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
 import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -87,7 +86,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy (isLoading = true, error = null)}
             try{
-                val list = TempListOfGames.list
                 _uiState.update {
                     it.copy(
                         dailyStartArtist = TempArtist.list[0],

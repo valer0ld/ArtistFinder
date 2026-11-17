@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -22,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.valer0ld.artistfinder.presentation.components.AnimatedStepsList
 import com.valer0ld.artistfinder.presentation.components.ChildrenScreen
-import com.valer0ld.artistfinder.domain.model.TempListOfGames
 import com.valer0ld.artistfinder.presentation.components.LazyColumnWithScrollbar
 import com.valer0ld.artistfinder.presentation.screens.game_list.components.GameItem
 import com.valer0ld.artistfinder.presentation.viewmodel.GameListViewModel
@@ -32,12 +31,12 @@ fun GamesList(onGoToGame: ()->Unit, onBackArrow: ()->Unit, viewModel: GameListVi
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
 
-    var selectedIndex by remember { mutableIntStateOf(-1) }
+    var selectedIndex by remember { mutableLongStateOf(-1) }
 
     ChildrenScreen(onBackArrow) {
         LazyColumnWithScrollbar(
             listState = listState,
-            isExpanded = selectedIndex != -1,
+            isExpanded = selectedIndex != -1L,
             modifier = Modifier
                 .fillMaxSize()
             ) {
@@ -56,11 +55,12 @@ fun GamesList(onGoToGame: ()->Unit, onBackArrow: ()->Unit, viewModel: GameListVi
                         GameItem(
                             game = game,
                             onPanelClick = {
-                                selectedIndex =  if (isExpanded) -1 else game.id
+                                selectedIndex =  if (isExpanded) -1L else game.id
                             },
                             onPlayClick = {
-                                onGoToGame()
-                                viewModel.onGameStart(game.start, game.target)
+                                viewModel.onGameStart(game.id){
+                                    onGoToGame()
+                                }
                             }
                         )
                         Spacer(Modifier.height(5.dp))

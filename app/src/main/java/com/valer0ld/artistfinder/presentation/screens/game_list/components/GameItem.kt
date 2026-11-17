@@ -22,7 +22,7 @@ fun GameItem(game: Game, onPanelClick: ()->Unit, onPlayClick: ()->Unit){
     Surface(
         tonalElevation = 4.dp,
         shape = RoundedCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant
+        color = if (game.isFinished) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f)
     ) {
         Row(
             modifier = Modifier

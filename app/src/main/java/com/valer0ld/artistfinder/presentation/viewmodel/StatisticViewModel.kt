@@ -51,7 +51,8 @@ class StatisticViewModel @Inject constructor(
                                 totalTime = user.totalTime,
                                 totalSteps = user.totalSteps,
                                 bestRating = user.bestRating
-                            )
+                            ),
+                            isLoading = false
                         )
                     }
                 }

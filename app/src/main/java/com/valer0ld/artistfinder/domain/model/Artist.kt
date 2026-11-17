@@ -1,7 +1,9 @@
 package com.valer0ld.artistfinder.domain.model
 
 import com.valer0ld.artistfinder.R
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Artist(
     val name: String,
     val image: Int,

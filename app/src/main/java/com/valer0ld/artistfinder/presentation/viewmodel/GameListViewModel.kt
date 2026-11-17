@@ -1,12 +1,13 @@
 package com.valer0ld.artistfinder.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.model.Game
-import com.valer0ld.artistfinder.domain.model.TempListOfGames
+import com.valer0ld.artistfinder.domain.model.UserStatistic
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
 import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
+import com.valer0ld.artistfinder.domain.repository.GameListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +25,8 @@ data class GameListUIState(
 @HiltViewModel
 class GameListViewModel @Inject constructor(
     private val currentGameRepository: CurrentGameRepository,
-    private val currentUserRepository: CurrentUserRepository
+    private val currentUserRepository: CurrentUserRepository,
+    private val gameListRepository: GameListRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GameListUIState())
@@ -34,10 +36,19 @@ class GameListViewModel @Inject constructor(
         loadList()
     }
 
-    fun onGameStart(start: Artist, target: Artist){
+    fun onGameStart(id: Long, onSuccess: ()->Unit){
         viewModelScope.launch {
-            currentGameRepository.startGame(start, target, false)
-            currentUserRepository.startGame()
+            try {
+                val game = gameListRepository.getGame(id)
+
+                if (game != null){
+                    currentGameRepository.startGame(game.start, game.target, false)
+                    currentUserRepository.startGame()
+                    onSuccess()
+                }
+            } catch (e: Exception) {
+            Log.e("MY_LOG", "Ошибка при запуске игры", e)
+            }
         }
     }
 
@@ -45,12 +56,15 @@ class GameListViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy (isLoading = true, error = null)}
             try{
-                val list = TempListOfGames.list
-                _uiState.update {
-                    it.copy(
-                        gameList = list,
-                        isLoading = false
-                    )
+                gameListRepository.observeGames().collect { games ->
+                    if (games == null) return@collect
+
+                    _uiState.update {
+                        it.copy(
+                            gameList = games.asReversed(),
+                            isLoading = false
+                        )
+                    }
                 }
             } catch (e: Exception){
                 _uiState.update {

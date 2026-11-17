@@ -1,6 +1,8 @@
 package com.valer0ld.artistfinder.data.repository
 
 import android.os.SystemClock
+import com.valer0ld.artistfinder.data.local.db.game.GameListDao
+import com.valer0ld.artistfinder.data.mapper.toGameListEntity
 import com.valer0ld.artistfinder.data.model.CurrentGame
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
@@ -12,7 +14,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CurrentGameRepositoryImpl @Inject constructor() : CurrentGameRepository{
+class CurrentGameRepositoryImpl @Inject constructor(
+    private val gameListDao: GameListDao
+) : CurrentGameRepository{
     private val _game = MutableStateFlow<CurrentGame?>(null)
     override val game: StateFlow<CurrentGame?> = _game.asStateFlow()
 
@@ -62,6 +66,7 @@ class CurrentGameRepositoryImpl @Inject constructor() : CurrentGameRepository{
                 isFinished = true
             )
         }
+        gameListDao.upsert(game.value?.toGameListEntity()!!) // возможно как-то надо исправить
         return game.value as CurrentGame
     }
 }

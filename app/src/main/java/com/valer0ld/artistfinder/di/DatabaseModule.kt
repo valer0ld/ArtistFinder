@@ -3,6 +3,7 @@ package com.valer0ld.artistfinder.di
 import android.content.Context
 import androidx.room.Room
 import com.valer0ld.artistfinder.data.local.db.AppDatabase
+import com.valer0ld.artistfinder.data.local.db.game.GameListDao
 import com.valer0ld.artistfinder.data.local.db.user.CurrentUserDao
 import dagger.Module
 import dagger.Provides
@@ -25,9 +26,14 @@ class DatabaseModule {
             context,
             AppDatabase::class.java,
             "Artist_finder.db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(true)
+            .build()
     }
 
     @Provides
     fun provideUserDao(db: AppDatabase): CurrentUserDao = db.CurrentUserDao()
+
+    @Provides
+    fun provideGameListDao(db: AppDatabase): GameListDao = db.GameListDao()
 }

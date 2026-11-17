@@ -3,9 +3,11 @@ package com.valer0ld.artistfinder.di
 import com.valer0ld.artistfinder.data.repository.AuthRepositoryImpl
 import com.valer0ld.artistfinder.data.repository.CurrentGameRepositoryImpl
 import com.valer0ld.artistfinder.data.repository.CurrentUserRepositoryImpl
+import com.valer0ld.artistfinder.data.repository.GameListRepositoryImpl
 import com.valer0ld.artistfinder.domain.repository.AuthRepository
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
 import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
+import com.valer0ld.artistfinder.domain.repository.GameListRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,4 +35,10 @@ abstract class RepositoryModule {
     abstract fun bindCurrentUserRepository(
         impl: CurrentUserRepositoryImpl
     ) : CurrentUserRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindGameListRepository(
+        impl: GameListRepositoryImpl
+    ) : GameListRepository
 }

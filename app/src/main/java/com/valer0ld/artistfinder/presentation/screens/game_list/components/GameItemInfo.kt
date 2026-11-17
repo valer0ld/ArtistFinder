@@ -14,6 +14,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.domain.model.Game
 import com.valer0ld.artistfinder.presentation.model.toSpanStyleColored
+import com.valer0ld.artistfinder.presentation.theme.extendedColors
+import com.valer0ld.artistfinder.presentation.util.formatDuration
 
 
 @Composable
@@ -30,7 +32,7 @@ fun GameItemInfo(game: Game){
                 withStyle(style = MaterialTheme.typography.bodyLarge.toSpanStyleColored(color = MaterialTheme.colorScheme.primary)){
                     append(game.start.name)
                 }
-                withStyle(style = MaterialTheme.typography.headlineMedium.toSpanStyleColored()){
+                withStyle(style = MaterialTheme.typography.headlineSmall.toSpanStyleColored()){
                     append(" → ")
                 }
                 withStyle(style = MaterialTheme.typography.bodyLarge.toSpanStyleColored(color = MaterialTheme.colorScheme.primary)){
@@ -58,11 +60,25 @@ fun GameItemInfo(game: Game){
                         append("Время: ")
                     }
                     withStyle(style = MaterialTheme.typography.bodySmall.toSpanStyleColored()) {
-                        append(game.time.toString())
+                        append(formatDuration(game.duration))
                     }
                 },
                 modifier = Modifier.padding(horizontal = 5.dp)
             )
+            if(game.isDaily){
+                Text(
+                    color = MaterialTheme.extendedColors.gold,
+                    text = buildAnnotatedString {
+                        withStyle(style = MaterialTheme.typography.bodySmall.toSpanStyleColored()) {
+                            append("★")
+                        }
+                        withStyle(style = MaterialTheme.typography.bodySmall.toSpanStyleColored()) {
+                            append("Игра дня")
+                        }
+                    },
+                    modifier = Modifier.padding(horizontal = 5.dp)
+                )
+            }
         }
     }
 }
