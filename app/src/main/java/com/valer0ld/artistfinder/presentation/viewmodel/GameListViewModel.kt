@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.valer0ld.artistfinder.domain.model.Game
-import com.valer0ld.artistfinder.domain.model.UserStatistic
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
 import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
 import com.valer0ld.artistfinder.domain.repository.GameListRepository
@@ -43,7 +42,7 @@ class GameListViewModel @Inject constructor(
 
                 if (game != null){
                     currentGameRepository.startGame(game.start, game.target, false)
-                    currentUserRepository.startGame()
+                    currentUserRepository.startGame(false)
                     onSuccess()
                 }
             } catch (e: Exception) {

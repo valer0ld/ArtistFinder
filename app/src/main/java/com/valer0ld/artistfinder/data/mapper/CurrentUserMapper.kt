@@ -12,6 +12,10 @@ fun CurrentUser.toEntity() = CurrentUserEntity(
     gameEnds = gameEnds,
     totalTime = totalTime,
     totalSteps = totalSteps,
+    dailyGameStarts = dailyGameStarts,
+    dailyGameEnds = dailyGameEnds,
+    dailyTime = dailyTime,
+    dailySteps = dailySteps,
     currentRating = currentRating,
     bestRating = bestRating
 )
@@ -25,6 +29,10 @@ fun CurrentUserEntity.toDomain() = CurrentUser(
     gameEnds = gameEnds,
     totalTime = totalTime,
     totalSteps = totalSteps,
+    dailyGameStarts = dailyGameStarts,
+    dailyGameEnds = dailyGameEnds,
+    dailyTime = dailyTime,
+    dailySteps = dailySteps,
     currentRating = currentRating,
     bestRating = bestRating
 )

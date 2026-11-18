@@ -14,7 +14,7 @@ interface GameListDao {
     suspend fun getGame(id: Long): GameListEntity?
 
     @Query("SELECT * FROM game_list")
-    fun observeGames(): Flow<List<GameListEntity>?>
+    fun observeGames(): Flow<List<GameListEntity>>
 
     @Query("SELECT * FROM game_list")
     suspend fun getGames(): List<GameListEntity>

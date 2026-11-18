@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,7 +51,7 @@ fun LazyColumnScrollbar(listState: LazyListState, isExpanded: Boolean, color: Co
     val totalItems = layoutInfo.totalItemsCount
     val visible = layoutInfo.visibleItemsInfo
 
-    if (totalItems == 0 || visible.isEmpty()) return
+    if (totalItems == 0 || visible.isEmpty() || totalItems <= visible.size) return
 
     val averageItemSize = visible
         .map { it.size }
@@ -64,7 +65,7 @@ fun LazyColumnScrollbar(listState: LazyListState, isExpanded: Boolean, color: Co
     val maxScroll = (totalContentHeight - viewport).coerceAtLeast(1f)
     val progress = (scrollPx / maxScroll).coerceIn(0f, 1f)
 
-    val thumbRatio = 0.3f
+    val thumbRatio = (viewport / totalContentHeight).coerceIn(0.05f, 1f) // возможно потом стоит исправить, чтобы не пересчитывал при изменении состояния
 
     val animateProgress by animateFloatAsState(
         targetValue = progress,
@@ -75,6 +76,7 @@ fun LazyColumnScrollbar(listState: LazyListState, isExpanded: Boolean, color: Co
     Box(
         modifier = modifier
             .fillMaxHeight()
+            .padding(end = 2.dp)
             .width(4.dp)
     ){
         Box(

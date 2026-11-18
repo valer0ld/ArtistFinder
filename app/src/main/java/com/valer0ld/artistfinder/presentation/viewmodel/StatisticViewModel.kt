@@ -18,6 +18,10 @@ data class StatisticUIState(
     gameEnds = 0,
     totalTime = 0,
     totalSteps = 0,
+    dailyGameStarts = 0,
+    dailyGameEnds = 0,
+    dailyTime = 0,
+    dailySteps = 0,
     bestRating = 0
     ),
     val isLoading: Boolean = false,
@@ -50,6 +54,10 @@ class StatisticViewModel @Inject constructor(
                                 gameEnds = user.gameEnds,
                                 totalTime = user.totalTime,
                                 totalSteps = user.totalSteps,
+                                dailyGameStarts = user.dailyGameStarts,
+                                dailyGameEnds = user.dailyGameEnds,
+                                dailyTime = user.dailyTime,
+                                dailySteps = user.dailySteps,
                                 bestRating = user.bestRating
                             ),
                             isLoading = false

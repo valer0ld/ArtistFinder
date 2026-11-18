@@ -54,14 +54,16 @@ class CurrentUserRepositoryImpl @Inject constructor(
         currentUserDao.updateProfileInfo(id, userName, email, avatarUrl)
     }
 
-    override suspend fun startGame() {
+    override suspend fun startGame(isDaily: Boolean) {
         val id = authDataStore.getUserID() ?: return
-        currentUserDao.startGame(id)
+        if (isDaily) currentUserDao.startDailyGame(id)
+        else currentUserDao.startGame(id)
     }
 
-    override suspend fun addGameStats(duration: Long, steps: Int) {
+    override suspend fun addGameStats(isDaily: Boolean, duration: Long, steps: Int) {
         val id = authDataStore.getUserID() ?: return
-        currentUserDao.addGameStats(id, duration, steps)
+        if (isDaily) currentUserDao.addDailyGameStats(id, duration, steps)
+        else currentUserDao.addGameStats(id, duration, steps)
     }
 
     override suspend fun updateCurrentRating(rating: Int) {

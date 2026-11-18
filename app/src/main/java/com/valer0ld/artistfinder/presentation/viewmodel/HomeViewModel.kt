@@ -42,11 +42,12 @@ class HomeViewModel @Inject constructor(
         loadDailyArtist()
     }
 
-    fun onGameStart(isDaily: Boolean){
+    fun onGameStart(isDaily: Boolean, onSuccess: ()->Unit){
         viewModelScope.launch {
             if (isDaily) currentGameRepository.startGame(_uiState.value.dailyStartArtist, _uiState.value.dailyEndArtist, true)
             else currentGameRepository.startGame(_uiState.value.searchStartArtist, _uiState.value.searchEndArtist, false)
-            currentUserRepository.startGame()
+            currentUserRepository.startGame(isDaily)
+            onSuccess()
         }
     }
 

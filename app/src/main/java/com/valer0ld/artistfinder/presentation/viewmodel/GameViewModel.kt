@@ -66,7 +66,7 @@ class GameViewModel @Inject constructor(
                 currentGameRepository.selectArtist(artist)
                 if (currentGameRepository.isWin()){
                     val game = currentGameRepository.onWin(SystemClock.elapsedRealtime() - _uiState.value.startTime)
-                    currentUserRepository.addGameStats(game.duration, game.currentStep)
+                    currentUserRepository.addGameStats(game.isDaily, game.duration, game.currentStep)
                     onWinGame()
                 }
                 delay(100.milliseconds)

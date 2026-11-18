@@ -47,12 +47,38 @@ interface CurrentUserDao {
 
     @Query("""
         UPDATE current_user
+        SET gameStarts = gameStarts + 1,
+            dailyGameStarts = dailyGameStarts + 1
+        WHERE id = :id
+    """)
+    suspend fun startDailyGame(
+        id: String
+    )
+
+    @Query("""
+        UPDATE current_user
         SET gameEnds = gameEnds + 1,
             totalTime = totalTime + :duration,
             totalSteps = totalSteps + :steps
         WHERE id = :id
     """)
     suspend fun addGameStats(
+        id: String,
+        duration: Long,
+        steps: Int
+    )
+
+    @Query("""
+        UPDATE current_user
+        SET gameEnds = gameEnds + 1,
+            totalTime = totalTime + :duration,
+            totalSteps = totalSteps + :steps,
+            dailyGameEnds = dailyGameEnds + 1,
+            dailyTime = dailyTime + :duration,
+            dailySteps = dailySteps + :steps
+        WHERE id = :id
+    """)
+    suspend fun addDailyGameStats(
         id: String,
         duration: Long,
         steps: Int

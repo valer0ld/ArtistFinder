@@ -21,7 +21,7 @@ class GameListRepositoryImpl @Inject constructor(
 
     override suspend fun observeGames(): Flow<List<Game>?>{
         return gameListDao.observeGames().map { list ->
-            list?.map { it.toGame() }
+            list.map { it.toGame() }
         }
     }
 

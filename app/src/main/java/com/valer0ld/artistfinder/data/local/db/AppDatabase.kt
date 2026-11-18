@@ -11,7 +11,7 @@ import com.valer0ld.artistfinder.data.local.db.user.CurrentUserEntity
 
 @Database(
     entities = [CurrentUserEntity::class, GameListEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

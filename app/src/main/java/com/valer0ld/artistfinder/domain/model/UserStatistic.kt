@@ -1,9 +1,13 @@
 package com.valer0ld.artistfinder.domain.model
 
 data class UserStatistic(
-    var gameStarts: Int,
-    var gameEnds: Int,
-    var totalTime: Long,
-    var totalSteps: Int,
-    var bestRating: Int
+    val gameStarts: Int,
+    val gameEnds: Int,
+    val totalTime: Long,
+    val totalSteps: Int,
+    val dailyGameStarts: Int,
+    val dailyGameEnds: Int,
+    val dailyTime: Long,
+    val dailySteps: Int,
+    val bestRating: Int,
 )
