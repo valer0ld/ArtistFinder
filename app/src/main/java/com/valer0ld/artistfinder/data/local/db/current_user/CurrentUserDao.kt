@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.data.local.db.user
+package com.valer0ld.artistfinder.data.local.db.current_user
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 interface CurrentUserDao {
 
     @Query("SELECT * FROM current_user WHERE id = :id LIMIT 1")
-    fun observeUser(id: String): Flow<CurrentUserEntity?>
+    fun observeUser(id: Long): Flow<CurrentUserEntity?>
 
     @Query("SELECT * FROM current_user WHERE id = :id LIMIT 1")
-    suspend fun getUser(id: String): CurrentUserEntity?
+    suspend fun getUser(id: Long): CurrentUserEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(user: CurrentUserEntity)
@@ -30,7 +30,7 @@ interface CurrentUserDao {
         WHERE id = :id
     """)
     suspend fun updateProfileInfo(
-        id: String,
+        id: Long,
         userName: String,
         email: String,
         avatarUrl: String
@@ -42,7 +42,7 @@ interface CurrentUserDao {
         WHERE id = :id
     """)
     suspend fun startGame(
-        id: String
+        id: Long
     )
 
     @Query("""
@@ -52,7 +52,7 @@ interface CurrentUserDao {
         WHERE id = :id
     """)
     suspend fun startDailyGame(
-        id: String
+        id: Long
     )
 
     @Query("""
@@ -63,7 +63,7 @@ interface CurrentUserDao {
         WHERE id = :id
     """)
     suspend fun addGameStats(
-        id: String,
+        id: Long,
         duration: Long,
         steps: Int
     )
@@ -79,7 +79,7 @@ interface CurrentUserDao {
         WHERE id = :id
     """)
     suspend fun addDailyGameStats(
-        id: String,
+        id: Long,
         duration: Long,
         steps: Int
     )
@@ -90,7 +90,7 @@ interface CurrentUserDao {
         WHERE id = :id
     """)
     suspend fun updateBestRating(
-        id: String,
+        id: Long,
         rating: Int
     )
 
@@ -100,7 +100,7 @@ interface CurrentUserDao {
         WHERE id = :id
     """)
     suspend fun updateCurrentRating(
-        id: String,
+        id: Long,
         rating: Int
     )
 }

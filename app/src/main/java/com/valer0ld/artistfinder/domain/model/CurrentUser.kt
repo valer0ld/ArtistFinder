@@ -2,7 +2,7 @@ package com.valer0ld.artistfinder.domain.model
 
 
 data class CurrentUser (
-    val id: String,
+    val id: Long,
     val userName: String,
     val email: String,
     val avatarUrl: String,

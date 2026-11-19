@@ -1,11 +1,11 @@
-package com.valer0ld.artistfinder.data.local.db.user
+package com.valer0ld.artistfinder.data.local.db.current_user
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "current_user")
 data class CurrentUserEntity(
-    @PrimaryKey val id: String,
+    @PrimaryKey val id: Long,
     val userName: String,
     val email: String,
     val avatarUrl: String,

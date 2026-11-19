@@ -13,18 +13,18 @@ class AuthRepositoryImpl @Inject constructor(
 
     override val isLoggedIn: Flow<Boolean> = authDataStore.isLoggedIn
 
-    override suspend fun saveUserToken(token: String, userID: String){
+    override suspend fun saveUserToken(token: String, userID: Long){
         authDataStore.saveUserToken(token, userID)
     }
 
-    override suspend fun getUserToken(email: String, password: String) : Pair<String?, String?> {
+    override suspend fun getUserToken(email: String, password: String) : Pair<String?, Long?> {
         return if (password != "" && email != ""){
             authDataStore.getToken() to authDataStore.getUserID()
         } else null to null
     }
 
-    override suspend fun createToken(email: String, password: String) : Pair<String, String> {
-        return "1" to "1"
+    override suspend fun createToken(email: String, password: String) : Pair<String, Long> {
+        return "1" to 1L
     }
 
     override suspend fun logout(){

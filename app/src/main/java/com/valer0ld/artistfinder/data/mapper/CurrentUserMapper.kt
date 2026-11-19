@@ -1,6 +1,6 @@
 package com.valer0ld.artistfinder.data.mapper
 
-import com.valer0ld.artistfinder.data.local.db.user.CurrentUserEntity
+import com.valer0ld.artistfinder.data.local.db.current_user.CurrentUserEntity
 import com.valer0ld.artistfinder.domain.model.CurrentUser
 
 fun CurrentUser.toEntity() = CurrentUserEntity(

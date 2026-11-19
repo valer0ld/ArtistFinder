@@ -2,7 +2,7 @@ package com.valer0ld.artistfinder.data.repository
 
 import android.os.SystemClock
 import com.valer0ld.artistfinder.data.local.db.game.GameListDao
-import com.valer0ld.artistfinder.data.mapper.toGameListEntity
+import com.valer0ld.artistfinder.data.mapper.toEntity
 import com.valer0ld.artistfinder.data.model.CurrentGame
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
@@ -66,7 +66,7 @@ class CurrentGameRepositoryImpl @Inject constructor(
                 isFinished = true
             )
         }
-        gameListDao.upsert(game.value?.toGameListEntity()!!) // возможно как-то надо исправить
+        gameListDao.upsert(game.value?.toEntity()!!) // возможно как-то надо исправить
         return game.value as CurrentGame
     }
 }

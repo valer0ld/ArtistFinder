@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.valer0ld.artistfinder.data.local.db.AppDatabase
 import com.valer0ld.artistfinder.data.local.db.game.GameListDao
-import com.valer0ld.artistfinder.data.local.db.user.CurrentUserDao
+import com.valer0ld.artistfinder.data.local.db.current_user.CurrentUserDao
+import com.valer0ld.artistfinder.data.local.db.public_user.PublicUserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,8 +33,11 @@ class DatabaseModule {
     }
 
     @Provides
-    fun provideUserDao(db: AppDatabase): CurrentUserDao = db.CurrentUserDao()
+    fun provideCurrentUserDao(db: AppDatabase): CurrentUserDao = db.CurrentUserDao()
 
     @Provides
     fun provideGameListDao(db: AppDatabase): GameListDao = db.GameListDao()
+
+    @Provides
+    fun providePublicUserDao(db: AppDatabase): PublicUserDao = db.PublicUserDao()
 }

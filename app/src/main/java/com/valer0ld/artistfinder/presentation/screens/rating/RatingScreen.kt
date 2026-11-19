@@ -21,18 +21,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.valer0ld.artistfinder.domain.model.RatingPlayer
-import com.valer0ld.artistfinder.domain.model.TemporaryPlayerList
 import com.valer0ld.artistfinder.presentation.components.LazyColumnWithScrollbar
 import com.valer0ld.artistfinder.presentation.screens.rating.components.CurrentPlayerRecordAndStats
 import com.valer0ld.artistfinder.presentation.screens.rating.components.PlayerRecordAndStats
@@ -62,7 +61,7 @@ fun RatingScreen(innerPadding: PaddingValues, viewModel: RatingViewModel = hiltV
 
 @Composable
 fun RatingTable(players: List<RatingPlayer>, currentPlayer: RatingPlayer){
-    var selectedIndex by remember { mutableIntStateOf(-1) }
+    var selectedIndex by remember { mutableLongStateOf(-1L) }
     val listState = rememberLazyListState()
 
     Surface(
@@ -81,7 +80,7 @@ fun RatingTable(players: List<RatingPlayer>, currentPlayer: RatingPlayer){
             Box{
                 LazyColumnWithScrollbar(
                     listState = listState,
-                    isExpanded = selectedIndex != -1,
+                    isExpanded = selectedIndex != -1L,
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .fillMaxWidth()

@@ -4,7 +4,7 @@ import com.valer0ld.artistfinder.data.local.db.game.GameListEntity
 import com.valer0ld.artistfinder.data.model.CurrentGame
 import com.valer0ld.artistfinder.domain.model.Game
 
-fun GameListEntity.toGame() = Game(
+fun GameListEntity.toDomain() = Game(
     id = id,
     start = start,
     target = target,
@@ -15,7 +15,7 @@ fun GameListEntity.toGame() = Game(
     isFinished = isFinished
 )
 
-fun CurrentGame.toGameListEntity() = GameListEntity(
+fun CurrentGame.toEntity() = GameListEntity(
     start = steps.first(),
     target = targetArtist,
     duration = duration,

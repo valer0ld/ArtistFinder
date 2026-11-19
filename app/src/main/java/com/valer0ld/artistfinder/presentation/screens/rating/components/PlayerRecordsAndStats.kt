@@ -18,15 +18,17 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.presentation.components.ExpandedAnimatedComponent
 import com.valer0ld.artistfinder.domain.model.RatingPlayer
 import com.valer0ld.artistfinder.presentation.theme.extendedColors
+import com.valer0ld.artistfinder.presentation.util.formatTotalTime
 
 
 @Composable
 fun PlayerRecordAndStats(
     player: RatingPlayer,
-    currentPlayerId: Int,
+    currentPlayerId: Long,
     index: Int,
     isExpanded: Boolean,
     onRecordClick: ()->Unit
@@ -65,13 +67,13 @@ fun PlayerRecord(player: RatingPlayer, index: Int, onPlayerClick: ()->Unit){
         RatingText(index.toString(), modifier = Modifier.weight(1f))
         VerticalDivider(color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.2f))
         AsyncImage(
-            model = player.picture,
+            model = if(player.pictureUrl.isNotBlank()) player.pictureUrl else R.drawable.webp_user_icon_black,
             contentDescription = "default profile picture",
             modifier = Modifier.size(35.dp).weight(1.5f),
             contentScale = ContentScale.Crop,
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
         )
-        RatingText(player.name, modifier = Modifier.weight(3.5f))
+        RatingText(player.username, modifier = Modifier.weight(3.5f))
         VerticalDivider(color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.2f))
         RatingText(player.sumScore.toString(), modifier = Modifier.weight(2f))
     }
@@ -91,8 +93,8 @@ fun ExpandedPlayerStats(expand: Boolean, player: RatingPlayer){
             }
             TableItem{
                 RatingText(player.dailyGames.toString(), modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
-                RatingText(player.totalSteps.toString(), modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
-                RatingText(player.totalTime, modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
+                RatingText(player.dailySteps.toString(), modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
+                RatingText(formatTotalTime(player.dailyTime), modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
             }
         }
     }

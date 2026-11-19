@@ -1,7 +1,7 @@
 package com.valer0ld.artistfinder.data.repository
 
 import com.valer0ld.artistfinder.data.local.datastore.AuthDataStore
-import com.valer0ld.artistfinder.data.local.db.user.CurrentUserDao
+import com.valer0ld.artistfinder.data.local.db.current_user.CurrentUserDao
 import com.valer0ld.artistfinder.data.mapper.toDomain
 import com.valer0ld.artistfinder.data.mapper.toEntity
 import com.valer0ld.artistfinder.domain.model.CurrentUser
@@ -21,7 +21,7 @@ class CurrentUserRepositoryImpl @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun observeUser(): Flow<CurrentUser?>{
         return authDataStore.userID.flatMapLatest{ id ->
-            if (id.isNullOrBlank()) flowOf(null)
+            if (id == null) flowOf(null)
             else currentUserDao.observeUser(id).map { it?.toDomain() }
         }
     }
@@ -33,7 +33,6 @@ class CurrentUserRepositoryImpl @Inject constructor(
 
     override suspend fun refreshUser(){
         val id = authDataStore.getUserID() ?: return
-
         // обновляем из апи
     }
 
