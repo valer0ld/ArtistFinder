@@ -1,11 +1,11 @@
-package com.valer0ld.artistfinder.presentation.model
+package com.valer0ld.artistfinder.domain.model
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
-import com.valer0ld.artistfinder.domain.model.Setting
 
 @Immutable
 data class SettingsHeader (
-    val title: String,
+    @StringRes val title: Int,
     val icon: Int? = null,
     val settingList: List<Setting>
 )

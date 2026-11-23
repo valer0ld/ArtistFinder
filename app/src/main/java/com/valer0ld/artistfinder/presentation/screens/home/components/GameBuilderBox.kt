@@ -2,14 +2,11 @@ package com.valer0ld.artistfinder.presentation.screens.home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -17,25 +14,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import com.valer0ld.artistfinder.R
-import com.valer0ld.artistfinder.presentation.components.CustomTextField
 import com.valer0ld.artistfinder.presentation.viewmodel.HomeUIState
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -52,13 +39,13 @@ fun GameBuilderBox(state: HomeUIState, onStartValueChanged: (String)->Unit, onEn
             .padding(horizontal = 10.dp, vertical = 20.dp)
     ) {
         Text(
-            "Своя игра",
+            stringResource(R.string.my_game),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier,)
 
-        SearchArtist(state.searchStartArtist.name,"Старт", state.searchStartList, onStartValueChanged)
-        SearchArtist(state.searchEndArtist.name, "Цель", state.searchEndList, onEndValueChanged)
+        SearchArtist(state.searchStartArtist.name,stringResource(R.string.start), state.searchStartList, onStartValueChanged)
+        SearchArtist(state.searchEndArtist.name, stringResource(R.string.target), state.searchEndList, onEndValueChanged)
 
         Row(Modifier){
             Button(
@@ -73,7 +60,7 @@ fun GameBuilderBox(state: HomeUIState, onStartValueChanged: (String)->Unit, onEn
                     .weight(3f),
             ) {
                 Text(
-                    text = "Начать",
+                    text = stringResource(R.string.begin),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleLarge)
             }

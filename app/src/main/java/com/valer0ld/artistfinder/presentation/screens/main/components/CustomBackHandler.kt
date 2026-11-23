@@ -11,7 +11,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.valer0ld.artistfinder.R
 import kotlinx.coroutines.launch
 
 
@@ -24,8 +26,10 @@ fun CustomBackHandler(pagerState: PagerState, navControllers: Map<Int, NavContro
     val currentPage = pagerState.currentPage
     val currentNavController = navControllers[currentPage]
 
+    val toastText = stringResource(R.string.press_again_to_exit)
+
     BackHandler(enabled = true){
-        if (currentNavController != null && currentNavController.previousBackStackEntry != null) {
+        if (currentNavController?.previousBackStackEntry != null) {
             currentNavController.popBackStack()
         }
         else{
@@ -36,7 +40,7 @@ fun CustomBackHandler(pagerState: PagerState, navControllers: Map<Int, NavContro
             } else {
                 val currentTime = System.currentTimeMillis()
                 if (currentTime - backPressedTime > 2000) {
-                    Toast.makeText(context, "Нажмите ещё раз для выхода", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                     backPressedTime = currentTime
                 } else {
                     (context as? Activity)?.finish()

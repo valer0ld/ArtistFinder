@@ -17,9 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.presentation.screens.auth.component.LoggInPanel
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
 import com.valer0ld.artistfinder.presentation.viewmodel.AuthViewModel
@@ -44,7 +46,7 @@ fun LoggInScreen(
         verticalArrangement = Arrangement.Center
     ){
         Text(
-            text = "Вход",
+            text = stringResource(R.string.login),
             style = MaterialTheme.typography.displayMedium,
             color = MaterialTheme.colorScheme.primary,
         )
@@ -61,45 +63,9 @@ fun LoggInScreen(
             contentAlignment = Alignment.Center
         ){
             Text(
-                text = "Зарегистрироваться",
+                text = stringResource(R.string.sing_up),
                 style = MaterialTheme.typography.headlineSmall
             )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun LoggInScreenPreview(){
-    AppTheme{
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                ,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ){
-            Text(
-                text = "Вход",
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Spacer(Modifier.height(20.dp))
-            LoggInPanel()
-            Spacer(Modifier.height(10.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .clickable{ },
-                contentAlignment = Alignment.Center
-            ){
-                Text(
-                    text = "Зарегистрироваться",
-                    style = MaterialTheme.typography.headlineSmall
-                )
-            }
         }
     }
 }

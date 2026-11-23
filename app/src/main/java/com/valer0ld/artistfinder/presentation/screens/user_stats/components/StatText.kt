@@ -19,10 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.domain.model.UserStatistic
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
 import com.valer0ld.artistfinder.presentation.theme.extendedColors
@@ -57,7 +59,7 @@ fun StatPanel(userStat: UserStatistic){
                 Text(
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    text = "Лучший рейтинг:"
+                    text = stringResource(R.string.best_rating)
                 )
             }
             Box(modifier = Modifier
@@ -86,17 +88,17 @@ fun StatPanelTable(userStat: UserStatistic, modifier: Modifier = Modifier){
         StatTextColumn(
             textList = listOf(
                 "",
-                "Начато игр:",
-                "Выиграно игр:",
-                "Общее время:",
-                "Сделано шагов:"
+                stringResource(R.string.games_started),
+                stringResource(R.string.games_won),
+                stringResource(R.string.total_time),
+                stringResource(R.string.total_steps)
             ),
             textColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier.weight(1f)
         )
         StatTextColumn(
             textList = listOf(
-                "Общая",
+                stringResource(R.string.general),
                 userStat.gameStarts.toString(),
                 userStat.gameEnds.toString(),
                 formatTotalTime(userStat.totalTime),
@@ -106,7 +108,7 @@ fun StatPanelTable(userStat: UserStatistic, modifier: Modifier = Modifier){
         )
         StatTextColumn(
             textList = listOf(
-                "Игры дня",
+                stringResource(R.string.daily_game),
                 userStat.dailyGameStarts.toString(),
                 userStat.dailyGameEnds.toString(),
                 formatTotalTime(userStat.dailyTime),

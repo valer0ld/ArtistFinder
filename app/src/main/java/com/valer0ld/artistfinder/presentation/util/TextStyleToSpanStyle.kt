@@ -1,4 +1,4 @@
-package com.valer0ld.artistfinder.presentation.model
+package com.valer0ld.artistfinder.presentation.util
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle

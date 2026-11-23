@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.presentation.model.TextConfig
@@ -25,7 +26,7 @@ fun FromArtistToArtist(startArtist: TextConfig, finishArtist: TextConfig, modifi
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         TitleAndContentText(
-            TextPreset.bodyS("Старт", MaterialTheme.colorScheme.primary),
+            TextPreset.bodyS(stringResource(R.string.start), MaterialTheme.colorScheme.primary),
             startArtist
         )
         Icon(
@@ -35,7 +36,7 @@ fun FromArtistToArtist(startArtist: TextConfig, finishArtist: TextConfig, modifi
             modifier = Modifier.size(40.dp)
         )
         TitleAndContentText(
-            TextPreset.bodyS("Цель", MaterialTheme.colorScheme.primary),
+            TextPreset.bodyS(stringResource(R.string.target), MaterialTheme.colorScheme.primary),
             finishArtist
         )
     }

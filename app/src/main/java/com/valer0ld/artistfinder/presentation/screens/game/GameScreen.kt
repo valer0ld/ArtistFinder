@@ -16,24 +16,24 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.presentation.components.TitleAndContentText
 import com.valer0ld.artistfinder.presentation.model.TextPreset
 import com.valer0ld.artistfinder.presentation.screens.game.components.MainGamePanel
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
 import com.valer0ld.artistfinder.presentation.util.formatDuration
-import com.valer0ld.artistfinder.presentation.viewmodel.GameUIState
 import com.valer0ld.artistfinder.presentation.viewmodel.GameViewModel
 import kotlinx.coroutines.delay
 
@@ -60,19 +60,19 @@ fun GameScreen(innerPadding: PaddingValues, viewModel: GameViewModel = hiltViewM
                 .windowInsetsPadding(WindowInsets.statusBars)
         ) {
             TitleAndContentText(
-                TextPreset.body("Цель",
+                TextPreset.body(stringResource(R.string.target),
                 colorScheme.outlineVariant),
                 TextPreset.display(state.targetArtist.name,
                 colorScheme.primary)
             )
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
                 TitleAndContentText(
-                    TextPreset.bodyM("Время", colorScheme.outlineVariant),
+                    TextPreset.bodyM(stringResource(R.string.time), colorScheme.outlineVariant),
                     TextPreset.displayS(formatDuration(duration), colorScheme.tertiary),
                     modifier = Modifier.widthIn(min = 110.dp)
                 )
                 TitleAndContentText(
-                    TextPreset.bodyM("Текущий шаг", colorScheme.outlineVariant),
+                    TextPreset.bodyM(stringResource(R.string.current_step), colorScheme.outlineVariant),
                     TextPreset.displayS(state.currentStep.toString(), colorScheme.tertiary),
                     modifier = Modifier.widthIn(min = 110.dp)
                 )

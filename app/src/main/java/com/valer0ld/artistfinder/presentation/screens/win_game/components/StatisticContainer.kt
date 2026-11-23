@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.presentation.components.TitleAndContentText
 import com.valer0ld.artistfinder.presentation.model.TextPreset
 import com.valer0ld.artistfinder.presentation.util.formatDuration
@@ -32,11 +34,11 @@ fun StatisticContainer(state: WinUIState){
         verticalAlignment = Alignment.CenterVertically
     ) {
         TitleAndContentText(
-            TextPreset.body("Время", MaterialTheme.colorScheme.primaryContainer),
+            TextPreset.body(stringResource(R.string.show_time), MaterialTheme.colorScheme.primaryContainer),
             TextPreset.display(formatDuration(state.duration), MaterialTheme.colorScheme.primary)
         )
         TitleAndContentText(
-            TextPreset.body("Шаги", MaterialTheme.colorScheme.primaryContainer),
+            TextPreset.body(stringResource(R.string.steps), MaterialTheme.colorScheme.primaryContainer),
             TextPreset.display(state.totalStep.toString(), MaterialTheme.colorScheme.primary)
         )
     }

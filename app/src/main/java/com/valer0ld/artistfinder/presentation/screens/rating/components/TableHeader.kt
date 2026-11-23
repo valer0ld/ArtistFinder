@@ -12,17 +12,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.valer0ld.artistfinder.R
 
 
 @Composable
 fun TableHeader(){
     TableItem(color = MaterialTheme.colorScheme.primaryContainer){
-        RatingHeaderText("№", modifier = Modifier.weight(1f))
+        RatingHeaderText(stringResource(R.string.number), modifier = Modifier.weight(1f))
         VerticalDivider(color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.3f))
-        RatingHeaderText("Пользователь", modifier = Modifier.weight(5f))
+        RatingHeaderText(stringResource(R.string.user), modifier = Modifier.weight(5f))
         VerticalDivider(color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.3f))
-        RatingHeaderText("Баллы", modifier = Modifier.weight(2f))
+        RatingHeaderText(stringResource(R.string.scores), modifier = Modifier.weight(2f))
     }
 }
 

@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.R
 
@@ -54,7 +55,7 @@ fun StepsHeader(expanded: Boolean, onToggle: ()->Unit){
                 modifier = Modifier.size(40.dp)
             )
             Text(
-                text = "Показать маршрут",
+                text = stringResource(R.string.show_route),
                 color = if (expanded)
                     MaterialTheme.colorScheme.primary
                 else

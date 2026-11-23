@@ -5,6 +5,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import com.valer0ld.artistfinder.di.qualifiers.AuthDataStore
+import com.valer0ld.artistfinder.di.qualifiers.SettingsDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,9 +20,19 @@ object DataStoreModule {
 
     @Provides
     @Singleton
-    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences>{
+    @AuthDataStore
+    fun provideAuthDataStore(@ApplicationContext context: Context): DataStore<Preferences>{
         return PreferenceDataStoreFactory.create {
             context.preferencesDataStoreFile("auth_prefs")
+        }
+    }
+
+    @Provides
+    @Singleton
+    @SettingsDataStore
+    fun provideSettingsDataStore(@ApplicationContext context: Context): DataStore<Preferences>{
+        return PreferenceDataStoreFactory.create {
+            context.preferencesDataStoreFile("settings_prefs")
         }
     }
 

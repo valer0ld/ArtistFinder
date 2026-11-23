@@ -19,8 +19,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.presentation.viewmodel.ProfileUIState
 
 
@@ -50,7 +52,7 @@ fun UserProfileViewer(state: ProfileUIState){
                     style = MaterialTheme.typography.headlineMedium
                 )
                 Text(
-                    text = "#${state.rating} место в рейтинге",
+                    text = stringResource(R.string.place_in_rating, state.rating),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge
                 )

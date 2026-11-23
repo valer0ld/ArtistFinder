@@ -1,5 +1,6 @@
 package com.valer0ld.artistfinder.presentation.screens.settings.components
 
+import android.util.Log
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,13 +27,19 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.valer0ld.artistfinder.domain.model.AppLanguage
+import com.valer0ld.artistfinder.domain.model.AppSettings
 import com.valer0ld.artistfinder.domain.model.Setting
 import com.valer0ld.artistfinder.domain.model.SettingColor
 import com.valer0ld.artistfinder.domain.model.SettingId
 import com.valer0ld.artistfinder.domain.model.SettingType
+import com.valer0ld.artistfinder.domain.model.SettingsEnum
 import com.valer0ld.artistfinder.presentation.viewmodel.SettingsUIState
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 
 
 @Composable
@@ -54,7 +61,7 @@ fun SwitchSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (S
         horizontalArrangement = Arrangement.Absolute.SpaceBetween,
     ){
         Text(
-            text = setting.title,
+            text = stringResource(setting.title),
             color = when (setting.color){
                 SettingColor.DEFAULT -> MaterialTheme.colorScheme.primary
                 SettingColor.SECOND -> MaterialTheme.colorScheme.tertiary
@@ -110,7 +117,7 @@ fun ButtonSetting(setting: Setting, state: SettingsUIState,onSettingAction: (Set
             }
         ) {
             Text(
-                text = setting.title,
+                text = stringResource(setting.title),
                 style = MaterialTheme.typography.titleLarge
             )
         }
@@ -157,7 +164,7 @@ fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction:
         enabled = state.isEditingProfile,
         placeholder = {
             Text(
-                setting.title,
+                stringResource(setting.title),
                 style = MaterialTheme.typography.titleLarge,
                 color = if (state.isEditingProfile) MaterialTheme.colorScheme.outlineVariant else MaterialTheme.colorScheme.surfaceDim
             )
@@ -170,18 +177,19 @@ fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction:
 fun ListSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (SettingId, Any?)->Unit, modifier: Modifier = Modifier){
     val items by remember(setting.optionList) {
         derivedStateOf {
-            setting.optionList ?: listOf("")
+            setting.optionList ?: listOf()
         }
     }
 
     val count = Int.MAX_VALUE
     val centerOffset = count / 2
 
-    val currentValue = state.values[setting.Id] as? String ?: items.firstOrNull().orEmpty()
+    val currentValue = state.values[setting.Id] ?: items.first()
 
     val initialFirstVisibleItemIndex = remember(items, currentValue) {
-        val selectedIndex = items.indexOf(currentValue).takeIf { it >= 0 } ?: 0
-        centerOffset + selectedIndex
+        Log.d("currentLang", "current = $currentValue")
+        val selectedIndex = items.indexOf(currentValue).coerceAtLeast(0)
+        centerOffset + selectedIndex - 1
     }
 
     val listState = rememberLazyListState( initialFirstVisibleItemIndex = initialFirstVisibleItemIndex)
@@ -191,22 +199,28 @@ fun ListSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (Set
         derivedStateOf { listState.firstVisibleItemIndex + 1 }
     }
 
-    LaunchedEffect(listState) {
-        snapshotFlow {listState.isScrollInProgress}
-            .filter { !it }
-            .collect {
-                val selected = items[(centerIndex - centerOffset).mod(items.size)]
+    LaunchedEffect(listState, items) {
+        snapshotFlow {
+            listState.isScrollInProgress
+        }
+            .filter { it }
+            .collectLatest {
+                snapshotFlow {
+                    listState.isScrollInProgress
+                }.first { !it }
 
-                if (selected != currentValue) {
-                    onSettingAction(setting.Id, selected)
-                }
+                val selectedIndex = (
+                        listState.firstVisibleItemIndex + 1 - centerOffset
+                        ).mod(items.size)
+
+                onSettingAction(setting.Id, items[selectedIndex])
             }
     }
 
     LaunchedEffect(currentValue) {
         val selectedIndex = items.indexOf(currentValue)
         if (selectedIndex >= 0){
-            val targetIndex = centerOffset + selectedIndex
+            val targetIndex = centerOffset + selectedIndex - 1
 
             if (targetIndex != listState.firstVisibleItemIndex){
                 listState.scrollToItem(targetIndex)
@@ -222,7 +236,7 @@ fun ListSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (Set
         horizontalArrangement = Arrangement.Absolute.SpaceBetween,
     ) {
         Text(
-            text = setting.title,
+            text = stringResource(setting.title),
             color = when (setting.color) {
                 SettingColor.DEFAULT -> MaterialTheme.colorScheme.primary
                 SettingColor.SECOND -> MaterialTheme.colorScheme.tertiary
@@ -251,7 +265,7 @@ fun ListSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (Set
                 )
                 {
                     Text(
-                    text = items[virtualIndex],
+                    text = stringResource(items[virtualIndex].displaySetting),
                     modifier = Modifier.alpha(if (isCenter) 1f else 0.4f),
                     color = if (isCenter) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.onSurfaceVariant

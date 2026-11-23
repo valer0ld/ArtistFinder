@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.valer0ld.artistfinder.di.qualifiers.AuthDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 
 class AuthDataStore @Inject constructor(
+    @AuthDataStore
     private val dataStore: DataStore<Preferences>
 ) {
     companion object {

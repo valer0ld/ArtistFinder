@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.presentation.components.FromArtistToArtist
@@ -40,7 +41,7 @@ fun DailyGameBox(start: String, finish: String, onGameClick: () -> Unit){
             .padding(horizontal = 10.dp, vertical = 20.dp)
     ){
         Text(
-            "Игра дня!",
+            stringResource(R.string.daily_game),
             style = typography.headlineMedium,
             color = colorScheme.onPrimaryContainer,
             modifier = Modifier)
@@ -64,7 +65,7 @@ fun DailyGameBox(start: String, finish: String, onGameClick: () -> Unit){
         ) {
             Icon(
                 painter = painterResource((R.drawable.play_arrow_24px)),
-                contentDescription = "Play",
+                contentDescription = stringResource(R.string.play),
                 modifier = Modifier.size(30.dp)
             )
             Text("Играть", style = typography.titleLarge)

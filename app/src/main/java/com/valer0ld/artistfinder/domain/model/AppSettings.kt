@@ -1,6 +1,8 @@
 package com.valer0ld.artistfinder.domain.model
 
-import com.valer0ld.artistfinder.presentation.model.SettingsHeader
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.valer0ld.artistfinder.R
 
 enum class SettingId {
     DARK_THEME,
@@ -21,72 +23,72 @@ enum class SettingId {
 object AppSettings{
     val list = listOf(
         SettingsHeader(
-            title = "Внешний вид",
+            title = R.string.appearance,
             settingList = listOf(
                 SettingPreset.switchSetting(
                     settingId = SettingId.DARK_THEME,
-                    title = "Тёмная тема"
+                    title = R.string.dark_theme
                 ),
                 SettingPreset.listSetting(
                     settingId = SettingId.LANGUAGE,
-                    title = "Язык",
-                    list = listOf("Русский", "Английский")
+                    title = R.string.language,
+                    list = listOf(AppLanguage.SYSTEM, AppLanguage.ENGLISH, AppLanguage.RUSSIAN)
                 )
             )
         ),
         SettingsHeader(
-            title = "Конфиденциональность",
+            title = R.string.confidenciality,
             settingList = listOf(
                 SettingPreset.switchSetting(
                     settingId = SettingId.SHOW_IN_RATING,
-                    title = "Отображать в рейтинге"
+                    title = R.string.show_in_rating
                 ),
             )
         ),
         SettingsHeader(
-            title = "Аккаунт",
+            title = R.string.account,
             settingList = listOf(
                 SettingPreset.buttonSetting(
                     settingId = SettingId.EDIT_PROFILE,
-                    title = "Редактировать"
+                    title = R.string.edit
                 ),
                 SettingPreset.buttonSetting(
                     settingId = SettingId.SAVE_PROFILE,
-                    title = "Сохранить"
+                    title = R.string.save
                 ),
                 SettingPreset.buttonSetting(
                     settingId = SettingId.QUIT_EDITING,
-                    title = "Отменить",
+                    title = R.string.cancel,
                     color = SettingColor.DESTRUCTIVE
                 ),
                 SettingPreset.buttonSetting(
                     settingId = SettingId.EDIT_PICTURE,
-                    title = "Изменить аватар"
+                    title = R.string.change_avatar
                 ),
                 SettingPreset.textFieldSetting(
                     settingId = SettingId.EDIT_USERNAME,
-                    title = "Имя пользователя"
+                    title = R.string.username
                 ),
                 SettingPreset.textFieldSetting(
                     settingId = SettingId.EDIT_EMAIL,
-                    title = "Почта"
+                    title = R.string.email
                 ),
                 SettingPreset.textFieldSetting(
                     settingId = SettingId.EDIT_PASSWORD,
-                    title = "Пароль"
+                    title = R.string.password
                 ),
                 SettingPreset.textFieldSetting(
                     settingId = SettingId.CONFIRM_PASSWORD,
-                    title = "Подтвердить пароль"
+                    title = R.string.repeat_password
                 ),
                 SettingPreset.buttonSetting(
                     settingId = SettingId.LOGOUT,
-                    title = "Выход из аккаунта",
+                    title = R.string.log_out,
                     color = SettingColor.SECOND
                 ),
                 SettingPreset.buttonSetting(
                     settingId = SettingId.DELETE_ACCOUNT,
-                    title = "Удалить аккаунт",
+                    title = R.string.delete_account,
                     color = SettingColor.DESTRUCTIVE
                 ),
             )

@@ -10,9 +10,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
 import com.valer0ld.artistfinder.presentation.viewmodel.WinBarViewModel
 
@@ -39,7 +41,7 @@ fun WinGameBar(modifier: Modifier = Modifier, onHomeClick:  ()->Unit, viewModel:
 
     ){
         Text(
-            text = "Меню",
+            text = stringResource(R.string.menu),
             style = MaterialTheme.typography.displaySmall,
             color = MaterialTheme.colorScheme.onPrimary,
         )

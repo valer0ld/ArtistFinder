@@ -17,8 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.presentation.components.ChildrenScreen
 import com.valer0ld.artistfinder.presentation.screens.auth.component.RegisterPanel
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
@@ -48,7 +50,7 @@ fun RegisterScreen(onBackArrowClick: ()->Unit){
         ){
             Spacer(Modifier.height(60.dp))
             Text(
-                text = "Регистрация",
+                text = stringResource(R.string.registration),
                 style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.colorScheme.primary,
             )
@@ -58,33 +60,4 @@ fun RegisterScreen(onBackArrowClick: ()->Unit){
         }
 
     }
-}
-
-@Composable
-@Preview
-fun RegisterScreenPreview(){
-    AppTheme{
-        ChildrenScreen(
-            onBackArrow = {}
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Spacer(Modifier.height(60.dp))
-                Text(
-                    text = "Регистрация",
-                    style = MaterialTheme.typography.displayMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-                Spacer(Modifier.height(20.dp))
-
-               RegisterPanel{}
-
-            }
-        }
-    }
-
 }

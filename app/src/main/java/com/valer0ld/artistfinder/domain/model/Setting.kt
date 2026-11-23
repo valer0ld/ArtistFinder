@@ -1,15 +1,16 @@
 package com.valer0ld.artistfinder.domain.model
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 
 @Immutable
 data class Setting(
     val Id: SettingId,
     val type: SettingType,
-    val title: String,
+    @StringRes val title: Int,
     val icon: Int? = null,
     val color: SettingColor,
-    val optionList: List<String>? = null
+    val optionList: List<SettingsEnum>? = null
 )
 
 enum class SettingType {
@@ -29,7 +30,7 @@ object SettingPreset{
 
     fun switchSetting(
         settingId: SettingId,
-        title: String,
+        title: Int,
         icon: Int? = null,
         color: SettingColor = SettingColor.DEFAULT) = Setting(
             Id = settingId,
@@ -41,7 +42,7 @@ object SettingPreset{
 
     fun buttonSetting(
         settingId: SettingId,
-        title: String,
+        title: Int,
         icon: Int? = null,
         color: SettingColor = SettingColor.DEFAULT) = Setting(
         Id = settingId,
@@ -53,10 +54,10 @@ object SettingPreset{
 
     fun listSetting(
         settingId: SettingId,
-        title: String,
+        title: Int,
         icon: Int? = null,
         color: SettingColor = SettingColor.DEFAULT,
-        list: List<String>) = Setting(
+        list: List<SettingsEnum>) = Setting(
         Id = settingId,
         type = SettingType.LIST,
         title = title,
@@ -67,7 +68,7 @@ object SettingPreset{
 
     fun textFieldSetting(
         settingId: SettingId,
-        title: String,
+        title: Int,
         icon: Int? = null,
         color: SettingColor = SettingColor.DEFAULT) = Setting(
         Id = settingId,

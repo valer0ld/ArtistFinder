@@ -16,10 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.presentation.screens.home.components.DailyGameBox
 import com.valer0ld.artistfinder.presentation.screens.home.components.GameBuilderBox
@@ -57,7 +59,7 @@ fun Home(innerPadding: PaddingValues, onGameClick: ()->Unit, viewModel: HomeView
             onShuffleClick = viewModel::randomArtists
         )
         Text(
-            "Или попробуйте",
+            stringResource(R.string.or_try),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(40.dp)

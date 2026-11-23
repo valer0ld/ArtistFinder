@@ -16,9 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.presentation.components.CustomTextField
 import com.valer0ld.artistfinder.presentation.viewmodel.LoggInViewModel
 
@@ -41,8 +43,8 @@ fun LoggInPanel(viewModel: LoggInViewModel = hiltViewModel()){
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            CustomTextField("Почта", state.email, viewModel::onEmailChange, Modifier)
-            CustomTextField("Пароль", state.password, viewModel::onPasswordChange,Modifier)
+            CustomTextField(stringResource(R.string.email), state.email, viewModel::onEmailChange, Modifier)
+            CustomTextField(stringResource(R.string.password), state.password, viewModel::onPasswordChange,Modifier)
             Spacer(Modifier.height(5.dp))
             Button(
                 onClick = { viewModel.login() },
@@ -56,7 +58,7 @@ fun LoggInPanel(viewModel: LoggInViewModel = hiltViewModel()){
                     .fillMaxWidth(),
             ) {
                 Text(
-                    text = "Войти",
+                    text = stringResource(R.string.enter),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleLarge)
             }

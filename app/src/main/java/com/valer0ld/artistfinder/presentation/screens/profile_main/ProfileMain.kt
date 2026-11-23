@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,15 +39,15 @@ fun ProfileMain(
 
         UserProfileViewer(state)
         Spacer(modifier = Modifier.height(30.dp))
-        OptionButton("Мои игры", R.drawable.list_24px) {
+        OptionButton(stringResource(R.string.my_games), R.drawable.list_24px) {
             onGamesClick()
         }
         Spacer(modifier = Modifier.height(20.dp))
-        OptionButton("Настройки", R.drawable.settings_24px){
+        OptionButton(stringResource(R.string.settings), R.drawable.settings_24px){
             onSettingsClick()
         }
         Spacer(modifier = Modifier.height(20.dp))
-        OptionButton("Статистика", R.drawable.outline_show_chart_24){
+        OptionButton(stringResource(R.string.statistic), R.drawable.outline_show_chart_24){
             onStatsClick()
         }
     }

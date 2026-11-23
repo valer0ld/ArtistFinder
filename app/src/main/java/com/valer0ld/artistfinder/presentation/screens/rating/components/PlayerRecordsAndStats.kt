@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.valer0ld.artistfinder.R
@@ -87,9 +88,9 @@ fun ExpandedPlayerStats(expand: Boolean, player: RatingPlayer){
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             TableItem{
-                RatingText("Всего Игр", modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
-                RatingText("Всего Шагов", modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
-                RatingText("Общее время", modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
+                RatingText(stringResource(R.string.games_won), modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
+                RatingText(stringResource(R.string.total_steps), modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
+                RatingText(stringResource(R.string.total_time), modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
             }
             TableItem{
                 RatingText(player.dailyGames.toString(), modifier = Modifier.weight(1f), color =  MaterialTheme.colorScheme.onPrimaryContainer)
