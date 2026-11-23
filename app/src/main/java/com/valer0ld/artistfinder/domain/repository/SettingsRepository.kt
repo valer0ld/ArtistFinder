@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
     val isDarkTheme: Flow<Boolean?>
-    val language: Flow<AppLanguage>
     val showInRating: Flow<Boolean>
     suspend fun setTheme(value: Boolean)
     suspend fun setLanguage(value: AppLanguage)
+    suspend fun getLanguage() : AppLanguage
     suspend fun setShowInRating(value: Boolean)
 }

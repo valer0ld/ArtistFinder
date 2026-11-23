@@ -20,7 +20,6 @@ class SettingsDataStore @Inject constructor(
 ) {
     companion object{
         private val IS_DARK_THEME = booleanPreferencesKey("app_theme")
-        private val LANGUAGE = stringPreferencesKey("language")
         private val SHOW_IN_RATING = booleanPreferencesKey("show_in_rating")
     }
 
@@ -31,15 +30,6 @@ class SettingsDataStore @Inject constructor(
         }.map { preferences ->
             preferences[IS_DARK_THEME]
         }
-
-    val language: Flow<String> = dataStore.data
-        .catch { exception ->
-            if (exception is IOException) emit(emptyPreferences())
-            else throw exception
-        }.map { preferences ->
-            preferences[LANGUAGE] ?: AppLanguage.SYSTEM.name
-        }
-
     val showInRating: Flow<Boolean> = dataStore.data
         .catch { exception ->
             if (exception is IOException) emit(emptyPreferences())
@@ -50,10 +40,6 @@ class SettingsDataStore @Inject constructor(
 
     suspend fun setTheme(value: Boolean){
         dataStore.edit { it[IS_DARK_THEME] = value }
-    }
-
-    suspend fun setLanguage(value: String){
-        dataStore.edit { it[LANGUAGE] = value }
     }
 
     suspend fun setShowInRating(value: Boolean){

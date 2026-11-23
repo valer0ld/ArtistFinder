@@ -94,13 +94,12 @@ class SettingsViewModel @Inject constructor(
 
     fun loadLanguage(){
         viewModelScope.launch {
-            settingsRepository.language.collect { value ->
-                _uiState.update { state ->
-                    state.copy(
-                        values = state.values + (SettingId.LANGUAGE to value)
-                    )
-                }
-                Log.d("loadLang", "state = $value")
+            val language = settingsRepository.getLanguage()
+
+            _uiState.update { state ->
+                state.copy(
+                    values = state.values + (SettingId.LANGUAGE to language)
+                )
             }
         }
     }
@@ -131,7 +130,6 @@ class SettingsViewModel @Inject constructor(
                     val language = AppLanguage.entries.first{
                         it == value
                     }
-                    Log.d("onLangList", "value = $value language = $language")
                     settingsRepository.setLanguage(language)
                     _uiState.update {it.copy(values = it.values + (SettingId.LANGUAGE to value) )}
                 }
