@@ -3,9 +3,11 @@ package com.valer0ld.artistfinder.presentation.viewmodel
 import android.os.SystemClock
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.valer0ld.artistfinder.domain.manager.GameSessionManager
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
 import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
+import com.valer0ld.artistfinder.domain.repository.GameListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -30,7 +34,9 @@ data class GameUIState(
 @HiltViewModel
 class GameViewModel @Inject constructor(
     private val currentGameRepository: CurrentGameRepository,
-    private val currentUserRepository: CurrentUserRepository
+    private val currentUserRepository: CurrentUserRepository,
+    private val gameListRepository: GameListRepository,
+    private val gameSessionManager: GameSessionManager
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(GameUIState())
@@ -63,12 +69,25 @@ class GameViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                currentGameRepository.selectArtist(artist)
-                if (currentGameRepository.isWin()){
-                    val game = currentGameRepository.onWin(SystemClock.elapsedRealtime() - _uiState.value.startTime)
-                    currentUserRepository.addGameStats(game.isDaily, game.duration, game.currentStep)
-                    onWinGame()
+                gameSessionManager.mutex.lock()
+                try {
+                    if (!gameSessionManager.isFinalized){
+                        currentGameRepository.selectArtist(artist)
+                        if (currentGameRepository.isWin()){
+
+                            val game = currentGameRepository.onWin(SystemClock.elapsedRealtime() - _uiState.value.startTime)
+                            currentUserRepository.addGameStats(game.isDaily, game.duration, game.currentStep, true)
+                            gameListRepository.upsert(game)
+
+                            gameSessionManager.markFinalized()
+
+                            onWinGame()
+                        }
+                    }
+                } finally {
+                    gameSessionManager.mutex.unlock()
                 }
+
                 delay(100.milliseconds)
             } finally {
                 _uiState.update { it.copy (processingButtonId = null) }

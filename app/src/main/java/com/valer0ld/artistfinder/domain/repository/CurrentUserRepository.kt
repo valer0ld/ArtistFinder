@@ -11,6 +11,6 @@ interface CurrentUserRepository {
     suspend fun clearUser()
     suspend fun updateProfileInfo(userName: String, email: String, avatarUrl: String)
     suspend fun startGame(isDaily: Boolean)
-    suspend fun addGameStats(isDaily: Boolean, duration: Long, steps: Int)
+    suspend fun addGameStats(isDaily: Boolean, duration: Long, steps: Int, win: Boolean)
     suspend fun updateCurrentRating(rating: Int)
 }

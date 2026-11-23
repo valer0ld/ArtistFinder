@@ -57,7 +57,7 @@ interface CurrentUserDao {
 
     @Query("""
         UPDATE current_user
-        SET gameEnds = gameEnds + 1,
+        SET gameEnds = gameEnds + :win,
             totalTime = totalTime + :duration,
             totalSteps = totalSteps + :steps
         WHERE id = :id
@@ -65,15 +65,16 @@ interface CurrentUserDao {
     suspend fun addGameStats(
         id: Long,
         duration: Long,
-        steps: Int
+        steps: Int,
+        win: Int
     )
 
     @Query("""
         UPDATE current_user
-        SET gameEnds = gameEnds + 1,
+        SET gameEnds = gameEnds + :win,
             totalTime = totalTime + :duration,
             totalSteps = totalSteps + :steps,
-            dailyGameEnds = dailyGameEnds + 1,
+            dailyGameEnds = dailyGameEnds + :win,
             dailyTime = dailyTime + :duration,
             dailySteps = dailySteps + :steps
         WHERE id = :id
@@ -81,7 +82,8 @@ interface CurrentUserDao {
     suspend fun addDailyGameStats(
         id: Long,
         duration: Long,
-        steps: Int
+        steps: Int,
+        win: Int
     )
 
     @Query("""

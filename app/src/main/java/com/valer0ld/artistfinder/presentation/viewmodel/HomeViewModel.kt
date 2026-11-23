@@ -2,6 +2,7 @@ package com.valer0ld.artistfinder.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.valer0ld.artistfinder.domain.manager.GameSessionManager
 import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.model.TempArtist
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
@@ -33,7 +34,8 @@ enum class SearchArtist{
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val currentGameRepository: CurrentGameRepository,
-    private val currentUserRepository: CurrentUserRepository
+    private val currentUserRepository: CurrentUserRepository,
+    private val gameSessionManager: GameSessionManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUIState())
     val uiState: StateFlow<HomeUIState> = _uiState.asStateFlow()
@@ -47,6 +49,7 @@ class HomeViewModel @Inject constructor(
             if (isDaily) currentGameRepository.startGame(_uiState.value.dailyStartArtist, _uiState.value.dailyEndArtist, true)
             else currentGameRepository.startGame(_uiState.value.searchStartArtist, _uiState.value.searchEndArtist, false)
             currentUserRepository.startGame(isDaily)
+            gameSessionManager.reset()
             onSuccess()
         }
     }

@@ -1,5 +1,7 @@
 package com.valer0ld.artistfinder.presentation.screens.game.components
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +14,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,6 +31,7 @@ import com.valer0ld.artistfinder.presentation.components.BouncingIconButton
 import com.valer0ld.artistfinder.presentation.model.CounterIconItems
 import com.valer0ld.artistfinder.presentation.theme.AppTheme
 import com.valer0ld.artistfinder.presentation.viewmodel.GameBarViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun GameBottomBar(
@@ -33,6 +40,32 @@ fun GameBottomBar(
     onHomeClick: ()->Unit
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val scope = rememberCoroutineScope()
+
+    var isLeaving by remember {
+        mutableStateOf(false)
+    }
+
+    fun cancelAndLeave(){
+        if (isLeaving) return
+
+        isLeaving = true
+
+        scope.launch {
+            try {
+                viewModel.onCancelGame()
+                onHomeClick()
+                isLeaving = false
+            } catch (e: Exception){
+                isLeaving = false
+            }
+        }
+    }
+
+    BackHandler {
+        cancelAndLeave()
+    }
 
     Surface(
         shape = RoundedCornerShape(30.dp),
@@ -55,8 +88,8 @@ fun GameBottomBar(
                 size = 60.dp,
                 modifier = Modifier.padding(horizontal = 30.dp),
                 onIconClick = {
-                    onHomeClick()
-                    viewModel.onUpdateState()
+                    cancelAndLeave()
+                    //viewModel.onUpdateState()
                 }
             )
             Row(modifier = Modifier.padding(horizontal = 30.dp)) {
@@ -80,13 +113,5 @@ fun GameBottomBar(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun GameBottomBarPreview(){
-    AppTheme {
-        GameBottomBar(Modifier, viewModel(), {})
     }
 }

@@ -55,6 +55,15 @@ class CurrentGameRepositoryImpl @Inject constructor(
         _game.value = null
     }
 
+    override suspend fun onCancelGame(duration: Long) : CurrentGame {
+        _game.update{ current ->
+            current?.copy(
+                duration = duration
+            )
+        }
+        return game.value as CurrentGame
+    }
+
     override suspend fun isWin() : Boolean {
         return game.value?.currentArtist?.name == _game.value?.targetArtist?.name
     }
@@ -66,7 +75,6 @@ class CurrentGameRepositoryImpl @Inject constructor(
                 isFinished = true
             )
         }
-        gameListDao.upsert(game.value?.toEntity()!!) // возможно как-то надо исправить
         return game.value as CurrentGame
     }
 }

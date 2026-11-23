@@ -13,4 +13,5 @@ interface CurrentGameRepository{
     suspend fun clear()
     suspend fun isWin() : Boolean
     suspend fun onWin(duration: Long) : CurrentGame
+    suspend fun onCancelGame(duration: Long) : CurrentGame
 }
