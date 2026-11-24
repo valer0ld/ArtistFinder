@@ -43,8 +43,8 @@ fun LoggInPanel(viewModel: LoggInViewModel = hiltViewModel()){
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            CustomTextField(stringResource(R.string.email), state.email, viewModel::onEmailChange, Modifier)
-            CustomTextField(stringResource(R.string.password), state.password, viewModel::onPasswordChange,Modifier)
+            CustomTextField(stringResource(R.string.email), state.email, state.emailError, viewModel::onEmailChange, Modifier)
+            CustomTextField(stringResource(R.string.password), state.password, state.passwordError, viewModel::onPasswordChange,Modifier)
             Spacer(Modifier.height(5.dp))
             Button(
                 onClick = { viewModel.login() },

@@ -56,4 +56,12 @@
     <string name="change_avatar">Изменить аватар</string>
     <string name="log_out">Выйти из аккаунта</string>
     <string name="delete_account">Удалить аккаунт</string>
+    <string name="empty_error">Введите данные</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="invalid_format_error">Неправильный формат</string>
+    <string name="not_exist_error">Аккаунт не найден</string>
+    <string name="incorrect_data_error">Неверные данные</string>
+    <string name="too_short_error">"Пароль должен быть минимум 8 символов "</string>
+    <string name="mismatch_error">Пароли не совпадают</string>
+    <string name="not_found_error">Артист не найден</string>
 </resources>

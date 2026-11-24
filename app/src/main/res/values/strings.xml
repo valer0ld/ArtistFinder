@@ -55,5 +55,13 @@
     <string name="change_avatar">Change avatar</string>
     <string name="log_out">Log out</string>
     <string name="delete_account">Delete account</string>
+    <string name="empty_error">Enter data</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="invalid_format_error">Invalid format</string>
+    <string name="not_exist_error">Account not found</string>
+    <string name="incorrect_data_error">Incorrect data</string>
+    <string name="too_short_error">Password must be at least 8 characters</string>
+    <string name="mismatch_error">Password mismatch</string>
+    <string name="not_found_error">Artist not found</string>
 
 </resources>

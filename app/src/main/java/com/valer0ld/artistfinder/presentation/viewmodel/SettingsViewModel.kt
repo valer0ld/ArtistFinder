@@ -9,6 +9,12 @@ import com.valer0ld.artistfinder.domain.repository.AuthRepository
 import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
 import com.valer0ld.artistfinder.domain.repository.GameListRepository
 import com.valer0ld.artistfinder.domain.repository.SettingsRepository
+import com.valer0ld.artistfinder.domain.validation.error_enums.ConfirmPasswordError
+import com.valer0ld.artistfinder.domain.validation.error_enums.EmailError
+import com.valer0ld.artistfinder.domain.validation.error_enums.PasswordError
+import com.valer0ld.artistfinder.domain.validation.validators.validateConfirmPassword
+import com.valer0ld.artistfinder.domain.validation.validators.validateEmail
+import com.valer0ld.artistfinder.domain.validation.validators.validatePassword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +42,10 @@ data class SettingsUIState(
         SettingId.CONFIRM_PASSWORD to "",
         SettingId.EDIT_PICTURE to ""
     ),
-    val isEditingProfile: Boolean = false
+    val isEditingProfile: Boolean = false,
+    val emailError: EmailError? = null,
+    val passwordError: PasswordError? = null,
+    val confirmPasswordError: ConfirmPasswordError? = null
 )
 
 @HiltViewModel
@@ -85,7 +94,7 @@ class SettingsViewModel @Inject constructor(
 
                 _uiState.update { state ->
                     state.copy(
-                        values =state.values + (SettingId.DARK_THEME to value)
+                        values = state.values + (SettingId.DARK_THEME to value)
                     )
                 }
             }
@@ -114,6 +123,24 @@ class SettingsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun validateData(): Boolean{
+        val state = _uiState.value
+
+        val emailError = validateEmail(state.values[SettingId.EDIT_EMAIL] as String)
+        val passwordError = validatePassword(state.values[SettingId.EDIT_PASSWORD] as String)
+        val confirmPasswordError = validateConfirmPassword(state.values[SettingId.EDIT_PASSWORD] as String, state.values[SettingId.CONFIRM_PASSWORD] as String)
+
+        _uiState.update {
+            it.copy(
+                emailError = emailError,
+                passwordError = passwordError,
+                confirmPasswordError = confirmPasswordError
+            )
+        }
+
+        return !(emailError != null || passwordError != null || confirmPasswordError != null)
     }
 
     fun onSettingAction(settingId: SettingId, value: Any? = null){
@@ -153,31 +180,17 @@ class SettingsViewModel @Inject constructor(
                 _uiState.update { state ->
                     state.copy(
                         isEditingProfile = false,
-                        values = state.values + state.oldUserInfo
+                        values = state.values + state.oldUserInfo, // почему-то не возвращает пароль и подтверждение пароля
+                        emailError = null,
+                        passwordError = null,
+                        confirmPasswordError = null
                     )
                 }
             }
             SettingId.SAVE_PROFILE -> {
 
                 viewModelScope.launch {
-                    if (_uiState.value.values[SettingId.EDIT_PASSWORD] != _uiState.value.oldUserInfo[SettingId.EDIT_PASSWORD]){
-                        if (_uiState.value.values[SettingId.CONFIRM_PASSWORD] == _uiState.value.values[SettingId.EDIT_PASSWORD]){
-                            currentUserRepository.updateProfileInfo(
-                                userName = _uiState.value.values[SettingId.EDIT_USERNAME] as String,
-                                email = _uiState.value.values[SettingId.EDIT_EMAIL] as String,
-                                avatarUrl = _uiState.value.values[SettingId.EDIT_PICTURE] as String
-                            )
-                            _uiState.update { state ->
-                                state.copy(
-                                    isEditingProfile = false,
-                                    oldUserInfo = state.values.filterKeys { it in state.oldUserInfo.keys } // перестраховка
-                                )
-                            }
-                        }
-
-                        //else{ ошибка: не совпадают пароли }
-                    }
-                    else{
+                    if (validateData()){
                         currentUserRepository.updateProfileInfo(
                             userName = _uiState.value.values[SettingId.EDIT_USERNAME] as String,
                             email = _uiState.value.values[SettingId.EDIT_EMAIL] as String,
@@ -191,12 +204,47 @@ class SettingsViewModel @Inject constructor(
                         }
                     }
                 }
+
             }
             SettingId.EDIT_PICTURE -> { _uiState.update {it.copy(values = it.values + (SettingId.EDIT_PICTURE to "") )}}
             SettingId.EDIT_USERNAME -> {  _uiState.update {it.copy(values = it.values + (SettingId.EDIT_USERNAME to value) )} }
-            SettingId.EDIT_EMAIL -> {  _uiState.update {it.copy(values = it.values + (SettingId.EDIT_EMAIL to value) )} }
-            SettingId.EDIT_PASSWORD -> {  _uiState.update {it.copy(values = it.values + (SettingId.EDIT_PASSWORD to value) )} }
-            SettingId.CONFIRM_PASSWORD -> { _uiState.update {it.copy(values = it.values + (SettingId.CONFIRM_PASSWORD to value) )} }
+            SettingId.EDIT_EMAIL -> {
+                _uiState.update { state ->
+                    state.copy(
+                        values = state.values + (SettingId.EDIT_EMAIL to value),
+                        emailError = if (state.emailError != null){
+                            validateEmail(value as String)
+                        } else {
+                            null
+                        }
+                    )
+                }
+            }
+            SettingId.EDIT_PASSWORD -> {
+                _uiState.update { state ->
+                    state.copy(
+                        values = state.values + (SettingId.EDIT_PASSWORD to value),
+                        passwordError = if (state.passwordError != null){
+                            validatePassword(value as String)
+                        } else {
+                            null
+                        }
+                    )
+                }
+            }
+            SettingId.CONFIRM_PASSWORD -> {
+                _uiState.update { state ->
+                    state.copy(
+                        values = state.values + (SettingId.CONFIRM_PASSWORD to value),
+                        confirmPasswordError = if (state.confirmPasswordError != null){
+                            validateConfirmPassword(state.values[SettingId.EDIT_PASSWORD] as String, value as String)
+                        } else {
+                            null
+                        }
+                    )
+                }
+                _uiState.update {it.copy( )}
+            }
             SettingId.LOGOUT -> {
                 viewModelScope.launch {
                     gameListRepository.clearGameList()

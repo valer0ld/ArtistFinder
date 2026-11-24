@@ -52,9 +52,7 @@ fun Home(innerPadding: PaddingValues, onGameClick: ()->Unit, viewModel: HomeView
             onStartValueChanged = viewModel::onStartValueChanged,
             onEndValueChanged = viewModel::onEndValueChanged,
             onGameClick = {
-                if (state.searchStartArtist.name != "" && state.searchEndArtist.name != ""){
-                    viewModel.onGameStart(false, onGameClick)
-                }
+                viewModel.onGameStart(false, onGameClick)
             },
             onShuffleClick = viewModel::randomArtists
         )

@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.valer0ld.artistfinder.R
 import com.valer0ld.artistfinder.domain.model.AppLanguage
 import com.valer0ld.artistfinder.domain.model.AppSettings
 import com.valer0ld.artistfinder.domain.model.Setting
@@ -36,6 +37,11 @@ import com.valer0ld.artistfinder.domain.model.SettingColor
 import com.valer0ld.artistfinder.domain.model.SettingId
 import com.valer0ld.artistfinder.domain.model.SettingType
 import com.valer0ld.artistfinder.domain.model.SettingsEnum
+import com.valer0ld.artistfinder.domain.validation.error_enums.ArtistSearchError
+import com.valer0ld.artistfinder.domain.validation.error_enums.ConfirmPasswordError
+import com.valer0ld.artistfinder.domain.validation.error_enums.EmailError
+import com.valer0ld.artistfinder.domain.validation.error_enums.PasswordError
+import com.valer0ld.artistfinder.presentation.util.toMessage
 import com.valer0ld.artistfinder.presentation.viewmodel.SettingsUIState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
@@ -126,11 +132,23 @@ fun ButtonSetting(setting: Setting, state: SettingsUIState,onSettingAction: (Set
 
 @Composable
 fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction: (SettingId, Any?)->Unit, modifier: Modifier = Modifier){
+    val error = when(setting.Id){
+        SettingId.EDIT_EMAIL -> state.emailError
+        SettingId.EDIT_PASSWORD -> state.passwordError
+        SettingId.CONFIRM_PASSWORD -> state.confirmPasswordError
+        else -> null
+    }
 
     OutlinedTextField(
         value = state.values[setting.Id] as? String ?: "",
         onValueChange = { newText ->
             onSettingAction(setting.Id, newText)
+        },
+        isError = error != null,
+        supportingText = {
+            error?.let {
+                Text(text = error.toMessage())
+            }
         },
         textStyle = MaterialTheme.typography.titleLarge,
         colors = when (setting.color){
@@ -141,6 +159,7 @@ fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction:
                 unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
+                errorContainerColor = MaterialTheme.colorScheme.surfaceBright
             )
             SettingColor.SECOND -> OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MaterialTheme.colorScheme.tertiary,
@@ -148,7 +167,8 @@ fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction:
                 focusedTextColor = MaterialTheme.colorScheme.onSurface,
                 unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceBright
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
+                errorContainerColor = MaterialTheme.colorScheme.surfaceBright
             )
             SettingColor.DESTRUCTIVE -> OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MaterialTheme.colorScheme.errorContainer,
@@ -156,7 +176,8 @@ fun TextFieldSetting(setting: Setting, state:  SettingsUIState, onSettingAction:
                 focusedTextColor = MaterialTheme.colorScheme.error,
                 unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceBright
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
+                errorContainerColor = MaterialTheme.colorScheme.surfaceBright
             )
         },
         modifier = modifier.fillMaxWidth().padding(10.dp),

@@ -18,19 +18,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.valer0ld.artistfinder.domain.model.Artist
+import com.valer0ld.artistfinder.domain.validation.error_enums.ErrorEnums
 import com.valer0ld.artistfinder.presentation.components.CustomTextField
 import com.valer0ld.artistfinder.presentation.components.ExpandedAnimatedComponent
 import kotlinx.coroutines.launch
 
 @Composable
-fun SearchArtist(name: String, placeholder: String, list: List<Artist>, onValueChanged: (String)->Unit){
+fun SearchArtist(name: String, placeholder: String, list: List<Artist>, error: ErrorEnums?, onValueChanged: (String)->Unit){
     var isFocused by remember { mutableStateOf(false) }
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val coroutineScope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
 
     Column(modifier = Modifier.bringIntoViewRequester(bringIntoViewRequester)){
-        CustomTextField(placeholder, name, onValueChanged,
+        CustomTextField(placeholder, name, error, onValueChanged,
             Modifier
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused

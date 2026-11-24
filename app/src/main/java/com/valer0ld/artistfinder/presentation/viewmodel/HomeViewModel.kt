@@ -7,6 +7,9 @@ import com.valer0ld.artistfinder.domain.model.Artist
 import com.valer0ld.artistfinder.domain.model.TempArtist
 import com.valer0ld.artistfinder.domain.repository.CurrentGameRepository
 import com.valer0ld.artistfinder.domain.repository.CurrentUserRepository
+import com.valer0ld.artistfinder.domain.validation.error_enums.ArtistSearchError
+import com.valer0ld.artistfinder.domain.validation.validators.validateArtist
+import com.valer0ld.artistfinder.domain.validation.validators.validateEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,12 +21,14 @@ import javax.inject.Inject
 data class HomeUIState(
     val dailyStartArtist: Artist = Artist("", 0),
     val dailyEndArtist: Artist = Artist("", 0),
-    val searchStartArtist: Artist = Artist("", 0),
-    val searchEndArtist: Artist = Artist("", 0),
+    val searchStartArtist: String = "",
+    val searchEndArtist: String = "",
     val searchStartList: List<Artist> = emptyList(),
     val searchEndList: List<Artist> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val startArtistError: ArtistSearchError? = null,
+    val endArtistError: ArtistSearchError? = null
 )
 
 enum class SearchArtist{
@@ -46,23 +51,65 @@ class HomeViewModel @Inject constructor(
 
     fun onGameStart(isDaily: Boolean, onSuccess: ()->Unit){
         viewModelScope.launch {
-            if (isDaily) currentGameRepository.startGame(_uiState.value.dailyStartArtist, _uiState.value.dailyEndArtist, true)
-            else currentGameRepository.startGame(_uiState.value.searchStartArtist, _uiState.value.searchEndArtist, false)
-            currentUserRepository.startGame(isDaily)
-            gameSessionManager.reset()
-            onSuccess()
+            if (validateData()){
+                if (isDaily) currentGameRepository.startGame(_uiState.value.dailyStartArtist, _uiState.value.dailyEndArtist, true)
+                else {
+                    val startArtist = Artist(_uiState.value.searchStartArtist, 0)
+                    val endArtist = Artist(_uiState.value.searchEndArtist, 0)
+                    currentGameRepository.startGame(startArtist, endArtist, false)
+                }
+                currentUserRepository.startGame(isDaily)
+                gameSessionManager.reset()
+                onSuccess()
+            }
         }
     }
 
+    fun validateData(): Boolean{
+        val state = _uiState.value
+
+        val first = validateArtist(state.searchStartArtist)
+        val second = validateArtist(state.searchEndArtist)
+
+        _uiState.update {
+            it.copy(
+                startArtistError = first,
+                endArtistError = second
+            )
+        }
+
+        return !(first != null || second != null)
+    }
+
     fun onStartValueChanged(value: String){
-        val newArtist = Artist(value, 0)
-        _uiState.update { it.copy (searchStartArtist = newArtist) }
+
+        _uiState.update { state ->
+            state.copy(
+                searchStartArtist = value,
+                startArtistError = if (state.startArtistError != null){
+                    validateArtist(value)
+                } else {
+                    null
+                }
+            )
+        }
+
         loadSearchList(SearchArtist.START, value)
     }
 
     fun onEndValueChanged(value: String){
-        val newArtist = Artist(value, 0)
-        _uiState.update { it.copy (searchEndArtist = newArtist) }
+
+        _uiState.update { state ->
+            state.copy(
+                searchEndArtist = value,
+                endArtistError = if (state.endArtistError != null){
+                    validateArtist(value)
+                } else {
+                    null
+                }
+            )
+        }
+
         loadSearchList(SearchArtist.END, value)
     }
 
@@ -81,8 +128,8 @@ class HomeViewModel @Inject constructor(
 
     fun randomArtists(){
         _uiState.update { it.copy (
-            searchStartArtist = TempArtist.list[0],
-            searchEndArtist = TempArtist.list[1]
+            searchStartArtist = TempArtist.list[0].name,
+            searchEndArtist = TempArtist.list[1].name
         ) }
     }
 
